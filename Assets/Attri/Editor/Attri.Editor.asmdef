@@ -1,14 +1,18 @@
 {
     "name": "Attri.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:bfd448b910755d444b7c4acd84a11812"
+    ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Csv.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

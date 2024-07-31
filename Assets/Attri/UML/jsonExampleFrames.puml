@@ -1,0 +1,19 @@
+﻿@startjson
+[
+    {
+        "Name" : "P",
+        "Type" : "float3",
+        "Value" : "csv as value"
+    },
+    {
+        "Name" : "uv",
+        "Type" : "float2",
+        "Value" : "csv as value"
+    },
+    {
+        "Name" : "N",
+        "Type" : "float3",
+        "Value" : "csv as value"
+    }
+]
+@endjson
