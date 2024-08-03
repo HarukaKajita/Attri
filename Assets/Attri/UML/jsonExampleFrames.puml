@@ -3,17 +3,17 @@
     {
         "Name" : "P",
         "Type" : "float3",
-        "Value" : "csv as value"
+        "Value" : ["csv as value at frame 0", "csv as value at frame 1", "csv as value at frame 2"]
     },
     {
         "Name" : "uv",
         "Type" : "float2",
-        "Value" : "csv as value"
+        "Value" : ["csv as value at frame 0", "csv as value at frame 1", "csv as value at frame 2"]
     },
     {
         "Name" : "N",
         "Type" : "float3",
-        "Value" : "csv as value"
+        "Value" : ["csv as value at frame 0", "csv as value at frame 1", "csv as value at frame 2"]
     }
 ]
 @endjson

@@ -1,6 +1,6 @@
 {
-    "name": "Attri",
-    "rootNamespace": "Attri.Runtime",
+    "name": "CSVParser",
+    "rootNamespace": "yotokun",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
