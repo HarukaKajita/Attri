@@ -15,14 +15,7 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: 63c660adc527bdf4da3b497a5196ffcf, type: 3}
   processors:
   - rid: 2218637522227691526
-  - rid: 2218637522227691533
-  skipFirstLine: 1
-  attributeContainer:
-    name: test_P
-    type: 0
-    signed: 0
-    dimension: 4
-    valueString: []
+  - rid: 2218637522227691537
   references:
     version: 2
     RefIds:
@@ -30,7 +23,9 @@ ScriptedImporter:
       type: {class: FloatArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
       data:
         assetPrefix: P_element
-    - rid: 2218637522227691533
-      type: {class: Vector3ImportProcessor, ns: Attri.Editor, asm: Attri.Editor}
+        skipFirstLine: 1
+    - rid: 2218637522227691537
+      type: {class: Vector3ArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
       data:
-        assetPrefix: Vector3ImportProcessor
+        assetPrefix: Vector3ArrayProcessor
+        skipFirstLine: 1
