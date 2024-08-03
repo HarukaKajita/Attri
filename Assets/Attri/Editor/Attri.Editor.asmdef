@@ -3,7 +3,8 @@
     "rootNamespace": "Attri.Editor",
     "references": [
         "GUID:bfd448b910755d444b7c4acd84a11812",
-        "GUID:76f95922c71d5b348a1b85e4b812849e"
+        "GUID:76f95922c71d5b348a1b85e4b812849e",
+        "GUID:bbde805d927e795439d7a746d1749cab"
     ],
     "includePlatforms": [
         "Editor"

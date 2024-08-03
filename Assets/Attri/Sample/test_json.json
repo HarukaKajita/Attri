@@ -1,0 +1,20 @@
+[
+    {
+        "name" : "P",
+        "attributeType" : "Real",
+        "dimension" : "3",
+        "valueCsvList" : ["csv as value"]
+    },
+    {
+        "name" : "uv",
+        "attributeType" : "Real",
+        "dimension" : "2",
+        "valueCsvList" : ["csv as value"]
+    },
+    {
+        "name" : "N",
+        "attributeType" : "Real",
+        "dimension" : "3",
+        "valueCsvList" : ["csv as value"]
+    }
+]
