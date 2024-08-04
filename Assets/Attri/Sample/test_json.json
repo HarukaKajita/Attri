@@ -1,13 +1,13 @@
 [
     {
         "name" : "P",
-        "attributeType" : "Real",
+        "attributeType" : "Float",
         "dimension" : "3",
         "valueCsvList" : ["csv as value"]
     },
     {
         "name" : "uv",
-        "attributeType" : "Real",
+        "attributeType" : "Float",
         "dimension" : "2",
         "valueCsvList" : ["csv as value"]
     },

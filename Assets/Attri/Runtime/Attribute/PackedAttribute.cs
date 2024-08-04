@@ -12,8 +12,9 @@ namespace Attri.Runtime
 
     public enum AttributeType
     {
-        Real,
+        Float,
         Integer,
+        Bool,
         String,
     }
 }

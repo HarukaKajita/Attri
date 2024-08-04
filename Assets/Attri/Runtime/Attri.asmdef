@@ -1,7 +1,9 @@
 {
     "name": "Attri",
     "rootNamespace": "Attri.Runtime",
-    "references": [],
+    "references": [
+        "GUID:76f95922c71d5b348a1b85e4b812849e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
