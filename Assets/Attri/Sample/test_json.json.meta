@@ -14,11 +14,15 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: d3ec89196a6ed0a4488dc4ca4ac2d3fe, type: 3}
   processors:
-  - rid: 2218637522227691542
+  - rid: 2218637522227691544
   references:
     version: 2
     RefIds:
-    - rid: 2218637522227691542
+    - rid: 2218637522227691544
       type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
       data:
         assetPrefix: AttributeArrayProcessor
+        CompressUnitVector: 0
+        CompressFloat: 0
+        FloatPrecisionBit: 3
+        CompressInteger: 0
