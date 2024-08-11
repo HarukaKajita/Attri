@@ -47,7 +47,7 @@ namespace Attri.Runtime.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(35)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(34)
             {
                 { typeof(global::Attri.Runtime.FrameData<bool>), 0 },
                 { typeof(global::Attri.Runtime.FrameData<float>), 1 },
@@ -74,16 +74,15 @@ namespace Attri.Runtime.Resolvers
                 { typeof(global::System.Collections.Generic.List<int>), 22 },
                 { typeof(global::System.Collections.Generic.List<string>), 23 },
                 { typeof(global::Attri.Runtime.AttributeType), 24 },
-                { typeof(global::UnityEngine.HideFlags), 25 },
-                { typeof(global::Attri.Runtime.AttributeAssetBase), 26 },
-                { typeof(global::Attri.Runtime.BoolAttributeAssetBase), 27 },
-                { typeof(global::Attri.Runtime.FloatAttributeAssetBase), 28 },
-                { typeof(global::Attri.Runtime.IntegerAttributeAssetBase), 29 },
-                { typeof(global::Attri.Runtime.StringAttributeAssetBase), 30 },
-                { typeof(global::Attri.Runtime.Vector2AttributeAssetBase), 31 },
-                { typeof(global::Attri.Runtime.Vector2IntAttributeAssetBase), 32 },
-                { typeof(global::Attri.Runtime.Vector3AttributeAssetBase), 33 },
-                { typeof(global::Attri.Runtime.Vector3IntAttributeAssetBase), 34 },
+                { typeof(global::Attri.Runtime.AttributeBase), 25 },
+                { typeof(global::Attri.Runtime.BoolAttribute), 26 },
+                { typeof(global::Attri.Runtime.FloatAttribute), 27 },
+                { typeof(global::Attri.Runtime.IntegerAttribute), 28 },
+                { typeof(global::Attri.Runtime.StringAttribute), 29 },
+                { typeof(global::Attri.Runtime.Vector2Attribute), 30 },
+                { typeof(global::Attri.Runtime.Vector2IntAttribute), 31 },
+                { typeof(global::Attri.Runtime.Vector3Attribute), 32 },
+                { typeof(global::Attri.Runtime.Vector3IntAttribute), 33 },
             };
         }
 
@@ -122,16 +121,15 @@ namespace Attri.Runtime.Resolvers
                 case 22: return new global::MessagePack.Formatters.ListFormatter<int>();
                 case 23: return new global::MessagePack.Formatters.ListFormatter<string>();
                 case 24: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeTypeFormatter();
-                case 25: return new Attri.Runtime.Formatters.UnityEngine.HideFlagsFormatter();
-                case 26: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeAssetBaseFormatter();
-                case 27: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeAssetBaseFormatter();
-                case 28: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeAssetBaseFormatter();
-                case 29: return new Attri.Runtime.Formatters.Attri.Runtime.IntegerAttributeAssetBaseFormatter();
-                case 30: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeAssetBaseFormatter();
-                case 31: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeAssetBaseFormatter();
-                case 32: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeAssetBaseFormatter();
-                case 33: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3AttributeAssetBaseFormatter();
-                case 34: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3IntAttributeAssetBaseFormatter();
+                case 25: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter();
+                case 26: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeFormatter();
+                case 27: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
+                case 28: return new Attri.Runtime.Formatters.Attri.Runtime.IntegerAttributeFormatter();
+                case 29: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
+                case 30: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeFormatter();
+                case 31: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeFormatter();
+                case 32: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3AttributeFormatter();
+                case 33: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3IntAttributeFormatter();
                 default: return null;
             }
         }

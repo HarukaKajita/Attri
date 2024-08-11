@@ -1,20 +1,115 @@
 [
-    {
-        "name" : "P",
-        "attributeType" : "Float",
-        "dimension" : "3",
-        "valueCsvList" : ["0,1,2"]
-    },
-    {
-        "name" : "uv",
-        "attributeType" : "Float",
-        "dimension" : "2",
-        "valueCsvList" : ["0.0, 0.78910"]
-    },
-    {
-        "name" : "N",
-        "attributeType" : "Float",
-        "dimension" : "3",
-        "valueCsvList" : ["12.345, 0.78910, 0.84324"]
-    }
+    [
+        5,
+        {
+            "name": "Vector3AttributeAssetBase",
+            "hideFlags": 0,
+            "values": [
+                {
+                    "data": [
+                        [
+                            1,
+                            2,
+                            3
+                        ],
+                        [
+                            4,
+                            5,
+                            6
+                        ]
+                    ]
+                },
+                {
+                    "data": [
+                        [
+                            7,
+                            8,
+                            9
+                        ],
+                        [
+                            10,
+                            11,
+                            12.3
+                        ]
+                    ]
+                }
+            ],
+            "attributeType": 0,
+            "dimension": 3
+        }
+    ],
+    [
+        7,
+        {
+            "name": "Vector2AttributeAssetBase",
+            "hideFlags": 0,
+            "values": [
+                {
+                    "data": [
+                        [
+                            1,
+                            2
+                        ],
+                        [
+                            3,
+                            4
+                        ]
+                    ]
+                },
+                {
+                    "data": [
+                        [
+                            5,
+                            6
+                        ],
+                        [
+                            7,
+                            8
+                        ]
+                    ]
+                }
+            ],
+            "attributeType": 0,
+            "dimension": 2
+        }
+    ],
+    [
+        5,
+        {
+            "name": "Vector3AttributeAssetBase",
+            "hideFlags": 0,
+            "values": [
+                {
+                    "data": [
+                        [
+                            1,
+                            2,
+                            3
+                        ],
+                        [
+                            4,
+                            5,
+                            6
+                        ]
+                    ]
+                },
+                {
+                    "data": [
+                        [
+                            7,
+                            8,
+                            9
+                        ],
+                        [
+                            10,
+                            11,
+                            12.3
+                        ]
+                    ]
+                }
+            ],
+            "attributeType": 0,
+            "dimension": 3
+        }
+    ]
 ]

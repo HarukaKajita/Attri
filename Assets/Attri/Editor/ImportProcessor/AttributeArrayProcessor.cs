@@ -32,32 +32,16 @@ namespace Attri.Editor
             if (Path.GetExtension(ctx.assetPath) == ".json") 
                 data = AttributeSerializer.ConvertFromJson(jsonText);
             
-            // var allBytes = File.ReadAllBytes(ctx.assetPath);
-            // var attributes = MessagePackSerializer.Deserialize<List<AttributeAssetBase>>(allBytes);
-            
-            // var attributes = MessagePackSerializer.Deserialize<dynamic>(allBytes, options);
-            // var attributes = MessagePackSerializer.Deserialize<AttributeAssetBase>(allBytes, options);
             var attributes = AttributeSerializer.DeserializeAsArray(data);
-            // var packedAttributes = JsonSerializer.CreateDefault().Deserialize<List<PackedAttribute>>(new JsonTextReader(new StringReader(jsonText)));
-            // _packedAttributes = JsonUtility.FromJson<List<PackedAttribute>>(jsonText);
-            
-            // foreach (var packedAttribute in packedAttributes)
-            // {
-            //     Debug.Log(packedAttribute.ToString());
-            //     var asset = AttributeAssetBase.CreateInstance(packedAttribute);   
-            //     // packedAttribute.attributeType
-            //     // var asset = ScriptableObject.CreateInstance(assetType);
-            //     // asset.SetFromPackedAttribute(packedAttribute);
-            //     _attributeAssets.Add(asset);
-            //     ctx.AddObjectToAsset($"{asset.name}_{GetHashCode()}", asset);
-            // }
+            var asset = ScriptableObject.CreateInstance<AttributeAsset>();
+            asset.attributes = attributes;
+            asset.name = assetPrefix;
             foreach (var a in attributes)
             {
                 Debug.Log(a.ToString());
-                _attributeAssets.Add(a);
-                ctx.AddObjectToAsset($"{a.name}_{a.GetHashCode()}", a);
             }
-            
+            _attributeAssets.Add(asset);
+            ctx.AddObjectToAsset($"{asset.name}_{asset.GetHashCode()}", asset);
             return _attributeAssets.Cast<Object>().ToArray();
         }
         
