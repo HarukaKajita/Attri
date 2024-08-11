@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MessagePack;
 using UnityEngine;
-using Object = System.Object;
 
 namespace Attri.Runtime
 {             
@@ -21,7 +20,6 @@ namespace Attri.Runtime
         public string name;
         public AttributeType attributeType;
         public ushort dimension = 0;
-        //TODO: valuesをgenericで一般化してもMessagePackでシリアライズ/デシリアライズできるか確認
         public AttributeBase(string name, AttributeType attributeType, ushort dimension)
         {
             this.name = name;
@@ -34,11 +32,20 @@ namespace Attri.Runtime
             var frameCount = FrameCount();
             var str = $"{attributeType.ToString()} {name}[{frameCount}]";
             for (var i = 0; i < frameCount; i++)
-                str += $", [{i++}][{AttributeCount(i)}]";
+                str += $", [{i++}][{ValueCount(i)}]";
             return str;
         }
-        public abstract int FrameCount();
 
-        public abstract int AttributeCount(int frame);
+        public int FrameCount()
+        {
+            return GetFrameData().Count;
+        }
+
+        public int ValueCount(int frame)
+        {
+            return GetFrameData()[frame].data.Count;
+        }
+
+        protected abstract List<FrameData<object>> GetFrameData();
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 
 namespace Attri.Runtime
@@ -7,16 +8,12 @@ namespace Attri.Runtime
     [MessagePackObject(true)]
     public class StringAttribute : AttributeBase
     {
-        public List<FrameData<string>> values = new();
+        public List<FrameData<string>> frames = new();
         public StringAttribute() : base("StringAttribute", AttributeType.String, 0) {}
         public StringAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        public override int FrameCount()
+        protected override List<FrameData<object>> GetFrameData()
         {
-            return values.Count;
-        }
-        public override int AttributeCount(int frame)
-        {
-            return values[frame].data.Count;
+            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }
     }
 }

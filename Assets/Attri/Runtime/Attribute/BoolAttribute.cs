@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 
 namespace Attri.Runtime
@@ -6,17 +7,14 @@ namespace Attri.Runtime
     [MessagePackObject(true)]
     public class BoolAttribute : AttributeBase
     {
-        public List<FrameData<bool>> values = new ();
+        public List<FrameData<bool>> frames = new();
 
         public BoolAttribute() : base( "BoolAttribute" , AttributeType.Bool, 1) {}
         public BoolAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        public override int FrameCount()
+
+        protected override List<FrameData<object>> GetFrameData()
         {
-            return values.Count;
-        }
-        public override int AttributeCount(int frame)
-        {
-            return values[frame].data.Count;
+            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }
     }
 }

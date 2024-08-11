@@ -45,7 +45,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             options.Security.DepthStep(ref reader);
             var formatterResolver = options.Resolver;
             var length = reader.ReadMapHeader();
-            var ____result = new global::Attri.Runtime.FrameData<T>();
+            var __data__ = default(global::System.Collections.Generic.List<T>);
 
             for (int i = 0; i < length; i++)
             {
@@ -59,12 +59,13 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                     case 4:
                         if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 1635017060UL) { goto FAIL; }
 
-                        ____result.data = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<T>>(formatterResolver).Deserialize(ref reader, options);
+                        __data__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<T>>(formatterResolver).Deserialize(ref reader, options);
                         continue;
 
                 }
             }
 
+            var ____result = new global::Attri.Runtime.FrameData<T>(__data__);
             reader.Depth--;
             return ____result;
         }

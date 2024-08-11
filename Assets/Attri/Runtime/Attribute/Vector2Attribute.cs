@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 using UnityEngine;
 
@@ -7,17 +8,13 @@ namespace Attri.Runtime
     [MessagePackObject(true)]
     public class Vector2Attribute : AttributeBase
     {
-        public List<FrameData<Vector2>> values = new();
+        public List<FrameData<Vector2>> frames = new();
 
-        public Vector2Attribute() : base("Vector2AttributeBase" , AttributeType.Float, 2) {}
+        public Vector2Attribute() : base("Vector2Attribute" , AttributeType.Float, 2) {}
         public Vector2Attribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        public override int FrameCount()
+        protected override List<FrameData<object>> GetFrameData()
         {
-            return values.Count;
-        }
-        public override int AttributeCount(int frame)
-        {
-            return values[frame].data.Count;
+            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }
     }
 }

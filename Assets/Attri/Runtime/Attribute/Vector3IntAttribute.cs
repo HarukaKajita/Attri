@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 using UnityEngine;
 
@@ -7,19 +8,14 @@ namespace Attri.Runtime
     [MessagePackObject(true)]
     public class Vector3IntAttribute : AttributeBase
     {
-        public List<FrameData<Vector3Int>> values = new();
+        public List<FrameData<Vector3Int>> frames = new();
 
         public Vector3IntAttribute() : base("Vector3IntAttribute", AttributeType.Integer, 3) {}
         public Vector3IntAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
 
-        public override int FrameCount()
+        protected override List<FrameData<object>> GetFrameData()
         {
-            return values.Count;
-        }
-
-        public override int AttributeCount(int frame)
-        {
-            return values[frame].data.Count;
+            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }
     }
 }

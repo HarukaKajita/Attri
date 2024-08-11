@@ -9,5 +9,10 @@ namespace Attri.Runtime
     public class FrameData<T>
     {
         public List<T> data = new();
+        public FrameData() {}
+        public FrameData(List<T> data)
+        {
+            this.data = data;
+        }
     }
 }

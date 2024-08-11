@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 
 namespace Attri.Runtime
@@ -6,17 +7,13 @@ namespace Attri.Runtime
     [MessagePackObject(true)]
     public class IntegerAttribute : AttributeBase
     {
-        public List<FrameData<int>> values = new();
+        public List<FrameData<int>> frames = new();
 
         public IntegerAttribute() : base("IntegerAttribute", AttributeType.Integer, 1) {}
         public IntegerAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        public override int FrameCount()
+        protected override List<FrameData<object>> GetFrameData()
         {
-            return values.Count;
-        }
-        public override int AttributeCount(int frame)
-        {
-            return values[frame].data.Count;
+            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }
     }
 }

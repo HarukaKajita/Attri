@@ -18,8 +18,8 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 {
     public sealed class Vector3AttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.Vector3Attribute>
     {
-        // values
-        private static global::System.ReadOnlySpan<byte> GetSpan_values() => new byte[1 + 6] { 166, 118, 97, 108, 117, 101, 115 };
+        // frames
+        private static global::System.ReadOnlySpan<byte> GetSpan_frames() => new byte[1 + 6] { 166, 102, 114, 97, 109, 101, 115 };
         // name
         private static global::System.ReadOnlySpan<byte> GetSpan_name() => new byte[1 + 4] { 164, 110, 97, 109, 101 };
         // attributeType
@@ -37,8 +37,8 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 
             var formatterResolver = options.Resolver;
             writer.WriteMapHeader(4);
-            writer.WriteRaw(GetSpan_values());
-            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>>(formatterResolver).Serialize(ref writer, value.values, options);
+            writer.WriteRaw(GetSpan_frames());
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>>(formatterResolver).Serialize(ref writer, value.frames, options);
             writer.WriteRaw(GetSpan_name());
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.name, options);
             writer.WriteRaw(GetSpan_attributeType());
@@ -57,8 +57,8 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             options.Security.DepthStep(ref reader);
             var formatterResolver = options.Resolver;
             var length = reader.ReadMapHeader();
-            var __values__IsInitialized = false;
-            var __values__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>);
+            var __frames__IsInitialized = false;
+            var __frames__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>);
             var __name__ = default(string);
             var __attributeType__ = default(global::Attri.Runtime.AttributeType);
             var __dimension__ = default(ushort);
@@ -73,10 +73,10 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                       reader.Skip();
                       continue;
                     case 6:
-                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 126879598928246UL) { goto FAIL; }
+                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 126879463993958UL) { goto FAIL; }
 
-                        __values__IsInitialized = true;
-                        __values__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>>(formatterResolver).Deserialize(ref reader, options);
+                        __frames__IsInitialized = true;
+                        __frames__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>>(formatterResolver).Deserialize(ref reader, options);
                         continue;
                     case 4:
                         if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 1701667182UL) { goto FAIL; }
@@ -98,9 +98,9 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             }
 
             var ____result = new global::Attri.Runtime.Vector3Attribute(__name__, __attributeType__, __dimension__);
-            if (__values__IsInitialized)
+            if (__frames__IsInitialized)
             {
-                ____result.values = __values__;
+                ____result.frames = __frames__;
             }
 
             reader.Depth--;
