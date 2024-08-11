@@ -1,24 +1,35 @@
+using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using yutokun;
+using MessagePack;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.Float, 1)]
     public class FloatAttributeAssetBase : AttributeAssetBase
     {
-        List<List<float>> values = new();
+        public List<FrameData<float>> values = new();
 
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public FloatAttributeAssetBase() : base(AttributeType.Float, 1)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<List<float>>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public FloatAttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;   
+        }
+
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                var onlineCsv = Regex.Replace(valueCsv, @"\r\n|\r|\n", "\r\n");
-                var valueInFrame = CSVParser.LoadFromString(onlineCsv)[0].ConvertAll(float.Parse);
-                values.Add(valueInFrame);
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+            return str;
         }
     }
 }

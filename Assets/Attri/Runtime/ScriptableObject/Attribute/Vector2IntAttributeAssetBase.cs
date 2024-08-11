@@ -1,26 +1,34 @@
 using System.Collections.Generic;
+using MessagePack;
 using UnityEngine;
-using yutokun;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.Integer, 2)]
     public class Vector2IntAttributeAssetBase : AttributeAssetBase
     {
-        List<Vector2Int> values = new();
-
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public List<FrameData<Vector2Int>> values = new();
+        
+        public Vector2IntAttributeAssetBase() : base(AttributeType.Integer, 2)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<Vector2Int>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public Vector2IntAttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                var oneLineCsv = valueCsv.ReplaceCrlf();
-                var valueList = CSVParser.LoadFromString(oneLineCsv)[0].ConvertAll(int.Parse);
-                // 値を2つずつ取り出してベクトルに変換
-                for (var i = 0; i < valueList.Count; i += 2)
-                    values.Add(new Vector2Int(valueList[i], valueList[i + 1]));
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+            return str;
         }
     }
 }

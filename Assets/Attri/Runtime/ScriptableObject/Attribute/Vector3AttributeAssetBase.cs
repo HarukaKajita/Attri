@@ -1,26 +1,43 @@
 using System.Collections.Generic;
+using MessagePack;
 using UnityEngine;
-using yutokun;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.Float, 3)]
+    [CreateAssetMenu(fileName = nameof(Vector3AttributeAssetBase), menuName = "Attri/ScriptableObject/Vector3Attribute")]
     public class Vector3AttributeAssetBase : AttributeAssetBase
     {
-        List<Vector3> values = new();
+        public List<FrameData<Vector3>> values = new();
 
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public Vector3AttributeAssetBase() : base(AttributeType.Float, 3)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<Vector3>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public Vector3AttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                var oneLineCsv = valueCsv.ReplaceCrlf();
-                var valueList = CSVParser.LoadFromString(oneLineCsv)[0].ConvertAll(float.Parse);
-                // 値を3つずつ取り出してベクトルに変換
-                for (var i = 0; i < valueList.Count; i += 3)
-                    values.Add(new Vector3(valueList[i], valueList[i + 1], valueList[i + 2]));
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+            return str;
+        }
+
+        [ContextMenu("Serialize")]
+        private void Serialize()
+        {
+            var bytes = AttributeSerializer.Serialize(this);
+            var json = AttributeSerializer.ConvertToJson(bytes);
+            Debug.Log(json);
         }
     }
 }

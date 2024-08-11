@@ -1,26 +1,34 @@
 using System.Collections.Generic;
+using MessagePack;
 using UnityEngine;
-using yutokun;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.Integer, 3)]
     public class Vector3IntAttributeAssetBase : AttributeAssetBase
     {
-        List<Vector3Int> values = new();
+        public List<FrameData<Vector3Int>> values = new();
 
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public Vector3IntAttributeAssetBase() : base(AttributeType.Integer, 3)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<Vector3Int>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public Vector3IntAttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                var oneLineCsv = valueCsv.ReplaceCrlf();
-                var valueList = CSVParser.LoadFromString(oneLineCsv)[0].ConvertAll(int.Parse);
-                // 値を3つずつ取り出してベクトルに変換
-                for (var i = 0; i < valueList.Count; i += 3)
-                    values.Add(new Vector3Int(valueList[i], valueList[i + 1], valueList[i + 2]));
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+            return str;
         }
     }
 }

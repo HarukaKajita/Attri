@@ -1,27 +1,33 @@
 using System.Collections.Generic;
-using System.Linq;
-using System;
-using yutokun;
+using MessagePack;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.Bool, 1)]
     public class BoolAttributeAssetBase : AttributeAssetBase
     {
-        List<List<bool>> values = new ();
-        
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public List<FrameData<bool>> values = new ();
+
+        public BoolAttributeAssetBase() : base(AttributeType.Bool, 1)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<List<bool>>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public BoolAttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;
+        }
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                // csvから改行を,に変換して読み込む
-                var oneLineCsv = valueCsv.ReplaceCrlf();
-                var strings = CSVParser.LoadFromString(oneLineCsv)[0];
-                var valuesInFrame = strings.Select(x => int.Parse(x) != 0).ToList();
-                values.Add(valuesInFrame);
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+            return str;
         }
     }
 }

@@ -1,38 +1,32 @@
-using System.Linq;
-using System.Reflection;
-using UnityEditor;
+using System;
+using MessagePack;
 using UnityEngine;
 
 namespace Attri.Runtime
-{
+{             
+    [Union(1, typeof(IntegerAttributeAssetBase))]
+    [Union(2, typeof(FloatAttributeAssetBase))]
+    [Union(3, typeof(BoolAttributeAssetBase))]
+    [Union(4, typeof(StringAttributeAssetBase))]
+    [Union(5, typeof(Vector3AttributeAssetBase))]
+    [Union(6, typeof(Vector3IntAttributeAssetBase))]
+    [Union(7, typeof(Vector2AttributeAssetBase))]
+    [Union(8, typeof(Vector2IntAttributeAssetBase))]
+    [MessagePackObject(true)]
     public abstract class AttributeAssetBase : ScriptableObject
     {
-        public AttributeType attributeType = AttributeType.String;
+        public AttributeType attributeType;
         public ushort dimension = 0;
-        protected virtual void SetFromPackedAttribute(PackedAttribute packedAttribute)
-        {
-            name = packedAttribute.name;
-            attributeType = packedAttribute.attributeType;
-            dimension = packedAttribute.dimension;
-        }
         
-        public static ScriptableObject CreateInstance(PackedAttribute packedAttribute)
+        public AttributeAssetBase(AttributeType attributeType, ushort dimension)
         {
-            var instance = CreateInstance(packedAttribute.attributeType, packedAttribute.dimension);
-            instance.SetFromPackedAttribute(packedAttribute);
-            return instance;
+            this.attributeType = attributeType;
+            this.dimension = dimension;
         }
 
-        static AttributeAssetBase CreateInstance(AttributeType attributeType, ushort dimension)
+        public override string ToString()
         {
-            var attributeAssetTypes = TypeCache.GetTypesWithAttribute<AttributeTypeAttribute>();
-            var matchedType = attributeAssetTypes
-                .Where(x => x.IsSubclassOf(typeof(AttributeAssetBase)))
-                .FirstOrDefault(
-                    x =>
-                        x.GetCustomAttribute<AttributeTypeAttribute>().attributeType == attributeType &&
-                        x.GetCustomAttribute<AttributeTypeAttribute>().dimension == dimension);
-            return (AttributeAssetBase)CreateInstance(matchedType);
+            return $"{attributeType} {name}[{dimension}]";
         }
     }
 }

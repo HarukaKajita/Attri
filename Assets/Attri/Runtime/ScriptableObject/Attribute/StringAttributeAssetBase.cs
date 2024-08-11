@@ -1,23 +1,35 @@
 using System;
 using System.Collections.Generic;
-using yutokun;
+using MessagePack;
 
 namespace Attri.Runtime
 {
+    [MessagePackObject(true)]
     [AttributeType(AttributeType.String, 0)]
     public class StringAttributeAssetBase : AttributeAssetBase
     {
-        public List<string> values = new();
-
-        protected override void SetFromPackedAttribute(PackedAttribute packedAttribute)
+        public List<FrameData<string>> values = new();
+        public StringAttributeAssetBase() : base(AttributeType.String, 0)
         {
-            base.SetFromPackedAttribute(packedAttribute);
-            values = new List<string>();
-            foreach (var valueCsv in packedAttribute.valueCsvList)
+        }
+        public StringAttributeAssetBase(string name, AttributeType attributeType, ushort dimension) : base(attributeType, dimension)
+        {
+            this.name = name;
+        }
+
+        public override string ToString()
+        {
+            var str = base.ToString();
+            foreach (var list in values)
             {
-                var oneLineCsv = valueCsv.ReplaceCrlf();
-                values = CSVParser.LoadFromString(oneLineCsv)[0];
+                str += $"Values: [{list.data.Count}]";
+                foreach (var value in list.data)
+                {
+                    str += $"({value})";
+                }
             }
+
+            return str;
         }
     }
 }
