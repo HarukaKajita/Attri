@@ -2,9 +2,10 @@
     [
         5,
         {
-            "name": "Vector3AttributeAssetBase",
-            "hideFlags": 0,
-            "values": [
+            "name": "P",
+            "attributeType": 0,
+            "dimension": 3,
+            "frames": [
                 {
                     "data": [
                         [
@@ -33,17 +34,16 @@
                         ]
                     ]
                 }
-            ],
-            "attributeType": 0,
-            "dimension": 3
+            ]
         }
     ],
     [
         7,
         {
-            "name": "Vector2AttributeAssetBase",
-            "hideFlags": 0,
-            "values": [
+            "name": "uv",
+            "attributeType": 0,
+            "dimension": 2,
+            "frames": [
                 {
                     "data": [
                         [
@@ -68,17 +68,16 @@
                         ]
                     ]
                 }
-            ],
-            "attributeType": 0,
-            "dimension": 2
+            ]
         }
     ],
     [
         5,
         {
-            "name": "Vector3AttributeAssetBase",
-            "hideFlags": 0,
-            "values": [
+            "name": "N",
+            "attributeType": 0,
+            "dimension": 3,
+            "frames": [
                 {
                     "data": [
                         [
@@ -107,9 +106,7 @@
                         ]
                     ]
                 }
-            ],
-            "attributeType": 0,
-            "dimension": 3
+            ]
         }
     ]
 ]
