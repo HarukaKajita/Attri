@@ -9,7 +9,7 @@ namespace Attri.Runtime
     {
         public List<FrameData<int>> frames = new();
 
-        public IntegerAttribute() : base("IntegerAttribute", AttributeType.Integer, 1) {}
+        public IntegerAttribute() : base(nameof(IntegerAttribute), AttributeType.Integer, 1) {}
         public IntegerAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
         protected override List<FrameData<object>> GetFrameData()
         {

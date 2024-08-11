@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MessagePack;
@@ -10,7 +9,7 @@ namespace Attri.Runtime
     {
         public List<FrameData<float>> frames = new();
 
-        public FloatAttribute() : base("FloatAttribute", AttributeType.Float, 1) {}
+        public FloatAttribute() : base(nameof(FloatAttribute), AttributeType.Float, 1) {}
         public FloatAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
         protected override List<FrameData<object>> GetFrameData()
         {

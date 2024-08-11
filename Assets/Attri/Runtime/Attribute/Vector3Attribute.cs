@@ -10,7 +10,7 @@ namespace Attri.Runtime
     {
         public List<FrameData<Vector3>> frames = new();
 
-        public Vector3Attribute() : base("Vector3Attribute", AttributeType.Float, 3) {}
+        public Vector3Attribute() : base(nameof(Vector3Attribute), AttributeType.Float, 3) {}
         public Vector3Attribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
         protected override List<FrameData<object>> GetFrameData()
         {

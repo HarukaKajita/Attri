@@ -9,7 +9,7 @@ namespace Attri.Runtime
     {
         public List<FrameData<bool>> frames = new();
 
-        public BoolAttribute() : base( "BoolAttribute" , AttributeType.Bool, 1) {}
+        public BoolAttribute() : base( nameof(BoolAttribute) , AttributeType.Bool, 1) {}
         public BoolAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
 
         protected override List<FrameData<object>> GetFrameData()
