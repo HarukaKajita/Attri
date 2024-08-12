@@ -6,7 +6,6 @@ using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
-using Object = System.Object;
 
 namespace Attri.Editor
 {
@@ -131,14 +130,21 @@ namespace Attri.Editor
 
             private void DrawFrameList(AttributeBase attribute)
             {
+                EditorGUILayout.BeginHorizontal();
+                // EditorStyles.helpBoxにインデントを効かせる記述
+                GUILayout.Space(GetIndentSize());
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
                 var frameListTitle = $"Frame List : Total {attribute.FrameCount()} Frames";
-                frameListFoldoutFlags[attribute] = EditorGUILayout.Foldout(frameListFoldoutFlags[attribute], frameListTitle);
+                // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
+                var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameListTitle), EditorStyles.foldout);
+                currentRect.xMin -= (EditorGUI.indentLevel-1)* 15;
+                frameListFoldoutFlags[attribute] = EditorGUI.Foldout(currentRect, frameListFoldoutFlags[attribute], frameListTitle);
                 if (frameListFoldoutFlags[attribute])
                     DrawFrameListContent(attribute);
                 
                 EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
 
             private void DrawFrameListContent(AttributeBase attribute)
@@ -154,13 +160,21 @@ namespace Attri.Editor
 
             private void DrawFrame(AttributeBase attribute, List<FrameData<object>> frames, int i)
             {
+                EditorGUILayout.BeginHorizontal();
+                // EditorStyles.helpBoxにインデントを効かせる記述
+                GUILayout.Space(GetIndentSize());
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
-                frameFoldoutFlags[(attribute,i)] = EditorGUILayout.Foldout(frameFoldoutFlags[(attribute,i)], $"Frame[{i}]");
+                var frameTitle = $"Frame[{i}]";
+                // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
+                var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameTitle), EditorStyles.foldout);
+                currentRect.xMin -= (EditorGUI.indentLevel-1)*15;
+                frameFoldoutFlags[(attribute,i)] = EditorGUI.Foldout(currentRect, frameFoldoutFlags[(attribute,i)], frameTitle);
                 if (frameFoldoutFlags[(attribute,i)])
                     DrawFrameContent(attribute, frames[i]);
                 
                 EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
             
             private void DrawFrameContent(AttributeBase attribute, FrameData<object> frame)
@@ -171,6 +185,12 @@ namespace Attri.Editor
                     EditorGUILayout.LabelField(data.ToString());
                 
                 EditorGUI.indentLevel--;
+            }
+
+            private float GetIndentSize()
+            {
+                
+                return EditorGUI.indentLevel * 15;
             }
         }
     }
