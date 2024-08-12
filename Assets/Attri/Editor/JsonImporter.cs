@@ -149,13 +149,9 @@ namespace Attri.Editor
 
             private void DrawFrameListContent(AttributeBase attribute)
             {
-                EditorGUI.indentLevel++;
-                
                 var frames = attribute.GetTemporalFrameData();
                 for (var i = 0; i < frames.Count; i++)
                     DrawFrame(attribute, frames, i);
-                
-                EditorGUI.indentLevel--;
             }
 
             private void DrawFrame(AttributeBase attribute, List<FrameData<object>> frames, int i)
@@ -179,12 +175,8 @@ namespace Attri.Editor
             
             private void DrawFrameContent(AttributeBase attribute, FrameData<object> frame)
             {
-                EditorGUI.indentLevel++;
-                
                 foreach (var data in frame.data)
                     EditorGUILayout.LabelField(data.ToString());
-                
-                EditorGUI.indentLevel--;
             }
 
             private float GetIndentSize()
