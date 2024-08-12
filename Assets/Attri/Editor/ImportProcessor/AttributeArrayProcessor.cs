@@ -19,7 +19,6 @@ namespace Attri.Editor
         public AttributeArrayProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {
-            
             _attributeAssets.Clear();
             var jsonText = File.ReadAllText(ctx.assetPath);
             byte[] data = File.ReadAllBytes(ctx.assetPath);

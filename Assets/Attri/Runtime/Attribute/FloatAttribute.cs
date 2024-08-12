@@ -11,7 +11,8 @@ namespace Attri.Runtime
 
         public FloatAttribute() : base(nameof(FloatAttribute), AttributeType.Float, 1) {}
         public FloatAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        protected override List<FrameData<object>> GetFrameData()
+
+        public override List<FrameData<object>> GetTemporalFrameData()
         {
             return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }

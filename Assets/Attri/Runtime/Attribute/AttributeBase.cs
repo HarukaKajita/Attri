@@ -26,23 +26,21 @@ namespace Attri.Runtime
 
         public override string ToString()
         {
-            var frameCount = FrameCount();
-            var str = $"{attributeType.ToString()} {name}[{frameCount}]";
+            var data = GetTemporalFrameData();
+            var frameCount = data.Count;
+            var str = $"{attributeType.ToString()}{dimension} {name}[{frameCount}]";
             for (var i = 0; i < frameCount; i++)
-                str += $", [{i++}][{ValueCount(i)}]";
+                str += $", [{i}][{data[i].data.Count}]";
             return str;
         }
 
         public int FrameCount()
         {
-            return GetFrameData().Count;
+            return GetTemporalFrameData().Count;
         }
 
-        public int ValueCount(int frame)
-        {
-            return GetFrameData()[frame].data.Count;
-        }
-
-        protected abstract List<FrameData<object>> GetFrameData();
+        public abstract List<FrameData<object>> GetTemporalFrameData();
+        // public abstract Dictionary<string, object> GetValueDetailObject(int frameIndex);
+        // public abstract Dictionary<string, object> GetValueDetailObject();
     }
 }

@@ -12,7 +12,8 @@ namespace Attri.Runtime
 
         public Vector3Attribute() : base(nameof(Vector3Attribute), AttributeType.Float, 3) {}
         public Vector3Attribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-        protected override List<FrameData<object>> GetFrameData()
+
+        public override List<FrameData<object>> GetTemporalFrameData()
         {
             return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
         }

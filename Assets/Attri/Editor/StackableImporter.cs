@@ -21,7 +21,7 @@ namespace Attri.Editor
             MakeMainAsset(ctx);
 
             // 任意の前処理
-            PrProcess(ctx);
+            PreProcess(ctx);
             
             // 任意の処理を走らせる為のProcessorを実行
             _subAssets = RunProcessors(ctx).ToList();
@@ -47,7 +47,7 @@ namespace Attri.Editor
             return subAssets.ToArray();
         }
         
-        protected virtual void PrProcess(AssetImportContext ctx)
+        protected virtual void PreProcess(AssetImportContext ctx)
         {
             // 任意の前処理
         }
