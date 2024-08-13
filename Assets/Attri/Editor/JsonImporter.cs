@@ -106,26 +106,19 @@ namespace Attri.Editor
                 var type = first.GetType();
                 EditorGUILayout.LabelField($"Deserialized Type :{type.Name}");
                 EditorGUILayout.LabelField($"IsArray :{type.IsArray}");
-                if(type.IsArray)
-                    EditorGUILayout.LabelField($"Array Rank :{type.GetArrayRank()}");
-                EditorGUILayout.LabelField($"IComparable :{type.IsSubclassOf(typeof(IComparable))}");
-                
-                var isVector3 = type == typeof(Vector3);
-                var isVector3Int = type == typeof(Vector3Int);
-                var isVector2 = type == typeof(Vector2);
-                var isVector2Int = type == typeof(Vector2Int);
-                EditorGUILayout.LabelField($"IsVector3 :{isVector3}");
-                EditorGUILayout.LabelField($"IsVector3Int :{isVector3Int}");
-                EditorGUILayout.LabelField($"IsVector2 :{isVector2}");
-                EditorGUILayout.LabelField($"IsVector2Int :{isVector2Int}");
+                // if(type.IsArray)
+                //     EditorGUILayout.LabelField($"Array Rank :{type.GetArrayRank()}");
+                // EditorGUILayout.LabelField($"IComparable :{type.IsSubclassOf(typeof(IComparable))}");
+                //
+                // var isVector3 = type == typeof(Vector3);
+                // var isVector3Int = type == typeof(Vector3Int);
+                // var isVector2 = type == typeof(Vector2);
+                // var isVector2Int = type == typeof(Vector2Int);
+                // EditorGUILayout.LabelField($"IsVector3 :{isVector3}");
+                // EditorGUILayout.LabelField($"IsVector3Int :{isVector3Int}");
+                // EditorGUILayout.LabelField($"IsVector2 :{isVector2}");
+                // EditorGUILayout.LabelField($"IsVector2Int :{isVector2Int}");
                 return;
-                
-                // var max = values.Max(v => (IComparable)v);
-                // var min = values.Min(v => (IComparable)v);
-                // // var nearestTo0 = values.Min(v => Mathf.Abs((float)v));
-                // EditorGUILayout.LabelField($"Max:{max}");
-                // EditorGUILayout.LabelField($"Min:{min}");
-                // EditorGUILayout.LabelField($"NearestTo0:{nearestTo0}");
             }
 
             private void DrawFrameList(AttributeBase attribute)
@@ -161,7 +154,7 @@ namespace Attri.Editor
                 GUILayout.Space(GetIndentSize());
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
-                var frameTitle = $"Frame[{i}]";
+                var frameTitle = $"Frame[{i}][]: {frames[i].data.Count} Elements";
                 // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
                 var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameTitle), EditorStyles.foldout);
                 currentRect.xMin -= (EditorGUI.indentLevel-1)*15;
