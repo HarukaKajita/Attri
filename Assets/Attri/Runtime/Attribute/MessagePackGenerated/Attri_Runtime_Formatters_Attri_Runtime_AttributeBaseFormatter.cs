@@ -8,142 +8,85 @@
 #pragma warning disable 168
 #pragma warning disable CS1591 // document public APIs
 
+#pragma warning disable SA1129 // Do not use default value type constructor
+#pragma warning disable SA1309 // Field names should not begin with underscore
+#pragma warning disable SA1312 // Variable names should begin with lower-case letter
 #pragma warning disable SA1403 // File may only contain a single namespace
 #pragma warning disable SA1649 // File name should match first type name
 
 namespace Attri.Runtime.Formatters.Attri.Runtime
 {
-    public sealed class AttributeBaseFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.AttributeBase>
+    public sealed class AttributeBaseFormatter<T> : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.AttributeBase<T>>
     {
-        private readonly global::System.Collections.Generic.Dictionary<global::System.RuntimeTypeHandle, global::System.Collections.Generic.KeyValuePair<int, int>> typeToKeyAndJumpMap;
-        private readonly global::System.Collections.Generic.Dictionary<int, int> keyToJumpMap;
+        // name
+        private static global::System.ReadOnlySpan<byte> GetSpan_name() => new byte[1 + 4] { 164, 110, 97, 109, 101 };
+        // frames
+        private static global::System.ReadOnlySpan<byte> GetSpan_frames() => new byte[1 + 6] { 166, 102, 114, 97, 109, 101, 115 };
 
-        public AttributeBaseFormatter()
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.AttributeBase<T> value, global::MessagePack.MessagePackSerializerOptions options)
         {
-            this.typeToKeyAndJumpMap = new global::System.Collections.Generic.Dictionary<global::System.RuntimeTypeHandle, global::System.Collections.Generic.KeyValuePair<int, int>>(8, global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)
+            if (value is null)
             {
-                { typeof(global::Attri.Runtime.IntegerAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(1, 0) },
-                { typeof(global::Attri.Runtime.FloatAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(2, 1) },
-                { typeof(global::Attri.Runtime.BoolAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(3, 2) },
-                { typeof(global::Attri.Runtime.StringAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(4, 3) },
-                { typeof(global::Attri.Runtime.Vector3Attribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(5, 4) },
-                { typeof(global::Attri.Runtime.Vector3IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(6, 5) },
-                { typeof(global::Attri.Runtime.Vector2Attribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(7, 6) },
-                { typeof(global::Attri.Runtime.Vector2IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(8, 7) },
-            };
-            this.keyToJumpMap = new global::System.Collections.Generic.Dictionary<int, int>(8)
-            {
-                { 1, 0 },
-                { 2, 1 },
-                { 3, 2 },
-                { 4, 3 },
-                { 5, 4 },
-                { 6, 5 },
-                { 7, 6 },
-                { 8, 7 },
-            };
-        }
-
-        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.AttributeBase value, global::MessagePack.MessagePackSerializerOptions options)
-        {
-            global::System.Collections.Generic.KeyValuePair<int, int> keyValuePair;
-            if (value != null && this.typeToKeyAndJumpMap.TryGetValue(value.GetType().TypeHandle, out keyValuePair))
-            {
-                writer.WriteArrayHeader(2);
-                writer.WriteInt32(keyValuePair.Key);
-                switch (keyValuePair.Value)
-                {
-                    case 0:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntegerAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.IntegerAttribute)value, options);
-                        break;
-                    case 1:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.FloatAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.FloatAttribute)value, options);
-                        break;
-                    case 2:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.BoolAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.BoolAttribute)value, options);
-                        break;
-                    case 3:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.StringAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.StringAttribute)value, options);
-                        break;
-                    case 4:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector3Attribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector3Attribute)value, options);
-                        break;
-                    case 5:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector3IntAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector3IntAttribute)value, options);
-                        break;
-                    case 6:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2Attribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector2Attribute)value, options);
-                        break;
-                    case 7:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2IntAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector2IntAttribute)value, options);
-                        break;
-                    default:
-                        break;
-                }
-
+                writer.WriteNil();
                 return;
             }
 
-            writer.WriteNil();
+            var formatterResolver = options.Resolver;
+            writer.WriteMapHeader(2);
+            writer.WriteRaw(GetSpan_name());
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.name, options);
+            writer.WriteRaw(GetSpan_frames());
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<T>>>(formatterResolver).Serialize(ref writer, value.frames, options);
         }
 
-        public global::Attri.Runtime.AttributeBase Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public global::Attri.Runtime.AttributeBase<T> Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
                 return null;
             }
 
-            if (reader.ReadArrayHeader() != 2)
-            {
-                throw new global::System.InvalidOperationException("Invalid Union data was detected. Type:global::Attri.Runtime.AttributeBase");
-            }
-
             options.Security.DepthStep(ref reader);
-            var key = reader.ReadInt32();
+            var formatterResolver = options.Resolver;
+            var length = reader.ReadMapHeader();
+            var __name__ = default(string);
+            var __frames__IsInitialized = false;
+            var __frames__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<T>>);
 
-            if (!this.keyToJumpMap.TryGetValue(key, out key))
+            for (int i = 0; i < length; i++)
             {
-                key = -1;
+                var stringKey = global::MessagePack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
+                switch (stringKey.Length)
+                {
+                    default:
+                    FAIL:
+                      reader.Skip();
+                      continue;
+                    case 4:
+                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 1701667182UL) { goto FAIL; }
+
+                        __name__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
+                        continue;
+                    case 6:
+                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 126879463993958UL) { goto FAIL; }
+
+                        __frames__IsInitialized = true;
+                        __frames__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<T>>>(formatterResolver).Deserialize(ref reader, options);
+                        continue;
+
+                }
             }
 
-            global::Attri.Runtime.AttributeBase result = null;
-            switch (key)
+            var ____result = new global::Attri.Runtime.AttributeBase<T>(__name__);
+            if (__frames__IsInitialized)
             {
-                case 0:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntegerAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 1:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.FloatAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 2:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.BoolAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 3:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.StringAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 4:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector3Attribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 5:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector3IntAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 6:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2Attribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                case 7:
-                    result = (global::Attri.Runtime.AttributeBase)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2IntAttribute>(options.Resolver).Deserialize(ref reader, options);
-                    break;
-                default:
-                    reader.Skip();
-                    break;
+                ____result.frames = __frames__;
             }
 
             reader.Depth--;
-            return result;
+            return ____result;
         }
     }
-
 
 }
 
@@ -152,5 +95,8 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 #pragma warning restore 618
 #pragma warning restore 612
 
+#pragma warning restore SA1129 // Do not use default value type constructor
+#pragma warning restore SA1309 // Field names should not begin with underscore
+#pragma warning restore SA1312 // Variable names should begin with lower-case letter
 #pragma warning restore SA1403 // File may only contain a single namespace
 #pragma warning restore SA1649 // File name should match first type name

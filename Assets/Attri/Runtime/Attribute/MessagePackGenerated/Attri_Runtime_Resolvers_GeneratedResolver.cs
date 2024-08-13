@@ -47,42 +47,48 @@ namespace Attri.Runtime.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(34)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(40)
             {
-                { typeof(global::Attri.Runtime.FrameData<bool>), 0 },
-                { typeof(global::Attri.Runtime.FrameData<float>), 1 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>), 2 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>), 3 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>), 4 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>), 5 },
-                { typeof(global::Attri.Runtime.FrameData<int>), 6 },
-                { typeof(global::Attri.Runtime.FrameData<string>), 7 },
-                { typeof(global::System.Collections.Generic.List<bool>), 8 },
-                { typeof(global::System.Collections.Generic.List<float>), 9 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<bool>>), 10 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<float>>), 11 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>), 12 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>), 13 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>), 14 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>), 15 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>), 16 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>), 17 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2>), 18 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2Int>), 19 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3>), 20 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3Int>), 21 },
-                { typeof(global::System.Collections.Generic.List<int>), 22 },
-                { typeof(global::System.Collections.Generic.List<string>), 23 },
-                { typeof(global::Attri.Runtime.AttributeType), 24 },
-                { typeof(global::Attri.Runtime.AttributeBase), 25 },
-                { typeof(global::Attri.Runtime.BoolAttribute), 26 },
-                { typeof(global::Attri.Runtime.FloatAttribute), 27 },
-                { typeof(global::Attri.Runtime.IntegerAttribute), 28 },
-                { typeof(global::Attri.Runtime.StringAttribute), 29 },
-                { typeof(global::Attri.Runtime.Vector2Attribute), 30 },
-                { typeof(global::Attri.Runtime.Vector2IntAttribute), 31 },
-                { typeof(global::Attri.Runtime.Vector3Attribute), 32 },
-                { typeof(global::Attri.Runtime.Vector3IntAttribute), 33 },
+                { typeof(global::Attri.Runtime.AttributeBase<bool>), 0 },
+                { typeof(global::Attri.Runtime.AttributeBase<float>), 1 },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>), 2 },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>), 3 },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>), 4 },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>), 5 },
+                { typeof(global::Attri.Runtime.AttributeBase<int>), 6 },
+                { typeof(global::Attri.Runtime.AttributeBase<string>), 7 },
+                { typeof(global::Attri.Runtime.FrameData<bool>), 8 },
+                { typeof(global::Attri.Runtime.FrameData<float>), 9 },
+                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>), 10 },
+                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>), 11 },
+                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>), 12 },
+                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>), 13 },
+                { typeof(global::Attri.Runtime.FrameData<int>), 14 },
+                { typeof(global::Attri.Runtime.FrameData<string>), 15 },
+                { typeof(global::System.Collections.Generic.List<bool>), 16 },
+                { typeof(global::System.Collections.Generic.List<float>), 17 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<bool>>), 18 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<float>>), 19 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>), 20 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>), 21 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>), 22 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>), 23 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>), 24 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>), 25 },
+                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2>), 26 },
+                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2Int>), 27 },
+                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3>), 28 },
+                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3Int>), 29 },
+                { typeof(global::System.Collections.Generic.List<int>), 30 },
+                { typeof(global::System.Collections.Generic.List<string>), 31 },
+                { typeof(global::Attri.Runtime.BoolAttribute), 32 },
+                { typeof(global::Attri.Runtime.FloatAttribute), 33 },
+                { typeof(global::Attri.Runtime.IntegerAttribute), 34 },
+                { typeof(global::Attri.Runtime.StringAttribute), 35 },
+                { typeof(global::Attri.Runtime.Vector2Attribute), 36 },
+                { typeof(global::Attri.Runtime.Vector2IntAttribute), 37 },
+                { typeof(global::Attri.Runtime.Vector3Attribute), 38 },
+                { typeof(global::Attri.Runtime.Vector3IntAttribute), 39 },
             };
         }
 
@@ -96,40 +102,46 @@ namespace Attri.Runtime.Resolvers
 
             switch (key)
             {
-                case 0: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<bool>();
-                case 1: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<float>();
-                case 2: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2>();
-                case 3: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2Int>();
-                case 4: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3>();
-                case 5: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3Int>();
-                case 6: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<int>();
-                case 7: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<string>();
-                case 8: return new global::MessagePack.Formatters.ListFormatter<bool>();
-                case 9: return new global::MessagePack.Formatters.ListFormatter<float>();
-                case 10: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<bool>>();
-                case 11: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<float>>();
-                case 12: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>();
-                case 13: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>();
-                case 14: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>();
-                case 15: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>();
-                case 16: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<int>>();
-                case 17: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<string>>();
-                case 18: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2>();
-                case 19: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2Int>();
-                case 20: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3>();
-                case 21: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3Int>();
-                case 22: return new global::MessagePack.Formatters.ListFormatter<int>();
-                case 23: return new global::MessagePack.Formatters.ListFormatter<string>();
-                case 24: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeTypeFormatter();
-                case 25: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter();
-                case 26: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeFormatter();
-                case 27: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
-                case 28: return new Attri.Runtime.Formatters.Attri.Runtime.IntegerAttributeFormatter();
-                case 29: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
-                case 30: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeFormatter();
-                case 31: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeFormatter();
-                case 32: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3AttributeFormatter();
-                case 33: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3IntAttributeFormatter();
+                case 0: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<bool>();
+                case 1: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<float>();
+                case 2: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<global::UnityEngine.Vector2>();
+                case 3: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<global::UnityEngine.Vector2Int>();
+                case 4: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<global::UnityEngine.Vector3>();
+                case 5: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<global::UnityEngine.Vector3Int>();
+                case 6: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<int>();
+                case 7: return new Attri.Runtime.Formatters.Attri.Runtime.AttributeBaseFormatter<string>();
+                case 8: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<bool>();
+                case 9: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<float>();
+                case 10: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2>();
+                case 11: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2Int>();
+                case 12: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3>();
+                case 13: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3Int>();
+                case 14: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<int>();
+                case 15: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<string>();
+                case 16: return new global::MessagePack.Formatters.ListFormatter<bool>();
+                case 17: return new global::MessagePack.Formatters.ListFormatter<float>();
+                case 18: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<bool>>();
+                case 19: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<float>>();
+                case 20: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>();
+                case 21: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>();
+                case 22: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>();
+                case 23: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>();
+                case 24: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<int>>();
+                case 25: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<string>>();
+                case 26: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2>();
+                case 27: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2Int>();
+                case 28: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3>();
+                case 29: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3Int>();
+                case 30: return new global::MessagePack.Formatters.ListFormatter<int>();
+                case 31: return new global::MessagePack.Formatters.ListFormatter<string>();
+                case 32: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeFormatter();
+                case 33: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
+                case 34: return new Attri.Runtime.Formatters.Attri.Runtime.IntegerAttributeFormatter();
+                case 35: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
+                case 36: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeFormatter();
+                case 37: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeFormatter();
+                case 38: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3AttributeFormatter();
+                case 39: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3IntAttributeFormatter();
                 default: return null;
             }
         }

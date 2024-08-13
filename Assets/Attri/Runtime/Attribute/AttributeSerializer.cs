@@ -32,21 +32,21 @@ namespace Attri.Runtime
         }
         #endif
         
-        public static byte[] Serialize(AttributeBase obj)
+        public static byte[] Serialize<T>(AttributeBase<T> obj)
         {
             if (!isInitialized) Initialize();
             return MessagePackSerializer.Serialize(obj, options);
         }
-        public static AttributeBase Deserialize(byte[] bytes)
+        public static AttributeBase<T> Deserialize<T>(byte[] bytes)
         {
             if (!isInitialized) Initialize();
-            return MessagePackSerializer.Deserialize<AttributeBase>(bytes, options);
+            return MessagePackSerializer.Deserialize<AttributeBase<T>>(bytes, options);
         }
-        public static AttributeBase[] DeserializeAsArray(byte[] bytes)
-        {
-            if (!isInitialized) Initialize();
-            return MessagePackSerializer.Deserialize<AttributeBase[]>(bytes, options);
-        }
+        // public static AttributeBase[] DeserializeAsArray(byte[] bytes)
+        // {
+        //     if (!isInitialized) Initialize();
+        //     return MessagePackSerializer.Deserialize<AttributeBase[]>(bytes, options);
+        // }
         public static string ConvertToJson(byte[] bytes)
         {
             if (!isInitialized) Initialize();

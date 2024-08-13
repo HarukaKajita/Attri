@@ -18,14 +18,10 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 {
     public sealed class StringAttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.StringAttribute>
     {
-        // frames
-        private static global::System.ReadOnlySpan<byte> GetSpan_frames() => new byte[1 + 6] { 166, 102, 114, 97, 109, 101, 115 };
         // name
         private static global::System.ReadOnlySpan<byte> GetSpan_name() => new byte[1 + 4] { 164, 110, 97, 109, 101 };
-        // attributeType
-        private static global::System.ReadOnlySpan<byte> GetSpan_attributeType() => new byte[1 + 13] { 173, 97, 116, 116, 114, 105, 98, 117, 116, 101, 84, 121, 112, 101 };
-        // dimension
-        private static global::System.ReadOnlySpan<byte> GetSpan_dimension() => new byte[1 + 9] { 169, 100, 105, 109, 101, 110, 115, 105, 111, 110 };
+        // frames
+        private static global::System.ReadOnlySpan<byte> GetSpan_frames() => new byte[1 + 6] { 166, 102, 114, 97, 109, 101, 115 };
 
         public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.StringAttribute value, global::MessagePack.MessagePackSerializerOptions options)
         {
@@ -36,15 +32,11 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             }
 
             var formatterResolver = options.Resolver;
-            writer.WriteMapHeader(4);
-            writer.WriteRaw(GetSpan_frames());
-            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>>(formatterResolver).Serialize(ref writer, value.frames, options);
+            writer.WriteMapHeader(2);
             writer.WriteRaw(GetSpan_name());
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.name, options);
-            writer.WriteRaw(GetSpan_attributeType());
-            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeType>(formatterResolver).Serialize(ref writer, value.attributeType, options);
-            writer.WriteRaw(GetSpan_dimension());
-            writer.Write(value.dimension);
+            writer.WriteRaw(GetSpan_frames());
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>>(formatterResolver).Serialize(ref writer, value.frames, options);
         }
 
         public global::Attri.Runtime.StringAttribute Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
@@ -57,11 +49,9 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             options.Security.DepthStep(ref reader);
             var formatterResolver = options.Resolver;
             var length = reader.ReadMapHeader();
+            var __name__ = default(string);
             var __frames__IsInitialized = false;
             var __frames__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>);
-            var __name__ = default(string);
-            var __attributeType__ = default(global::Attri.Runtime.AttributeType);
-            var __dimension__ = default(ushort);
 
             for (int i = 0; i < length; i++)
             {
@@ -72,32 +62,22 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                     FAIL:
                       reader.Skip();
                       continue;
+                    case 4:
+                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 1701667182UL) { goto FAIL; }
+
+                        __name__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
+                        continue;
                     case 6:
                         if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 126879463993958UL) { goto FAIL; }
 
                         __frames__IsInitialized = true;
                         __frames__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>>(formatterResolver).Deserialize(ref reader, options);
                         continue;
-                    case 4:
-                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 1701667182UL) { goto FAIL; }
-
-                        __name__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Deserialize(ref reader, options);
-                        continue;
-                    case 13:
-                        if (!global::System.MemoryExtensions.SequenceEqual(stringKey, GetSpan_attributeType().Slice(1))) { goto FAIL; }
-
-                        __attributeType__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeType>(formatterResolver).Deserialize(ref reader, options);
-                        continue;
-                    case 9:
-                        if (!global::System.MemoryExtensions.SequenceEqual(stringKey, GetSpan_dimension().Slice(1))) { goto FAIL; }
-
-                        __dimension__ = reader.ReadUInt16();
-                        continue;
 
                 }
             }
 
-            var ____result = new global::Attri.Runtime.StringAttribute(__name__, __attributeType__, __dimension__);
+            var ____result = new global::Attri.Runtime.StringAttribute(__name__);
             if (__frames__IsInitialized)
             {
                 ____result.frames = __frames__;

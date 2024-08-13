@@ -1,20 +1,22 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using MessagePack;
 using UnityEngine;
 
 namespace Attri.Runtime
 {
     [MessagePackObject(true)]
-    public class Vector2Attribute : AttributeBase
+    [Serializable]
+    public class Vector2Attribute : AttributeBase<Vector2>
     {
-        public List<FrameData<Vector2>> frames = new();
-        public Vector2Attribute() : base(nameof(Vector2Attribute) , AttributeType.Float, 2) {}
-        public Vector2Attribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-
-        public override List<FrameData<object>> GetTemporalFrameData()
+        public override AttributeType GetAttributeType()
         {
-            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
+            return AttributeType.Float;
         }
+        public override ushort GetDimension()
+        {
+            return 2;
+        }
+        public Vector2Attribute() : base(nameof(Vector2Attribute)) {}
+        public Vector2Attribute(string name) : base(name) {}
     }
 }

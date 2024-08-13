@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MessagePack;
@@ -5,16 +6,19 @@ using MessagePack;
 namespace Attri.Runtime
 {
     [MessagePackObject(true)]
-    public class FloatAttribute : AttributeBase
+    [Serializable]
+    public class FloatAttribute : AttributeBase<float>
     {
-        public List<FrameData<float>> frames = new();
-
-        public FloatAttribute() : base(nameof(FloatAttribute), AttributeType.Float, 1) {}
-        public FloatAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-
-        public override List<FrameData<object>> GetTemporalFrameData()
+        public override AttributeType GetAttributeType()
         {
-            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
+            return AttributeType.Float;
         }
+        public override ushort GetDimension()
+        {
+            return 1;
+        }
+        public FloatAttribute() : base(nameof(FloatAttribute)) {}
+        public FloatAttribute(string name) : base(name) {}
+
     }
 }

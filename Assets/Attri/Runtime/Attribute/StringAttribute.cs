@@ -1,19 +1,21 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using MessagePack;
 
 namespace Attri.Runtime
 {
     [MessagePackObject(true)]
-    public class StringAttribute : AttributeBase
+    [Serializable]
+    public class StringAttribute : AttributeBase<string>
     {
-        public List<FrameData<string>> frames = new();
-        public StringAttribute() : base(nameof(StringAttribute), AttributeType.String, 0) {}
-        public StringAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-
-        public override List<FrameData<object>> GetTemporalFrameData()
+        public override AttributeType GetAttributeType()
         {
-            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
+            return AttributeType.String;
         }
+        public override ushort GetDimension()
+        {
+            return 1;
+        }
+        public StringAttribute() : base(nameof(StringAttribute)) {}
+        public StringAttribute(string name) : base(name) {}
     }
 }

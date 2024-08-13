@@ -1,20 +1,21 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using MessagePack;
 
 namespace Attri.Runtime
 {
     [MessagePackObject(true)]
-    public class BoolAttribute : AttributeBase
+    [Serializable]
+    public class BoolAttribute : AttributeBase<bool>
     {
-        public List<FrameData<bool>> frames = new();
-
-        public BoolAttribute() : base( nameof(BoolAttribute) , AttributeType.Bool, 1) {}
-        public BoolAttribute(string name, AttributeType attributeType, ushort dimension) : base(name, attributeType, dimension) {}
-
-        public override List<FrameData<object>> GetTemporalFrameData()
+        public override AttributeType GetAttributeType()
         {
-            return frames.ConvertAll(frame => new FrameData<object>(frame.data.Cast<object>().ToList()));
+            return AttributeType.Bool;
         }
+        public override ushort GetDimension()
+        {
+            return 1;
+        }
+        public BoolAttribute() : base( nameof(BoolAttribute)) {}
+        public BoolAttribute(string name) : base(name) {}
     }
 }
