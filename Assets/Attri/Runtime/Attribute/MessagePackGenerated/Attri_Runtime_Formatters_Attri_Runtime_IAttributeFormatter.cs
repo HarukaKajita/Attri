@@ -22,7 +22,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
         {
             this.typeToKeyAndJumpMap = new global::System.Collections.Generic.Dictionary<global::System.RuntimeTypeHandle, global::System.Collections.Generic.KeyValuePair<int, int>>(16, global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)
             {
-                { typeof(global::Attri.Runtime.IntegerAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(0, 0) },
+                { typeof(global::Attri.Runtime.IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(0, 0) },
                 { typeof(global::Attri.Runtime.FloatAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(1, 1) },
                 { typeof(global::Attri.Runtime.BoolAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(2, 2) },
                 { typeof(global::Attri.Runtime.StringAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(3, 3) },
@@ -70,7 +70,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                 switch (keyValuePair.Value)
                 {
                     case 0:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntegerAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.IntegerAttribute)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.IntAttribute)value, options);
                         break;
                     case 1:
                         global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.FloatAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.FloatAttribute)value, options);
@@ -151,7 +151,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             switch (key)
             {
                 case 0:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntegerAttribute>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.IntAttribute>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 1:
                     result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.FloatAttribute>(options.Resolver).Deserialize(ref reader, options);

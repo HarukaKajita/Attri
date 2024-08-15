@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Attri.Runtime
 {
-    [Union(0, typeof(IntegerAttribute))]
+    [Union(0, typeof(IntAttribute))]
     [Union(1, typeof(FloatAttribute))]
     [Union(2, typeof(BoolAttribute))]
     [Union(3, typeof(StringAttribute))]
@@ -31,6 +31,7 @@ namespace Attri.Runtime
         Type GetDataType();
         List<object> GetObjectFrame(int index);
         List<List<object>> GetObjectFrames();
+        AttributeAsset CreateAsset();
         void DrawAttributeDetailInspector();
     }
 }

@@ -3,13 +3,16 @@ using UnityEngine;
 namespace Attri.Runtime
 {
     [CreateAssetMenu(fileName = nameof(FloatAttributeAsset), menuName = "Attri/Attribute/Float", order = 0)]
-    public class FloatAttributeAsset : ScriptableObject
+    public class FloatAttributeAsset : AttributeAsset
     {
-        [SerializeField] private FloatAttribute _attribute = new ();
-        [ContextMenu("SerializeTest")]
-        private void SerializeTest()
+        public FloatAttribute attribute = new ();
+        private void Reset()
         {
-            _attribute.SerializeTest();
+            attribute = new FloatAttribute();
+        }
+        public override IAttribute GetAttribute()
+        {
+            return attribute;
         }
     }
 }

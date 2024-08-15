@@ -76,7 +76,7 @@ namespace Attri.Runtime.Resolvers
                 { typeof(global::Attri.Runtime.IAttribute), 24 },
                 { typeof(global::Attri.Runtime.BoolAttribute), 25 },
                 { typeof(global::Attri.Runtime.FloatAttribute), 26 },
-                { typeof(global::Attri.Runtime.IntegerAttribute), 27 },
+                { typeof(global::Attri.Runtime.IntAttribute), 27 },
                 { typeof(global::Attri.Runtime.StringAttribute), 28 },
                 { typeof(global::Attri.Runtime.Vector2Attribute), 29 },
                 { typeof(global::Attri.Runtime.Vector2IntAttribute), 30 },
@@ -122,7 +122,7 @@ namespace Attri.Runtime.Resolvers
                 case 24: return new Attri.Runtime.Formatters.Attri.Runtime.IAttributeFormatter();
                 case 25: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeFormatter();
                 case 26: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
-                case 27: return new Attri.Runtime.Formatters.Attri.Runtime.IntegerAttributeFormatter();
+                case 27: return new Attri.Runtime.Formatters.Attri.Runtime.IntAttributeFormatter();
                 case 28: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
                 case 29: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeFormatter();
                 case 30: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeFormatter();

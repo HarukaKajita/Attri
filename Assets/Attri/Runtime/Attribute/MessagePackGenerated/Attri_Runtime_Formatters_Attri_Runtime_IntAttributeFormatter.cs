@@ -16,7 +16,7 @@
 
 namespace Attri.Runtime.Formatters.Attri.Runtime
 {
-    public sealed class IntegerAttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.IntAttribute>
+    public sealed class IntAttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.IntAttribute>
     {
         // name
         private static global::System.ReadOnlySpan<byte> GetSpan_name() => new byte[1 + 4] { 164, 110, 97, 109, 101 };

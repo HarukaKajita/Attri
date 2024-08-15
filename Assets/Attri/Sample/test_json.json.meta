@@ -21,7 +21,7 @@ ScriptedImporter:
     - rid: 2218637522227691544
       type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
       data:
-        assetPrefix: Assets
+        assetPrefix: TestAttributes
         CompressUnitVector: 0
         CompressFloat: 0
         FloatPrecisionBit: 3

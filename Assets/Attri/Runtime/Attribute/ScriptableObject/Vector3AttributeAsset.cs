@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Attri.Runtime
 {
     [CreateAssetMenu(fileName = nameof(Vector3AttributeAsset), menuName = "Attri/Attribute/Vector3", order = 0)]
-    public class Vector3AttributeAsset : ScriptableObject
+    public class Vector3AttributeAsset : AttributeAsset
     {
-        [SerializeField] private Vector3Attribute _attribute = new ();
+        public Vector3Attribute _attribute = new ();
 
         private void Reset()
         {
@@ -26,6 +26,11 @@ namespace Attri.Runtime
             var bytes = AttributeSerializer.Serialize(array);
             var json = AttributeSerializer.ConvertToJson(bytes);
             Debug.Log(json);
+        }
+
+        public override IAttribute GetAttribute()
+        {
+            return _attribute;
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Attri.Runtime
     {
         Unknown,
         Float,
-        Integer,
+        Int,
         Bool,
         String,
     }

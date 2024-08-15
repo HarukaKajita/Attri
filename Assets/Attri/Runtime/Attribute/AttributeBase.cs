@@ -24,7 +24,7 @@ namespace Attri.Runtime
     // [Union(16, typeof(Vector2IntAttribute))]
     // [MessagePackObject(true)]
     [Serializable]
-    public class AttributeBase<T> : IAttribute
+    public abstract class AttributeBase<T> : IAttribute
     {
         public string name;
         public List<FrameData<T>> frames = new();
@@ -76,11 +76,8 @@ namespace Attri.Runtime
             return frames.Select(frame => frame.data.Cast<object>().ToList()).ToList();
         }
 
-        public virtual void DrawAttributeDetailInspector()
-        {
-            // 継承先で実装
-        }
-
+        public abstract void DrawAttributeDetailInspector();
+        public abstract AttributeAsset CreateAsset();
         internal void SerializeTest()
         {
             var bytes = AttributeSerializer.Serialize(this);
@@ -88,44 +85,6 @@ namespace Attri.Runtime
             Debug.Log(json);
             var attribute = MessagePackSerializer.Deserialize<IAttribute>(bytes, AttributeSerializer.options);
             Debug.Log(attribute.ToString());
-        }
-
-        internal void PrintDetail(IAttribute attribute)
-        {
-            if(attribute == null)
-                return;
-            Debug.Log(attribute.ToString());
-            //
-            // switch (attribute.GetType())
-            // {
-            //     case Type t when t == typeof(IntegerAttribute):
-            //         Debug.Log(((IntegerAttribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(FloatAttribute):
-            //         Debug.Log(((FloatAttribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(BoolAttribute):
-            //         Debug.Log(((BoolAttribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(StringAttribute):
-            //         Debug.Log(((StringAttribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(Vector3Attribute):
-            //         Debug.Log(((Vector3Attribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(Vector3IntAttribute):
-            //         Debug.Log(((Vector3IntAttribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(Vector2Attribute):
-            //         Debug.Log(((Vector2Attribute)attribute).ToString());
-            //         break;
-            //     case Type t when t == typeof(Vector2IntAttribute):
-            //         Debug.Log(((Vector2IntAttribute)attribute).ToString());
-            //         break;
-            //     default:
-            //         Debug.Log($"Unknown: {attribute.GetType().Name}, {attribute.Name()}, {attribute.GetAttributeType()}[{attribute.GetDimension()}]");
-            //         break;
-            // }
         }
     }
 }

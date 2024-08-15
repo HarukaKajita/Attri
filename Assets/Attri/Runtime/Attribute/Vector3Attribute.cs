@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using MessagePack;
 using UnityEditor;
@@ -11,22 +10,23 @@ namespace Attri.Runtime
     [Serializable]
     public class Vector3Attribute : AttributeBase<Vector3>
     {
-        public override AttributeType GetAttributeType()
-        {
-            return AttributeType.Float;
-        }
-        public override ushort GetDimension()
-        {
-            return 3;
-        }
+        public override AttributeType GetAttributeType() => AttributeType.Float;
+        public override ushort GetDimension() => 3;
         public Vector3Attribute() : base(nameof(Vector3Attribute)) {}
         public Vector3Attribute(string name) : base(name) {}
+        
+        public override AttributeAsset CreateAsset()
+        {
+            var asset = ScriptableObject.CreateInstance<Vector3AttributeAsset>();
+            asset.name = name;
+            asset._attribute = this;
+            return asset;
+        }
 
-        #if UNITY_EDITOR
-        Vector3Int divisionPow = new Vector3Int(4, 4, 4);
+#if UNITY_EDITOR
+        private Vector3Int _divisionPow = new Vector3Int(4, 4, 4);
         public override void DrawAttributeDetailInspector()
         {
-            base.DrawAttributeDetailInspector();
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             frames.ForEach(frame =>
@@ -49,7 +49,7 @@ namespace Attri.Runtime
             {
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField($"{axisLabel[axis]}: [{min[axis]:F4} ~ {max[axis]:F4}] : Range: {range[axis]:F4}");
-                var div = (int)Mathf.Pow(2, divisionPow[axis]);
+                var div = (int)Mathf.Pow(2, _divisionPow[axis]);
                 var distribution = new int[div];
                 frames.ForEach(frame =>
                 {
@@ -62,7 +62,7 @@ namespace Attri.Runtime
                 // Label & Slider
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField($"{axisLabel[axis]} Distribution");
-                divisionPow[axis] = EditorGUILayout.IntSlider(divisionPow[axis], 0, 8);
+                _divisionPow[axis] = EditorGUILayout.IntSlider(_divisionPow[axis], 0, 8);
                 EditorGUILayout.EndHorizontal();
                 // Draw background
                 var rect = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(false, height));
@@ -93,6 +93,6 @@ namespace Attri.Runtime
                 EditorGUILayout.EndVertical();
             }
         }
-        #endif
+#endif
     }
 }
