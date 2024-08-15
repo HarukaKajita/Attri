@@ -57,7 +57,8 @@ namespace Attri.Runtime
                 {
                     frame.data.ForEach(data =>
                     {
-                        var index = (int)((data[axis] - min[axis]) / range[axis] * (div-1));
+                        var index = (int)((data[axis] - min[axis]) / range[axis] * div);
+                        if(index == div) index--;
                         distribution[index]++;
                     });
                 });
