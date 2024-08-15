@@ -31,5 +31,6 @@ namespace Attri.Runtime
         Type GetDataType();
         List<object> GetObjectFrame(int index);
         List<List<object>> GetObjectFrames();
+        void DrawAttributeDetailInspector();
     }
 }

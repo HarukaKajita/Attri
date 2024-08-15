@@ -84,7 +84,7 @@ namespace Attri.Editor
                 EditorGUILayout.LabelField($"Dimension:[{GetDimension(attribute)}]");
                 EditorGUILayout.LabelField(attribute.ToString());
                 
-                // DrawValueInfo(attribute);
+                DrawValueInfo(attribute);
                 DrawFrameList(attribute);
                 
                 EditorGUI.indentLevel--;
@@ -100,37 +100,7 @@ namespace Attri.Editor
         
             private void DrawValueInfo(IAttribute attribute)
             {
-                // var attributeGenericType = attributes.GetType();
-                // var typeParameter = attributeGenericType.GetGenericArguments()[0];
-                // var isNumeric = typeParameter == typeof(float) || typeParameter == typeof(int);
-                //
-                // if (!isNumeric) return;
-                // var frames = attribute.frames();
-                // if(frames.Count == 0) return;
-                //
-                // // 全フレームのデータを1次元リストに変換
-                // var values = new List<object>();
-                // foreach (var t in frames)
-                //     for (var elementIndex = 0; elementIndex < t.data.Count; elementIndex++)
-                //         values.Add(t.data[elementIndex]);
-                //
-                // var first = values.FirstOrDefault();
-                // if(first == null) return;
-                // var type = first.GetType();
-                // EditorGUILayout.LabelField($"Deserialized Type :{type.Name}");
-                // EditorGUILayout.LabelField($"IsArray :{type.IsArray}");
-                    
-                // EditorGUILayout.LabelField($"IComparable :{type.IsSubclassOf(typeof(IComparable))}");
-                //
-                // var isVector3 = type == typeof(Vector3);
-                // var isVector3Int = type == typeof(Vector3Int);
-                // var isVector2 = type == typeof(Vector2);
-                // var isVector2Int = type == typeof(Vector2Int);
-                // EditorGUILayout.LabelField($"IsVector3 :{isVector3}");
-                // EditorGUILayout.LabelField($"IsVector3Int :{isVector3Int}");
-                // EditorGUILayout.LabelField($"IsVector2 :{isVector2}");
-                // EditorGUILayout.LabelField($"IsVector2Int :{isVector2Int}");
-                return;
+                attribute.DrawAttributeDetailInspector();
             }
         
             private void DrawFrameList(IAttribute attribute)

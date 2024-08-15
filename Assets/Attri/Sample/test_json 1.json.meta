@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: a566bc99f006247478c5d6d04fbe1805
+importerOverride:
+  nativeImporterType: 2089858483
+  scriptedImporterType:
+    serializedVersion: 2
+    Hash: d42a898d2064567eea413dc92f5c2f18
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: d3ec89196a6ed0a4488dc4ca4ac2d3fe, type: 3}
+  processors:
+  - rid: 2218637522227691544
+  references:
+    version: 2
+    RefIds:
+    - rid: 2218637522227691544
+      type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
+      data:
+        assetPrefix: Assets
+        CompressUnitVector: 0
+        CompressFloat: 0
+        FloatPrecisionBit: 3
+        CompressInteger: 0

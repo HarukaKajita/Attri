@@ -76,6 +76,11 @@ namespace Attri.Runtime
             return frames.Select(frame => frame.data.Cast<object>().ToList()).ToList();
         }
 
+        public virtual void DrawAttributeDetailInspector()
+        {
+            // 継承先で実装
+        }
+
         internal void SerializeTest()
         {
             var bytes = AttributeSerializer.Serialize(this);
