@@ -2,7 +2,9 @@ using System;
 using System.Linq;
 using MessagePack;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEngine;
+#endif
 
 namespace Attri.Runtime
 {
@@ -45,7 +47,7 @@ namespace Attri.Runtime
             var total = frames.Sum(frame => frame.data.Count);
             var height = 50;
             var axisLabel = new [] {"X", "Y", "Z"};
-            for (var axis = 0; axis < 3; axis++)
+            for (var axis = 0; axis < axisLabel.Length; axis++)
             {
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField($"{axisLabel[axis]}: [{min[axis]:F4} ~ {max[axis]:F4}] : Range: {range[axis]:F4}");
