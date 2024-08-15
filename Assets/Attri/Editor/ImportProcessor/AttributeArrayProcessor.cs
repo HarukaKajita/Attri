@@ -19,24 +19,25 @@ namespace Attri.Editor
         public AttributeArrayProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {
-            _attributeAssets.Clear();
-            var jsonText = File.ReadAllText(ctx.assetPath);
-            byte[] data = File.ReadAllBytes(ctx.assetPath);
-            Debug.Log(jsonText);
-            if (Path.GetExtension(ctx.assetPath) == ".json") 
-                data = AttributeSerializer.ConvertFromJson(jsonText);
-            
-            var attributes = AttributeSerializer.DeserializeAsArray(data);
-            var asset = ScriptableObject.CreateInstance<AttributeAsset>();
-            asset.attributes = attributes;
-            asset.name = assetPrefix;
-            foreach (var a in attributes)
-            {
-                Debug.Log(a.ToString());
-            }
-            _attributeAssets.Add(asset);
-            ctx.AddObjectToAsset($"{asset.name}_{asset.GetHashCode()}", asset);
-            return _attributeAssets.Cast<Object>().ToArray();
+            // _attributeAssets.Clear();
+            // var jsonText = File.ReadAllText(ctx.assetPath);
+            // byte[] data = File.ReadAllBytes(ctx.assetPath);
+            // Debug.Log(jsonText);
+            // if (Path.GetExtension(ctx.assetPath) == ".json") 
+            //     data = AttributeSerializer.ConvertFromJson(jsonText);
+            //
+            // var attributes = AttributeSerializer.DeserializeAsArray(data);
+            // var asset = ScriptableObject.CreateInstance<AttributeAsset>();
+            // asset.attributes = attributes;
+            // asset.name = assetPrefix;
+            // foreach (var a in attributes)
+            // {
+            //     Debug.Log(a.ToString());
+            // }
+            // _attributeAssets.Add(asset);
+            // ctx.AddObjectToAsset($"{asset.name}_{asset.GetHashCode()}", asset);
+            // return _attributeAssets.Cast<Object>().ToArray();
+            return new Object[] { };
         }
         
         

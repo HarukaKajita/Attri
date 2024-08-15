@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec163a460a2f42549b99040fe45ce144, type: 3}
   m_Name: Vector3AttributeAsset
   m_EditorClassIdentifier: 
+  _attribute:
+    name: Vector3Attribute
+    frames:
+    - data:
+      - {x: 1.1, y: 0.123, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}

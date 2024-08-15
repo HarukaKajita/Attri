@@ -18,10 +18,11 @@ namespace Attri.Editor
         [CustomEditor(typeof(JsonImporter))]
         public class JsonImporterInspector : UnityEditor.Editor
         {
-            AttributeBase[] attributes;
-            Dictionary<AttributeBase,bool> attributeFoldoutFlags = new();
-            Dictionary<AttributeBase,bool> frameListFoldoutFlags = new();
-            Dictionary<(AttributeBase, int frameId),bool> frameFoldoutFlags = new();
+            IEnumerable<IAttribute> attributes;
+            Dictionary<IAttribute,bool> attributeFoldoutFlags = new();
+            Dictionary<object,bool> frameListFoldoutFlags = new();
+            Dictionary<(object, int frameId),bool> frameFoldoutFlags = new();
+            
             
             private void OnEnable()
             {
@@ -59,13 +60,13 @@ namespace Attri.Editor
                 if (GUILayout.Button("Reimport"))
                         AssetDatabase.ImportAsset(importer?.assetPath, ImportAssetOptions.ForceUpdate);
             }
-
-            private void DrawAttribute(AttributeBase attribute)
+        
+            private void DrawAttribute(IAttribute attribute)
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
-                var title = $"{attribute.name}({attribute.GetType().Name})";
+                var title = $"{attribute.Name()}({attribute.GetType().Name})";
                 attributeFoldoutFlags[attribute] = EditorGUILayout.Foldout(attributeFoldoutFlags[attribute], title);
                 if (attributeFoldoutFlags[attribute])
                     DrawAttributeContent(attribute);
@@ -73,41 +74,52 @@ namespace Attri.Editor
                 EditorGUILayout.EndVertical();
                 EditorGUI.indentLevel--;
             }
-
-            private void DrawAttributeContent(AttributeBase attribute)
+        
+            private void DrawAttributeContent(IAttribute attribute)
             {
                 EditorGUI.indentLevel++;
                 
-                EditorGUILayout.LabelField($"Type:{attribute.attributeType.ToString()}",GUILayout.Width(100));
-                EditorGUILayout.LabelField($"Dimension:[{attribute.dimension}]");
+                EditorGUILayout.LabelField($"Type:{attribute.GetType().Name}");
+                EditorGUILayout.LabelField($"Data Type:{attribute.GetDataType().Name}");
+                EditorGUILayout.LabelField($"Dimension:[{GetDimension(attribute)}]");
                 EditorGUILayout.LabelField(attribute.ToString());
                 
-                DrawValueInfo(attribute);
+                // DrawValueInfo(attribute);
                 DrawFrameList(attribute);
                 
                 EditorGUI.indentLevel--;
             }
-
-            private void DrawValueInfo(AttributeBase attribute)
+            
+            ushort GetDimension(IAttribute attribute)
             {
-                var isNumeric = attribute.attributeType is AttributeType.Float or AttributeType.Integer;
-                
-                if (!isNumeric) return;
-                var frames = attribute.GetTemporalFrameData();
-                if(frames.Count == 0) return;
-                
-                var values = new List<object>();
-                foreach (var t in frames)
-                    for (var elementIndex = 0; elementIndex < t.data.Count; elementIndex++)
-                        values.Add(t.data[elementIndex]);
-                
-                var first = values.FirstOrDefault();
-                if(first == null) return;
-                var type = first.GetType();
-                EditorGUILayout.LabelField($"Deserialized Type :{type.Name}");
-                EditorGUILayout.LabelField($"IsArray :{type.IsArray}");
-                // if(type.IsArray)
-                //     EditorGUILayout.LabelField($"Array Rank :{type.GetArrayRank()}");
+                var attributeDataType = attribute.GetDataType();
+                if (attributeDataType == typeof(Vector3) || attributeDataType == typeof(Vector3Int)) return 3;
+                if (attributeDataType == typeof(Vector2) || attributeDataType == typeof(Vector2Int)) return 2;
+                return 1;
+            }
+        
+            private void DrawValueInfo(IAttribute attribute)
+            {
+                // var attributeGenericType = attributes.GetType();
+                // var typeParameter = attributeGenericType.GetGenericArguments()[0];
+                // var isNumeric = typeParameter == typeof(float) || typeParameter == typeof(int);
+                //
+                // if (!isNumeric) return;
+                // var frames = attribute.frames();
+                // if(frames.Count == 0) return;
+                //
+                // // 全フレームのデータを1次元リストに変換
+                // var values = new List<object>();
+                // foreach (var t in frames)
+                //     for (var elementIndex = 0; elementIndex < t.data.Count; elementIndex++)
+                //         values.Add(t.data[elementIndex]);
+                //
+                // var first = values.FirstOrDefault();
+                // if(first == null) return;
+                // var type = first.GetType();
+                // EditorGUILayout.LabelField($"Deserialized Type :{type.Name}");
+                // EditorGUILayout.LabelField($"IsArray :{type.IsArray}");
+                    
                 // EditorGUILayout.LabelField($"IComparable :{type.IsSubclassOf(typeof(IComparable))}");
                 //
                 // var isVector3 = type == typeof(Vector3);
@@ -120,8 +132,8 @@ namespace Attri.Editor
                 // EditorGUILayout.LabelField($"IsVector2Int :{isVector2Int}");
                 return;
             }
-
-            private void DrawFrameList(AttributeBase attribute)
+        
+            private void DrawFrameList(IAttribute attribute)
             {
                 EditorGUILayout.BeginHorizontal();
                 // EditorStyles.helpBoxにインデントを効かせる記述
@@ -139,39 +151,39 @@ namespace Attri.Editor
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
             }
-
-            private void DrawFrameListContent(AttributeBase attribute)
+        
+            private void DrawFrameListContent(IAttribute attribute)
             {
-                var frames = attribute.GetTemporalFrameData();
+                var frames = attribute.GetObjectFrames();
                 for (var i = 0; i < frames.Count; i++)
                     DrawFrame(attribute, frames, i);
             }
-
-            private void DrawFrame(AttributeBase attribute, List<FrameData<object>> frames, int i)
+        
+            private void DrawFrame(IAttribute attribute, List<List<object>> frames, int i)
             {
                 EditorGUILayout.BeginHorizontal();
                 // EditorStyles.helpBoxにインデントを効かせる記述
                 GUILayout.Space(GetIndentSize());
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 
-                var frameTitle = $"Frame[{i}][]: {frames[i].data.Count} Elements";
+                var frameTitle = $"Frame[{i}][]: {frames[i].Count} Elements";
                 // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
                 var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameTitle), EditorStyles.foldout);
                 currentRect.xMin -= (EditorGUI.indentLevel-1)*15;
                 frameFoldoutFlags[(attribute,i)] = EditorGUI.Foldout(currentRect, frameFoldoutFlags[(attribute,i)], frameTitle);
                 if (frameFoldoutFlags[(attribute,i)])
-                    DrawFrameContent(attribute, frames[i]);
+                    DrawFrameContent(frames[i]);
                 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.EndHorizontal();
             }
             
-            private void DrawFrameContent(AttributeBase attribute, FrameData<object> frame)
+            private void DrawFrameContent(List<object> valuesInFrame)
             {
-                foreach (var data in frame.data)
+                foreach (var data in valuesInFrame)
                     EditorGUILayout.LabelField(data.ToString());
             }
-
+        
             private float GetIndentSize()
             {
                 

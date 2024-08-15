@@ -18,13 +18,5 @@ namespace Attri.Runtime
         }
         public Vector3Attribute() : base(nameof(Vector3Attribute)) {}
         public Vector3Attribute(string name) : base(name) {}
-
-        [ContextMenu("Serialize")]
-        private void Serialize()
-        {
-            var bytes = AttributeSerializer.Serialize(this);
-            var json = AttributeSerializer.ConvertToJson(bytes);
-            Debug.Log(json);
-        }
     }
 }

@@ -6,5 +6,10 @@ namespace Attri.Runtime
     public class FloatAttributeAsset : ScriptableObject
     {
         [SerializeField] private FloatAttribute _attribute = new ();
+        [ContextMenu("SerializeTest")]
+        private void SerializeTest()
+        {
+            _attribute.SerializeTest();
+        }
     }
 }

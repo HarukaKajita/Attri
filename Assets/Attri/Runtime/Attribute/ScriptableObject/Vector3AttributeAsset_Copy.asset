@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41c3f836bfc4684d9455f5ac0914cce, type: 3}
-  m_Name: FloatAttributeAsset
+  m_Script: {fileID: 11500000, guid: ec163a460a2f42549b99040fe45ce144, type: 3}
+  m_Name: Vector3AttributeAsset_Copy
   m_EditorClassIdentifier: 
   _attribute:
-    name: someAttribute
+    name: P
     frames:
     - data:
-      - 1
-      - 765.457
+      - {x: 1, y: 0, z: 0}
+      - {x: 2, y: 0, z: 0}
+      - {x: 3, y: 0, z: 0}

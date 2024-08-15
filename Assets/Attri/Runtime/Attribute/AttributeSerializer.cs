@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using UnityEngine;
 using MessagePack;
 using MessagePack.Resolvers;
@@ -10,14 +13,15 @@ namespace Attri.Runtime
     public class AttributeSerializer
     {
         static bool isInitialized = false;
-        private static MessagePackSerializerOptions options;
+        internal static MessagePackSerializerOptions options;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void Initialize()
         {
             if (isInitialized) return;
             isInitialized = true;
+            
             var resolver = CompositeResolver.Create(
-                Attri.Runtime.Resolvers.GeneratedResolver.Instance,
+                Resolvers.GeneratedResolver.Instance,
                 UnityBlitResolver.Instance,
                 StandardResolverAllowPrivate.Instance
             );
@@ -32,21 +36,26 @@ namespace Attri.Runtime
         }
         #endif
         
-        public static byte[] Serialize<T>(AttributeBase<T> obj)
+        public static byte[] Serialize(IAttribute obj)
         {
             if (!isInitialized) Initialize();
             return MessagePackSerializer.Serialize(obj, options);
         }
-        public static AttributeBase<T> Deserialize<T>(byte[] bytes)
+        public static byte[] Serialize(IEnumerable<IAttribute> obj)
         {
             if (!isInitialized) Initialize();
-            return MessagePackSerializer.Deserialize<AttributeBase<T>>(bytes, options);
+            return MessagePackSerializer.Serialize(obj, options);
         }
-        // public static AttributeBase[] DeserializeAsArray(byte[] bytes)
-        // {
-        //     if (!isInitialized) Initialize();
-        //     return MessagePackSerializer.Deserialize<AttributeBase[]>(bytes, options);
-        // }
+        public static IAttribute Deserialize(byte[] bytes)
+        {
+            if (!isInitialized) Initialize();
+            return MessagePackSerializer.Deserialize<IAttribute>(bytes, options);
+        }
+        public static IEnumerable<IAttribute> DeserializeAsArray(byte[] bytes)
+        {
+            if (!isInitialized) Initialize();
+            return MessagePackSerializer.Deserialize<IAttribute[]>(bytes, options);
+        }
         public static string ConvertToJson(byte[] bytes)
         {
             if (!isInitialized) Initialize();
