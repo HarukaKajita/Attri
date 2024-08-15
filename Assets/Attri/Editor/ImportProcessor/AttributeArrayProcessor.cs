@@ -23,7 +23,8 @@ namespace Attri.Editor
             var jsonText = File.ReadAllText(ctx.assetPath);
             byte[] data = File.ReadAllBytes(ctx.assetPath);
             Debug.Log(jsonText);
-            if (Path.GetExtension(ctx.assetPath) == ".json") 
+            var extension = Path.GetExtension(ctx.assetPath);
+            if (extension is ".json" or ".attrijson") 
                 data = AttributeSerializer.ConvertFromJson(jsonText);
             
             var attributes = AttributeSerializer.DeserializeAsArray(data);

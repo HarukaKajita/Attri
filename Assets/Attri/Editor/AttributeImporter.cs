@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -11,11 +9,11 @@ namespace Attri.Editor
 {
     //.attrijsonファイルを読み込むインポーター
     //.jsonもimporter切り替えで扱えるようにしておく
-    [ScriptedImporter(1,new[] {"attrijson"}, new[] { "json" })]
-    public class JsonImporter : StackableImporter
+    [ScriptedImporter(1,new[] {"attrijson","attri"}, new[] { "json" })]
+    public class AttributeImporter : StackableImporter
     {
         // カスタムインスペクタで内容を観れるようにする
-        [CustomEditor(typeof(JsonImporter))]
+        [CustomEditor(typeof(AttributeImporter))]
         public class JsonImporterInspector : UnityEditor.Editor
         {
             IEnumerable<IAttribute> attributes;
@@ -26,11 +24,12 @@ namespace Attri.Editor
             
             private void OnEnable()
             {
-                var importer = target as JsonImporter;
+                var importer = target as AttributeImporter;
                 var assetPath = importer.assetPath;
                 var jsonText = File.ReadAllText(assetPath);
                 byte[] data = File.ReadAllBytes(assetPath);
                 var extension = Path.GetExtension(assetPath);
+                Debug.Log(extension);
                 if (extension is ".json" or ".attrijson")
                     data = AttributeSerializer.ConvertFromJson(jsonText);
                 
@@ -49,7 +48,7 @@ namespace Attri.Editor
             public override void OnInspectorGUI()
             {
                 base.OnInspectorGUI();
-                var importer = target as JsonImporter;
+                var importer = target as AttributeImporter;
                 // Foldout Editor GUI
                 if (attributes == null) return;
                 
