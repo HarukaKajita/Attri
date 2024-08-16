@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: 1a593dabd817e61438e5808260bde445
+importerOverride:
+  nativeImporterType: 2089858483
+  scriptedImporterType:
+    serializedVersion: 2
+    Hash: fa16a521217a33291c3851cb17d671db
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: d3ec89196a6ed0a4488dc4ca4ac2d3fe, type: 3}
+  processors:
+  - rid: 2218637803934711813
+  references:
+    version: 2
+    RefIds:
+    - rid: 2218637803934711813
+      type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
+      data:
+        assetPrefix: Capybara
+        CompressUnitVector: 0
+        CompressFloat: 0
+        FloatPrecisionBit: 3
+        CompressInteger: 0

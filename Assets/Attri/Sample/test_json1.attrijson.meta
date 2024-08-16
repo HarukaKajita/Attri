@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 102b881cbe9e3c741877ed80d0738eae
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: d3ec89196a6ed0a4488dc4ca4ac2d3fe, type: 3}
+  processors:
+  - rid: 2218637803934711811
+  references:
+    version: 2
+    RefIds:
+    - rid: 2218637803934711811
+      type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
+      data:
+        assetPrefix: test
+        CompressUnitVector: 0
+        CompressFloat: 0
+        FloatPrecisionBit: 3
+        CompressInteger: 0
