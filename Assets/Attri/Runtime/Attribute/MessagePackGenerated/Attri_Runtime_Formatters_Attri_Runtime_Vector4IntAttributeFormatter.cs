@@ -16,14 +16,14 @@
 
 namespace Attri.Runtime.Formatters.Attri.Runtime
 {
-    public sealed class IntegerAttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.IntAttribute>
+    public sealed class Vector4IntAttributeFormatter : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.Vector4IntAttribute>
     {
         // name
         private static global::System.ReadOnlySpan<byte> GetSpan_name() => new byte[1 + 4] { 164, 110, 97, 109, 101 };
         // frames
         private static global::System.ReadOnlySpan<byte> GetSpan_frames() => new byte[1 + 6] { 166, 102, 114, 97, 109, 101, 115 };
 
-        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.IntAttribute value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.Vector4IntAttribute value, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (value is null)
             {
@@ -36,10 +36,10 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             writer.WriteRaw(GetSpan_name());
             global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<string>(formatterResolver).Serialize(ref writer, value.name, options);
             writer.WriteRaw(GetSpan_frames());
-            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>>(formatterResolver).Serialize(ref writer, value.frames, options);
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int[]>>>(formatterResolver).Serialize(ref writer, value.frames, options);
         }
 
-        public global::Attri.Runtime.IntAttribute Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public global::Attri.Runtime.Vector4IntAttribute Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -51,7 +51,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             var length = reader.ReadMapHeader();
             var __name__ = default(string);
             var __frames__IsInitialized = false;
-            var __frames__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>);
+            var __frames__ = default(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int[]>>);
 
             for (int i = 0; i < length; i++)
             {
@@ -71,13 +71,13 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                         if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 126879463993958UL) { goto FAIL; }
 
                         __frames__IsInitialized = true;
-                        __frames__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>>(formatterResolver).Deserialize(ref reader, options);
+                        __frames__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int[]>>>(formatterResolver).Deserialize(ref reader, options);
                         continue;
 
                 }
             }
 
-            var ____result = new global::Attri.Runtime.IntAttribute(__name__);
+            var ____result = new global::Attri.Runtime.Vector4IntAttribute(__name__);
             if (__frames__IsInitialized)
             {
                 ____result.frames = __frames__;

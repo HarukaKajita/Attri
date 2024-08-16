@@ -13,15 +13,17 @@ namespace Attri.Runtime
     [Union(5, typeof(Vector3IntAttribute))]
     [Union(6, typeof(Vector2Attribute))]
     [Union(7, typeof(Vector2IntAttribute))]
+    [Union(8, typeof(Vector4IntAttribute))]
     
-    [Union(8, typeof(AttributeBase<int>))]
-    [Union(9, typeof(AttributeBase<float>))]
-    [Union(10, typeof(AttributeBase<bool>))]
-    [Union(11, typeof(AttributeBase<string>))]
-    [Union(12, typeof(AttributeBase<Vector3>))]
-    [Union(13, typeof(AttributeBase<Vector3Int>))]
-    [Union(14, typeof(AttributeBase<Vector2>))]
-    [Union(15, typeof(AttributeBase<Vector2Int>))]
+    [Union(9, typeof(AttributeBase<int>))]
+    [Union(10, typeof(AttributeBase<float>))]
+    [Union(11, typeof(AttributeBase<bool>))]
+    [Union(12, typeof(AttributeBase<string>))]
+    [Union(13, typeof(AttributeBase<Vector3>))]
+    [Union(14, typeof(AttributeBase<Vector3Int>))]
+    [Union(15, typeof(AttributeBase<Vector2>))]
+    [Union(16, typeof(AttributeBase<Vector2Int>))]
+    [Union(17, typeof(AttributeBase<int[]>))]
     public interface IAttribute
     {
         public string Name();

@@ -20,7 +20,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 
         public IAttributeFormatter()
         {
-            this.typeToKeyAndJumpMap = new global::System.Collections.Generic.Dictionary<global::System.RuntimeTypeHandle, global::System.Collections.Generic.KeyValuePair<int, int>>(16, global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)
+            this.typeToKeyAndJumpMap = new global::System.Collections.Generic.Dictionary<global::System.RuntimeTypeHandle, global::System.Collections.Generic.KeyValuePair<int, int>>(18, global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)
             {
                 { typeof(global::Attri.Runtime.IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(0, 0) },
                 { typeof(global::Attri.Runtime.FloatAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(1, 1) },
@@ -30,16 +30,18 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                 { typeof(global::Attri.Runtime.Vector3IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(5, 5) },
                 { typeof(global::Attri.Runtime.Vector2Attribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(6, 6) },
                 { typeof(global::Attri.Runtime.Vector2IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(7, 7) },
-                { typeof(global::Attri.Runtime.AttributeBase<int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(8, 8) },
-                { typeof(global::Attri.Runtime.AttributeBase<float>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(9, 9) },
-                { typeof(global::Attri.Runtime.AttributeBase<bool>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(10, 10) },
-                { typeof(global::Attri.Runtime.AttributeBase<string>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(11, 11) },
-                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(12, 12) },
-                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(13, 13) },
-                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(14, 14) },
-                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(15, 15) },
+                { typeof(global::Attri.Runtime.Vector4IntAttribute).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(8, 8) },
+                { typeof(global::Attri.Runtime.AttributeBase<int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(9, 9) },
+                { typeof(global::Attri.Runtime.AttributeBase<float>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(10, 10) },
+                { typeof(global::Attri.Runtime.AttributeBase<bool>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(11, 11) },
+                { typeof(global::Attri.Runtime.AttributeBase<string>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(12, 12) },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(13, 13) },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(14, 14) },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(15, 15) },
+                { typeof(global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(16, 16) },
+                { typeof(global::Attri.Runtime.AttributeBase<int[]>).TypeHandle, new global::System.Collections.Generic.KeyValuePair<int, int>(17, 17) },
             };
-            this.keyToJumpMap = new global::System.Collections.Generic.Dictionary<int, int>(16)
+            this.keyToJumpMap = new global::System.Collections.Generic.Dictionary<int, int>(18)
             {
                 { 0, 0 },
                 { 1, 1 },
@@ -57,6 +59,8 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                 { 13, 13 },
                 { 14, 14 },
                 { 15, 15 },
+                { 16, 16 },
+                { 17, 17 },
             };
         }
 
@@ -94,28 +98,34 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                         global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2IntAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector2IntAttribute)value, options);
                         break;
                     case 8:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<int>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector4IntAttribute>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.Vector4IntAttribute)value, options);
                         break;
                     case 9:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<float>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<float>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<int>)value, options);
                         break;
                     case 10:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<bool>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<bool>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<float>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<float>)value, options);
                         break;
                     case 11:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<string>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<string>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<bool>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<bool>)value, options);
                         break;
                     case 12:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<string>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<string>)value, options);
                         break;
                     case 13:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>)value, options);
                         break;
                     case 14:
-                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>)value, options);
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>)value, options);
                         break;
                     case 15:
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>)value, options);
+                        break;
+                    case 16:
                         global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>)value, options);
+                        break;
+                    case 17:
+                        global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int[]>>(options.Resolver).Serialize(ref writer, (global::Attri.Runtime.AttributeBase<int[]>)value, options);
                         break;
                     default:
                         break;
@@ -175,28 +185,34 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                     result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector2IntAttribute>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 8:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Vector4IntAttribute>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 9:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<float>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 10:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<bool>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<float>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 11:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<string>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<bool>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 12:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<string>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 13:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 14:
-                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>>(options.Resolver).Deserialize(ref reader, options);
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector3Int>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 case 15:
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2>>(options.Resolver).Deserialize(ref reader, options);
+                    break;
+                case 16:
                     result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<global::UnityEngine.Vector2Int>>(options.Resolver).Deserialize(ref reader, options);
+                    break;
+                case 17:
+                    result = (global::Attri.Runtime.IAttribute)global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.AttributeBase<int[]>>(options.Resolver).Deserialize(ref reader, options);
                     break;
                 default:
                     reader.Skip();
