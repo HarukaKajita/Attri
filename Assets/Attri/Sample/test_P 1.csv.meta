@@ -14,18 +14,12 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 63c660adc527bdf4da3b497a5196ffcf, type: 3}
   processors:
-  - rid: 2218637522227691526
-  - rid: 2218637522227691536
+  - rid: 2218637822815109121
   references:
     version: 2
     RefIds:
-    - rid: 2218637522227691526
+    - rid: 2218637822815109121
       type: {class: FloatArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
       data:
-        assetPrefix: P_element
-        skipFirstLine: 1
-    - rid: 2218637522227691536
-      type: {class: Vector3ArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
-      data:
-        assetPrefix: Vector3ArrayProcessor
+        assetPrefix: FloatArray
         skipFirstLine: 1

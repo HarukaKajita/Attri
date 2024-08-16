@@ -8,11 +8,11 @@ using yutokun;
 
 namespace Attri.Editor
 {
-    public class Vector3ArrayProcessor : ImportProcessor
+    public class Vector3ArrayProcessor : CsvImportProcessor
     {
         [SerializeField] bool skipFirstLine = true;
         private readonly List<Vector3Array> _scriptableObjects = new();
-        public Vector3ArrayProcessor() { }
+        public Vector3ArrayProcessor() : this("Vector3Array") { }
         public Vector3ArrayProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {

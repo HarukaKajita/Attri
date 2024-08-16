@@ -9,10 +9,10 @@ using Object = UnityEngine.Object;
 
 namespace Attri.Editor
 {
-    public class StackableImporter : ScriptedImporter
+    public class StackableImporter<T> : ScriptedImporter where T : ImportProcessor
     {
         [SerializeReference, SubclassSelector]
-        protected List<ImportProcessor> processors = new();
+        public List<T> processors = new();
         private List<Object> _subAssets = new();
         
         public override void OnImportAsset(AssetImportContext ctx)
