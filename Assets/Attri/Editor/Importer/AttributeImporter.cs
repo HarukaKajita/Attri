@@ -3,6 +3,7 @@ using System.IO;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Attri.Editor
@@ -12,28 +13,34 @@ namespace Attri.Editor
     [ScriptedImporter(1,new[] {"attrijson","attri"}, new[] { "json" })]
     public class AttributeImporter : StackableImporter<AttributeImportProcessor>
     {
+        // テスト用
+        public List<MeshProcessor> meshProcessors = new();
+        private new void OnValidate()
+        {
+            base.OnValidate();
+            // テスト用
+            foreach (var meshProcessor in meshProcessors)
+            {
+                if (meshProcessor == null) continue;
+                meshProcessor.SetAssetPath(assetPath);
+                meshProcessor.SetAttributes(attributes);
+            }
+        }
+        
         // カスタムインスペクタで内容を観れるようにする
         [CustomEditor(typeof(AttributeImporter))]
-        public class JsonImporterInspector : UnityEditor.Editor
+        public class AttributeImporterInspector : UnityEditor.Editor
         {
             IEnumerable<IAttribute> attributes;
             Dictionary<IAttribute,bool> attributeFoldoutFlags = new();
             Dictionary<object,bool> frameListFoldoutFlags = new();
             Dictionary<(object, int frameId),bool> frameFoldoutFlags = new();
-            
-            
-            private void OnEnable()
+
+            public void OnEnable()
             {
                 var importer = target as AttributeImporter;
-                var assetPath = importer.assetPath;
-                var jsonText = File.ReadAllText(assetPath);
-                byte[] data = File.ReadAllBytes(assetPath);
-                var extension = Path.GetExtension(assetPath);
-                Debug.Log(extension);
-                if (extension is ".json" or ".attrijson")
-                    data = AttributeSerializer.ConvertFromJson(jsonText);
+                attributes = importer.attributes;
                 
-                attributes = AttributeSerializer.DeserializeAsArray(data);
                 // Foldout Flags
                 attributeFoldoutFlags.Clear();
                 foreach (var attribute in attributes)
@@ -47,8 +54,63 @@ namespace Attri.Editor
             }
             public override void OnInspectorGUI()
             {
-                base.OnInspectorGUI();
                 var importer = target as AttributeImporter;
+                EditorGUI.BeginChangeCheck();
+                serializedObject.UpdateIfRequiredOrScript();
+                // Loop through properties and create one field (including children) for each top level property.
+                SerializedProperty property = serializedObject.GetIterator();
+                bool expanded = true;
+                while (property.NextVisible(expanded))
+                {
+                    var isScriptProperty = "m_Script" == property.propertyPath;
+                    var isProcessorsProperty = nameof(importer.processors) == property.propertyPath;
+                    if (isProcessorsProperty) continue;
+                    using (new EditorGUI.DisabledScope(isScriptProperty))
+                    {
+                        EditorGUILayout.PropertyField(property, true);
+                    }
+                    expanded = false;
+                }
+                // --- list
+                SerializedProperty processors = serializedObject.FindProperty(nameof(importer.processors));
+                var list = new ReorderableList(serializedObject, processors);
+                list.draggable = true;
+                list.drawHeaderCallback = rect => EditorGUI.LabelField(rect, nameof(importer.processors));
+                list.drawElementCallback = (rect, index, isActive, isFocused) =>
+                {
+                    rect.x += 8;
+                    var element = processors.GetArrayElementAtIndex(index);
+                    // Debug.Log($"{element.type} {element.name} {element.propertyPath} {element.propertyType}");
+                    if (element.managedReferenceValue == null) 
+                        EditorGUI.PropertyField(rect, element, new GUIContent(element.displayName));
+                    else
+                    {
+                        var value = element.managedReferenceValue;
+                        if(value.GetType() == typeof(MeshProcessor))
+                            new MeshProcessorDrawer().OnGUI(rect, element, new GUIContent(element.displayName));
+                        else
+                            EditorGUI.PropertyField(rect, element, new GUIContent(element.displayName));
+                    }
+                };
+                list.elementHeightCallback = index =>
+                {
+                    var element = processors.GetArrayElementAtIndex(index);
+                    if (element.managedReferenceValue == null) return EditorGUI.GetPropertyHeight(element);
+                    var value = element.managedReferenceValue;
+                    if(value.GetType() == typeof(MeshProcessor))
+                        return new MeshProcessorDrawer().GetPropertyHeight(element, new GUIContent(element.displayName));
+                    else
+                        return EditorGUI.GetPropertyHeight(element);
+                };
+                list.DoLayoutList();
+                // ---
+                serializedObject.ApplyModifiedProperties();
+                var changed = EditorGUI.EndChangeCheck();
+                if (changed)
+                {
+                    // repaint
+                    EditorUtility.SetDirty(importer);
+                } 
                 // Foldout Editor GUI
                 if (attributes == null) return;
                 
