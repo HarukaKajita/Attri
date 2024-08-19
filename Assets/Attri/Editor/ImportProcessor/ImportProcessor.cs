@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public abstract class ImportProcessor//: IImportProcessor
     {
         internal string assetPath;
-        [SerializeField]
+        [SerializeField, Delayed]
         protected string assetPrefix;
         internal List<IAttribute> attributes = new();
         protected ImportProcessor(string prefix = "")
