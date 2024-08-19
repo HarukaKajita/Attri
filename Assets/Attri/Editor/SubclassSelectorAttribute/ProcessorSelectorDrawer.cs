@@ -10,7 +10,7 @@ namespace Attri.Editor
 	[CustomPropertyDrawer(typeof(ProcessorSelectorAttribute))]
 	public class ProcessorSelectorDrawer : PropertyDrawer
 	{
-		bool initialized = false;
+		// bool initialized = false;
 		Type[] inheritedTypes;
 		string[] typePopupNameArray;
 		string[] typeFullNameArray;
@@ -24,7 +24,7 @@ namespace Attri.Editor
 			{
 				Initialize(property);
 				GetCurrentTypeIndex(property.managedReferenceFullTypename);
-				initialized = true;
+				// initialized = true;
 			}
 
 			int selectedTypeIndex = EditorGUI.Popup(GetPopupPosition(position), currentTypeIndex, typePopupNameArray);

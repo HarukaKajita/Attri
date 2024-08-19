@@ -25,27 +25,12 @@ namespace Attri.Editor
     public class MeshProcessor :AttributeImportProcessor
     {
         [SerializeField, HideInInspector] List<Mesh> _meshes = new();
-        // internal int PositionAttributeIndex = 0;
-        // internal string PositionAttributeNameCache;
-        [SerializeField, HideInInspector]
-        // internal SerializedDictionary<string, AttributeSelection> attributeSelection = new();
         
         internal string[] Keys = {"Position", "Index", "Normal", "UV"};
         internal AttributeSelection[] Values = {new (0, "P"), new (0, "index"), new (0, "N"), new (0, "uv")};
         
         public MeshProcessor():this("Mesh") {}
-        public MeshProcessor(string prefix = "Mesh") : base(prefix)
-        {
-            // attributeSelection.Clear();
-            // if(!attributeSelection.ContainsKey("Position"))
-            //     attributeSelection.Add("Position", new (0, "P"));
-            // if(!attributeSelection.ContainsKey("Index"))
-            //     attributeSelection.Add("Index", new(0, "index"));
-            // if(!attributeSelection.ContainsKey("Normal"))
-            //     attributeSelection.Add("Normal", new(0, "N"));
-            // if(!attributeSelection.ContainsKey("UV"))
-            //     attributeSelection.Add("UV", new(0, "uv"));
-        }
+        public MeshProcessor(string prefix = "Mesh") : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {
             Debug.Log($"{GetType().Name}.RunProcessor()");
@@ -72,7 +57,6 @@ namespace Attri.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             property.serializedObject.Update();
-            // base.OnGUI();
             // var target = property.serializedObject.targetObject;
             var processor = property.GetValue<MeshProcessor>();
             Preparation(processor);
@@ -126,11 +110,8 @@ namespace Attri.Editor
             if (processor.attributes == null) return;
             // アトリビュート名の配列を作る
             var attributes = processor.attributes;
-            // Debug.Log($"{processor.GetType().Name}.Preparation() : attributes[{attributes.Count}]");
-            _attributeNames = attributes.Select(a => a.Name()).Prepend("Unused").ToArray();
-            // foreach(var name in _attributeNames)
-                // Debug.Log($"attributeNames:{name}");
-            
+            // メッシュに含めないアトリビュート用に"_"を追加
+            _attributeNames = attributes.Select(a => a.Name()).Prepend("_").ToArray();
             // fileのアトリビュートの順の変更や増減があった場合に、選択しているアトリビュートのindexがずれるので、それを修正する
             for (int index = 0; index < processor.Keys.Length; index++)
             {
@@ -142,22 +123,8 @@ namespace Attri.Editor
                 var currentAttributeName = _attributeNames[selectedIndex];
                 if (currentAttributeName != selectedName)
                     processor.Values[index].index = Array.IndexOf(_attributeNames, selectedName);
-                // {
-                //     processor.attributeSelection[key].index = Array.IndexOf(_attributeNames, selectedName);
-                // }
+                
             }
-            // foreach (var selection in processor.attributeSelection)
-            // {
-            //     var key = selection.Key;
-            //     var selectedIndex = selection.Value.index;
-            //     var selectedName = selection.Value.name;
-            //     Debug.Log($"key:{key} index:{selectedIndex} name:{selectedName}");
-            //     if (selectedIndex >= _attributeNames.Length || selectedIndex < 0)
-            //         selectedIndex = 0;
-            //     var currentAttributeName = _attributeNames[selectedIndex];
-            //     if (currentAttributeName != selection.Value.name)
-            //         processor.attributeSelection[key].index = Array.IndexOf(_attributeNames, selectedName);    
-            // }
         }
     }
 }

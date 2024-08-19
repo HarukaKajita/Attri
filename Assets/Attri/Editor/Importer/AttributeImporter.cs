@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -13,19 +12,6 @@ namespace Attri.Editor
     [ScriptedImporter(1,new[] {"attrijson","attri"}, new[] { "json" })]
     public class AttributeImporter : StackableImporter<AttributeImportProcessor>
     {
-        // テスト用
-        public List<MeshProcessor> meshProcessors = new();
-        private new void OnValidate()
-        {
-            base.OnValidate();
-            // テスト用
-            foreach (var meshProcessor in meshProcessors)
-            {
-                if (meshProcessor == null) continue;
-                meshProcessor.SetAssetPath(assetPath);
-                meshProcessor.SetAttributes(attributes);
-            }
-        }
         
         // カスタムインスペクタで内容を観れるようにする
         [CustomEditor(typeof(AttributeImporter))]
