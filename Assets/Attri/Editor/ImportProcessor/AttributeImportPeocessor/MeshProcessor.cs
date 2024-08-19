@@ -25,9 +25,40 @@ namespace Attri.Editor
     public class MeshProcessor :AttributeImportProcessor
     {
         [SerializeField, HideInInspector] List<Mesh> _meshes = new();
-        
-        internal string[] Keys = {"Position", "Index", "Normal", "UV"};
-        internal AttributeSelection[] Values = {new (0, "P"), new (0, "index"), new (0, "N"), new (0, "uv")};
+        // TODO: まとめる
+        // TODO: Support SubMesh
+        internal string[] Keys =
+        {
+            "Position",
+            "Normal",
+            "Tangent",
+            "Color",
+            "UV0",
+            "UV1",
+            "UV2",
+            "UV3",
+            "UV4",
+            "UV5",
+            "UV6",
+            "UV7",
+            "Index"
+        };
+        internal AttributeSelection[] Values =
+        {
+            new (0, "P"),
+            new (0, "N"),
+            new (0, "tangent"),
+            new (0, "Cd"),
+            new (0, "uv"),
+            new (0, "uv1"),
+            new (0, "uv2"),
+            new (0, "uv3"),
+            new (0, "uv4"),
+            new (0, "uv5"),
+            new (0, "uv6"),
+            new (0, "uv7"),
+            new (0, "index")
+        };
         
         public MeshProcessor():this("Mesh") {}
         public MeshProcessor(string prefix = "Mesh") : base(prefix) { }
