@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 namespace Attri.Editor
@@ -12,52 +13,46 @@ namespace Attri.Editor
     [Serializable]
     class AttributeSelection
     {
+        public VertexAttribute? Attribute { get; }
+        public VertexAttributeFormat format;
+        public int dimension = 3;//[1,4]
         [HideInInspector]
-        public int index;
-        public string name;
-        public AttributeSelection(int index, string name)
+        public int index = 0;
+        public string fetchAttributeName;
+        
+        public string AttributeName()
         {
-            this.index = index;
-            this.name = name;
+            return Attribute== null ? "Index" : Attribute.Value.ToString();
+        }
+
+        public AttributeSelection(VertexAttribute? attribute, VertexAttributeFormat format, string fetchAttributeName)
+        {
+            this.Attribute = attribute;
+            this.format = format;
+            this.fetchAttributeName = fetchAttributeName;
         }
     }
     [Serializable]
     public class MeshProcessor :AttributeImportProcessor
     {
         [SerializeField, HideInInspector] List<Mesh> _meshes = new();
-        // TODO: まとめる
+        
         // TODO: Support SubMesh
-        internal string[] Keys =
+        internal AttributeSelection[] attributeSelections =
         {
-            "Position",
-            "Normal",
-            "Tangent",
-            "Color",
-            "UV0",
-            "UV1",
-            "UV2",
-            "UV3",
-            "UV4",
-            "UV5",
-            "UV6",
-            "UV7",
-            "Index"
-        };
-        internal AttributeSelection[] Values =
-        {
-            new (0, "P"),
-            new (0, "N"),
-            new (0, "tangent"),
-            new (0, "Cd"),
-            new (0, "uv"),
-            new (0, "uv1"),
-            new (0, "uv2"),
-            new (0, "uv3"),
-            new (0, "uv4"),
-            new (0, "uv5"),
-            new (0, "uv6"),
-            new (0, "uv7"),
-            new (0, "index")
+            new (VertexAttribute.Position , VertexAttributeFormat.Float16, "P"),
+            new (VertexAttribute.Normal   , VertexAttributeFormat.Float16, "N"),
+            new (VertexAttribute.Tangent  , VertexAttributeFormat.Float16, "tangent"),
+            new (VertexAttribute.Color    , VertexAttributeFormat.UNorm8 , "Cd"),
+            new (VertexAttribute.TexCoord0, VertexAttributeFormat.UNorm8 , "uv"),
+            new (VertexAttribute.TexCoord1, VertexAttributeFormat.UNorm8 , "uv1"),
+            new (VertexAttribute.TexCoord2, VertexAttributeFormat.UNorm8 , "uv2"),
+            new (VertexAttribute.TexCoord3, VertexAttributeFormat.UNorm8 , "uv3"),
+            new (VertexAttribute.TexCoord4, VertexAttributeFormat.UNorm8 , "uv4"),
+            new (VertexAttribute.TexCoord5, VertexAttributeFormat.UNorm8 , "uv5"),
+            new (VertexAttribute.TexCoord6, VertexAttributeFormat.UNorm8 , "uv6"),
+            new (VertexAttribute.TexCoord7, VertexAttributeFormat.UNorm8 , "uv7"),
+            new (null, VertexAttributeFormat.UInt32, "index")
         };
         
         public MeshProcessor():this("Mesh") {}
@@ -106,11 +101,9 @@ namespace Attri.Editor
                 // debug
                 // EditorGUI.DrawRect(additionalRect, Color.red);
                 // Debug.Log($"{processor.GetType().Name}.OnGUI() : processor.attributeSelection.Count:{processor.attributeSelection.Count}");
-                for (var index = 0; index < processor.Keys.Length; index++)
+                foreach (var selection in processor.attributeSelections)
                 {
-                    var key = processor.Keys[index];
-                    var selection = processor.Values[index];
-                    DrawAttributeSelection(key, selection, additionalRect);
+                    DrawAttributeSelection(selection, additionalRect);
                     additionalRect.y += EditorGUIUtility.singleLineHeight;
                 }
                 property.SetValue(processor);
@@ -124,15 +117,27 @@ namespace Attri.Editor
             var processor = property.GetValue<MeshProcessor>();
             var h = EditorGUI.GetPropertyHeight(property, label, true);
             if(property.isExpanded)
-                h += EditorGUIUtility.singleLineHeight * processor.Keys.Length;
+                h += EditorGUIUtility.singleLineHeight * processor.attributeSelections.Length;
             return h;
         }
-        private void DrawAttributeSelection(string selectionKey, AttributeSelection selection, Rect position)
+        private void DrawAttributeSelection( AttributeSelection selection, Rect position)
         {
-            selection.index = EditorGUI.Popup(position, selectionKey, selection.index, _attributeNames);
+            var labelWidth = EditorGUIUtility.labelWidth/2;
+            var w = position.width;
+            w = (position.width - labelWidth)/3;
+            
+            var labelRect = new Rect(position.x, position.y, labelWidth, position.height);
+            var optionRect = new Rect(position.x + labelWidth, position.y, w, position.height);
+            EditorGUI.LabelField(labelRect, selection.AttributeName());
+            selection.index = EditorGUI.Popup(optionRect, "", selection.index, _attributeNames);
+            optionRect.x += w;
+            selection.format = (VertexAttributeFormat)EditorGUI.EnumPopup(optionRect, selection.format);
+            optionRect.x += w;
+            selection.dimension = EditorGUI.IntSlider(optionRect, "", selection.dimension, 1, 4);
+            
             if (selection.index >= _attributeNames.Length || selection.index < 0)
                 selection.index = 0;
-            selection.name = _attributeNames[selection.index];
+            selection.fetchAttributeName = _attributeNames[selection.index];
         }
 
         void Preparation(MeshProcessor processor)
@@ -144,17 +149,14 @@ namespace Attri.Editor
             // メッシュに含めないアトリビュート用に"_"を追加
             _attributeNames = attributes.Select(a => a.Name()).Prepend("_").ToArray();
             // fileのアトリビュートの順の変更や増減があった場合に、選択しているアトリビュートのindexがずれるので、それを修正する
-            for (int index = 0; index < processor.Keys.Length; index++)
+            foreach (var selection in processor.attributeSelections)
             {
-                var key = processor.Keys[index];
-                var selection = processor.Values[index];
                 var selectedIndex = selection.index;
-                var selectedName = selection.name;
+                var selectedName = selection.fetchAttributeName;
                 if (selectedIndex >= _attributeNames.Length || selectedIndex < 0) selectedIndex = 0;
                 var currentAttributeName = _attributeNames[selectedIndex];
                 if (currentAttributeName != selectedName)
-                    processor.Values[index].index = Array.IndexOf(_attributeNames, selectedName);
-                
+                    selection.index = Array.IndexOf(_attributeNames, selectedName);
             }
         }
     }
