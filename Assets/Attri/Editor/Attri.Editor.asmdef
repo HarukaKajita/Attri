@@ -15,11 +15,7 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [
-        "Newtonsoft.Json.dll",
-        "Microsoft.NET.StringTools.dll",
-        "Unity.Plastic.Newtonsoft.Json.dll"
-    ],
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

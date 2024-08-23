@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -11,7 +12,7 @@ namespace Attri.Runtime
     {
         internal string assetPath;
         [SerializeField, Delayed]
-        protected string assetPrefix;
+        internal string assetPrefix;
         internal List<IAttribute> attributes = new();
         protected ImportProcessor(string prefix = "")
         {

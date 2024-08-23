@@ -1,50 +1,53 @@
-﻿//based on https://qiita.com/tsukimi_neko/items/7922b2433ed4d8616cce#%E5%8F%82%E8%80%83
 using System;
 using System.Linq;
 using System.Reflection;
+using Attri.Runtime;
 using UnityEditor;
 using UnityEngine;
 
 namespace Attri.Editor
 {
-	[CustomPropertyDrawer(typeof(ProcessorSelectorAttribute))]
-	public class ProcessorSelectorDrawer : PropertyDrawer
-	{
-		// bool initialized = false;
-		Type[] inheritedTypes;
-		string[] typePopupNameArray;
-		string[] typeFullNameArray;
-		int currentTypeIndex;
-
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
-			if (property.propertyType != SerializedPropertyType.ManagedReference) return;
-			// コメントアウトしないとInspectorのProcessorのリストの表示が正しくなくなる
-			// if (!initialized)
-			{
-				Initialize(property);
-				GetCurrentTypeIndex(property.managedReferenceFullTypename);
-				// initialized = true;
-			}
-
-			int selectedTypeIndex = EditorGUI.Popup(GetPopupPosition(position), currentTypeIndex, typePopupNameArray);
-			UpdatePropertyToSelectedTypeIndex(property, selectedTypeIndex);
-			EditorGUI.PropertyField(position, property, label, true);
-		}
-
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return EditorGUI.GetPropertyHeight(property, true);
-		}
-
-		private void Initialize(SerializedProperty property)
-		{
-			inheritedTypes = 
-				TypeCache.GetTypesDerivedFrom(GetType(property))
-					.Prepend(null)
-					.ToArray();
-			GetInheritedTypeNameArrays();
-		}
+    [CustomPropertyDrawer(typeof(ImportProcessor), true)]
+    public class ImportProcessorDrawer : PropertyDrawer
+    {
+        Type[] inheritedTypes;
+        string[] typePopupNameArray;
+        string[] typeFullNameArray;
+        int currentTypeIndex;
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            // EditorGUI.indentLevel--;
+            if (property.propertyType != SerializedPropertyType.ManagedReference) return;
+            Initialize(property);
+            GetCurrentTypeIndex(property.managedReferenceFullTypename);
+            if (1 < typePopupNameArray.Length)
+            {
+	            int selectedTypeIndex = EditorGUI.Popup(GetPopupPosition(position), currentTypeIndex, typePopupNameArray);
+	            UpdatePropertyToSelectedTypeIndex(property, selectedTypeIndex);
+            }
+            // Debug.Log($"{property.type} : {property.managedReferenceValue.GetType().Name} {property.managedReferenceValue}");
+            EditorGUI.PropertyField(position, property, label, true);
+            // EditorGUI.indentLevel++;
+        }
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            var h = base.GetPropertyHeight(property, label);
+            if(!property.isExpanded) return h;
+            var value = property.managedReferenceValue as ImportProcessor;
+            var prefixProperty = property.FindPropertyRelative(nameof(value.assetPrefix));
+            h += EditorGUI.GetPropertyHeight(prefixProperty, new GUIContent(prefixProperty.displayName), true);
+            h += 2;
+            return h;
+        }
+        private void Initialize(SerializedProperty property)
+        {
+            inheritedTypes = 
+                TypeCache.GetTypesDerivedFrom(GetType(property))
+	                .Where(type => !type.IsAbstract)
+                    .Prepend(null)
+                    .ToArray();
+            GetInheritedTypeNameArrays();
+        }
 
 		private void GetCurrentTypeIndex(string typeFullName)
 		{
@@ -112,5 +115,6 @@ namespace Attri.Editor
 
 			return fieldType;
 		}
-	}
+        
+    }
 }

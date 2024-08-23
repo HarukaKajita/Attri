@@ -12,7 +12,7 @@ namespace Attri.Editor
 {
     public class StackableImporter<T> : ScriptedImporter where T : ImportProcessor
     {
-        [SerializeReference, ProcessorSelector]
+        [SerializeReference]
         public List<T> processors = new();
         private List<Object> _subAssets = new();
         [SerializeReference, HideInInspector]

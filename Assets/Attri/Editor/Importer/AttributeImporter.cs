@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Attri.Editor
@@ -15,15 +14,16 @@ namespace Attri.Editor
         
         // カスタムインスペクタで内容を観れるようにする
         [CustomEditor(typeof(AttributeImporter))]
-        public class AttributeImporterInspector : UnityEditor.Editor
+        public class AttributeImporterInspector : ScriptedImporterEditor
         {
             IEnumerable<IAttribute> attributes;
             Dictionary<IAttribute,bool> attributeFoldoutFlags = new();
             Dictionary<object,bool> frameListFoldoutFlags = new();
             Dictionary<(object, int frameId),bool> frameFoldoutFlags = new();
-
-            public void OnEnable()
+            
+            protected override void Awake()
             {
+                base.Awake();
                 var importer = target as AttributeImporter;
                 attributes = importer.attributes;
                 
@@ -38,74 +38,38 @@ namespace Attri.Editor
                         frameFoldoutFlags.Add((attribute,i),false);
                 }
             }
-            public override void OnInspectorGUI()
+            void DoDrawDefaultInspector(SerializedObject obj)
             {
-                var importer = target as AttributeImporter;
-                EditorGUI.BeginChangeCheck();
-                serializedObject.UpdateIfRequiredOrScript();
+                obj.UpdateIfRequiredOrScript();
+
                 // Loop through properties and create one field (including children) for each top level property.
-                SerializedProperty property = serializedObject.GetIterator();
+                SerializedProperty property = obj.GetIterator();
                 bool expanded = true;
                 while (property.NextVisible(expanded))
                 {
-                    var isScriptProperty = "m_Script" == property.propertyPath;
-                    var isProcessorsProperty = nameof(importer.processors) == property.propertyPath;
-                    if (isProcessorsProperty) continue;
-                    using (new EditorGUI.DisabledScope(isScriptProperty))
+                    using (new EditorGUI.DisabledScope("m_Script" == property.propertyPath))
                     {
                         EditorGUILayout.PropertyField(property, true);
                     }
                     expanded = false;
                 }
-                // --- list
-                SerializedProperty processors = serializedObject.FindProperty(nameof(importer.processors));
-                var list = new ReorderableList(serializedObject, processors);
-                list.draggable = true;
-                list.drawHeaderCallback = rect => EditorGUI.LabelField(rect, nameof(importer.processors));
-                list.drawElementCallback = (rect, index, isActive, isFocused) =>
-                {
-                    rect.x += 8;
-                    var element = processors.GetArrayElementAtIndex(index);
-                    // Debug.Log($"{element.type} {element.name} {element.propertyPath} {element.propertyType}");
-                    if (element.managedReferenceValue == null) 
-                        EditorGUI.PropertyField(rect, element, new GUIContent(element.displayName));
-                    else
-                    {
-                        var value = element.managedReferenceValue;
-                        if(value.GetType() == typeof(MeshProcessor))
-                            new MeshProcessorDrawer().OnGUI(rect, element, new GUIContent(element.displayName));
-                        else
-                            EditorGUI.PropertyField(rect, element, new GUIContent(element.displayName));
-                    }
-                };
-                list.elementHeightCallback = index =>
-                {
-                    var element = processors.GetArrayElementAtIndex(index);
-                    if (element.managedReferenceValue == null) return EditorGUI.GetPropertyHeight(element);
-                    var value = element.managedReferenceValue;
-                    if(value.GetType() == typeof(MeshProcessor))
-                        return new MeshProcessorDrawer().GetPropertyHeight(element, new GUIContent(element.displayName));
-                    else
-                        return EditorGUI.GetPropertyHeight(element);
-                };
-                list.DoLayoutList();
-                // ---
-                serializedObject.ApplyModifiedProperties();
-                var changed = EditorGUI.EndChangeCheck();
-                if (changed)
-                {
-                    // repaint
-                    EditorUtility.SetDirty(importer);
-                } 
-                // Foldout Editor GUI
-                if (attributes == null) return;
+
+                obj.ApplyModifiedProperties();
+            }
+            public override void OnInspectorGUI()
+            {
+                //base.OnInspectorGUI();
+                DoDrawDefaultInspector(serializedObject);
+                if (extraDataType != null)
+                    DoDrawDefaultInspector(extraDataSerializedObject);
                 
                 foreach (var attribute in attributes)
                     DrawAttribute(attribute);
                 
                 // Reimport Self
-                if (GUILayout.Button("Reimport"))
-                        AssetDatabase.ImportAsset(importer?.assetPath, ImportAssetOptions.ForceUpdate);
+                // if (GUILayout.Button("Reimport"))
+                //         AssetDatabase.ImportAsset(importer?.assetPath, ImportAssetOptions.ForceUpdate);
+                ApplyRevertGUI();
             }
         
             private void DrawAttribute(IAttribute attribute)
