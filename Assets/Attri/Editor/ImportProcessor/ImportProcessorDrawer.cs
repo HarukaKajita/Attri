@@ -16,27 +16,24 @@ namespace Attri.Editor
         int currentTypeIndex;
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            // EditorGUI.indentLevel--;
-            if (property.propertyType != SerializedPropertyType.ManagedReference) return;
+	        Debug.Log($"{property.propertyPath} {property.managedReferenceFullTypename} {GetType().Name}.OnGUI()");
             Initialize(property);
             GetCurrentTypeIndex(property.managedReferenceFullTypename);
             if (1 < typePopupNameArray.Length)
             {
 	            int selectedTypeIndex = EditorGUI.Popup(GetPopupPosition(position), currentTypeIndex, typePopupNameArray);
+	            Debug.Log($"currentTypeIndex:{currentTypeIndex}, selectedTypeIndex:{selectedTypeIndex}");
 	            UpdatePropertyToSelectedTypeIndex(property, selectedTypeIndex);
             }
             // Debug.Log($"{property.type} : {property.managedReferenceValue.GetType().Name} {property.managedReferenceValue}");
+            // if (property.managedReferenceValue == null) return;
             EditorGUI.PropertyField(position, property, label, true);
-            // EditorGUI.indentLevel++;
+            Debug.Log($"{property.propertyPath} {GetType().Name}.OnGUI() End");
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            var h = base.GetPropertyHeight(property, label);
-            if(!property.isExpanded) return h;
-            var value = property.managedReferenceValue as ImportProcessor;
-            var prefixProperty = property.FindPropertyRelative(nameof(value.assetPrefix));
-            h += EditorGUI.GetPropertyHeight(prefixProperty, new GUIContent(prefixProperty.displayName), true);
-            h += 2;
+	        var h = EditorGUI.GetPropertyHeight(property, label);
+            // h += 2;
             return h;
         }
         private void Initialize(SerializedProperty property)

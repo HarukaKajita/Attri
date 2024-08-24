@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 using Object = UnityEngine.Object;

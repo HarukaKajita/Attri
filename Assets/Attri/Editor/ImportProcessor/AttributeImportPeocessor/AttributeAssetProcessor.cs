@@ -24,7 +24,6 @@ namespace Attri.Editor
             {
                 var asset = a.CreateAsset();
                 asset.name = $"{assetPrefix}_{asset.name}";
-                Debug.Log(a.ToString());
                 _attributeAssets.Add(asset);
                 ctx.AddObjectToAsset($"{asset.name}_{asset.GetHashCode()}", asset);
             }
