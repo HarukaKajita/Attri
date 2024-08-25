@@ -28,5 +28,11 @@ namespace Attri.Editor
             this.format = format;
             this.fetchAttributeName = fetchAttributeName;
         }
+
+        public bool IsValid()
+        {
+            return !string.IsNullOrEmpty(fetchAttributeName);
+        } 
+            
     }
 }
