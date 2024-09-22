@@ -64,11 +64,11 @@ namespace Attri.Runtime
             // フレーム内の要素のループ
             for(var i = 0; i < elementCount; i++)
             {
+                elementsList[i].Add(new List<object>(componentCount));
                 for (var j = 0; j < componentCount; j++)
                 {
                     // 要素の成分をobjectに変換してリスト化
-                    if(j == 0) elementsList[i] = new List<object>(componentCount);
-                    elementsList[i][j] = elements[i][j];
+                    elementsList[i].Add(elements[i][j]);
                 }
             }
             return elementsList;
