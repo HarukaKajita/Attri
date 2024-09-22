@@ -9,6 +9,7 @@ namespace Attri.Runtime
     [Serializable]
     public abstract class ImportProcessor//: IImportProcessor
     {
+        public bool enabled = true;
         internal string assetPath;
         [SerializeField, Delayed]
         internal string assetPrefix;

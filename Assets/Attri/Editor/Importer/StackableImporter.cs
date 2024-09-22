@@ -77,7 +77,8 @@ namespace Attri.Editor
         {
             var subAssets = new List<Object>();
             foreach (var processor in processors)
-                subAssets.AddRange(processor?.RunProcessor(ctx) ?? Array.Empty<Object>());
+                if (processor.enabled) 
+                    subAssets.AddRange(processor?.RunProcessor(ctx) ?? Array.Empty<Object>());
             return subAssets.ToArray();
         }
         
