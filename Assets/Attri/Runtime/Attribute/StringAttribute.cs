@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public class StringAttribute : AttributeBase<string>
     {
         public override AttributeType GetAttributeType() => AttributeType.String;
-        public override ushort GetDimension() => 1;
+        public override int GetDimension() => 1;
         public StringAttribute() : base(nameof(StringAttribute)) {}
         public StringAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)

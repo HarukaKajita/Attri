@@ -30,7 +30,7 @@ namespace Attri.Runtime
     {
         public string Name();
         AttributeType GetAttributeType();
-        ushort GetDimension();
+        int GetDimension();
         int FrameCount();
         Type GetDataType();
         List<object> GetObjectFrame(int frameIndex);

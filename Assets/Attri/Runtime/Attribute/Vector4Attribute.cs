@@ -14,7 +14,7 @@ namespace Attri.Runtime
     public class Vector4Attribute : AttributeBase<Vector4>
     {
         public override AttributeType GetAttributeType() => AttributeType.Float;
-        public override ushort GetDimension() => 4;
+        public override int GetDimension() => 4;
         public Vector4Attribute() : base(nameof(Vector4Attribute)) {}
         public Vector4Attribute(string name) : base(name) {}
 

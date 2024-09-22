@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public class Vector4IntAttribute : AttributeBase<int[]>
     {
         public override AttributeType GetAttributeType() => AttributeType.Int;
-        public override ushort GetDimension() => 4;
+        public override int GetDimension() => 4;
         public Vector4IntAttribute() : base(nameof(Vector4IntAttribute)) {}
         public Vector4IntAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)

@@ -14,7 +14,7 @@ namespace Attri.Runtime
     public class Vector2Attribute : AttributeBase<Vector2>
     {
         public override AttributeType GetAttributeType() => AttributeType.Float;
-        public override ushort GetDimension() => 2;
+        public override int GetDimension() => 2;
         public Vector2Attribute() : base(nameof(Vector2Attribute)) {}
         public Vector2Attribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)

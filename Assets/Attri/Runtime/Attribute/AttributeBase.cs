@@ -37,7 +37,7 @@ namespace Attri.Runtime
             return AttributeType.Unknown;
         }
 
-        public abstract ushort GetDimension();
+        public abstract int GetDimension();
         public AttributeBase(string name)
         {
             this.name = name;

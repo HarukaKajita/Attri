@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public class Vector3IntAttribute : AttributeBase<Vector3Int>
     {
         public override AttributeType GetAttributeType() => AttributeType.Int;
-        public override ushort GetDimension() => 3;
+        public override int GetDimension() => 3;
         public Vector3IntAttribute() : base(nameof(Vector3IntAttribute)) {}
         public Vector3IntAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)

@@ -94,7 +94,7 @@ namespace Attri.Editor
             EditorGUI.indentLevel--;
         }
         
-        ushort GetDimension(IAttribute attribute)
+        int GetDimension(IAttribute attribute)
         {
             var attributeDataType = attribute.GetDataType();
             if (attributeDataType == typeof(Vector3) || attributeDataType == typeof(Vector3Int)) return 3;

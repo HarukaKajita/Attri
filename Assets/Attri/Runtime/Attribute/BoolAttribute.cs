@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public class BoolAttribute : AttributeBase<bool>
     {
         public override AttributeType GetAttributeType() => AttributeType.Bool;
-        public override ushort GetDimension() => 1;
+        public override int GetDimension() => 1;
         public BoolAttribute() : base( nameof(BoolAttribute)) {}
         public BoolAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)

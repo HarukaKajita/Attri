@@ -10,7 +10,7 @@ namespace Attri.Runtime
     public class FloatAttribute : AttributeBase<float>
     {
         public override AttributeType GetAttributeType() => AttributeType.Float;
-        public override ushort GetDimension() => 1;
+        public override int GetDimension() => 1;
         public FloatAttribute() : base(nameof(FloatAttribute)) {}
         public FloatAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)
