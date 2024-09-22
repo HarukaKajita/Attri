@@ -37,10 +37,7 @@ namespace Attri.Runtime
             return AttributeType.Unknown;
         }
 
-        public virtual ushort GetDimension()
-        {
-            return 0;
-        }
+        public abstract ushort GetDimension();
         public AttributeBase(string name)
         {
             this.name = name;
@@ -66,10 +63,13 @@ namespace Attri.Runtime
             return typeof(T);
         }
 
-        public List<object> GetObjectFrame(int index)
+        public List<object> GetObjectFrame(int frameIndex)
         {
-            return frames[index].data.Cast<object>().ToList();
+            return frames[frameIndex].data.Cast<object>().ToList();
         }
+
+        public abstract List<byte[]> GeByte(int frameIndex);
+        public abstract int GetByteSize();
 
         public List<List<object>> GetObjectFrames()
         {

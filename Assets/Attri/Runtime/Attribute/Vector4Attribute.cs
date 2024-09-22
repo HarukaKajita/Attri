@@ -11,12 +11,12 @@ namespace Attri.Runtime
 {
     [MessagePackObject(true)]
     [Serializable]
-    public class Vector3Attribute : AttributeBase<Vector3>
+    public class Vector4Attribute : AttributeBase<Vector4>
     {
         public override AttributeType GetAttributeType() => AttributeType.Float;
-        public override ushort GetDimension() => 3;
-        public Vector3Attribute() : base(nameof(Vector3Attribute)) {}
-        public Vector3Attribute(string name) : base(name) {}
+        public override ushort GetDimension() => 4;
+        public Vector4Attribute() : base(nameof(Vector4Attribute)) {}
+        public Vector4Attribute(string name) : base(name) {}
 
         public override List<byte[]> GeByte(int frameIndex)
         {
@@ -28,6 +28,7 @@ namespace Attri.Runtime
                 var x = BitConverter.GetBytes(v.x);
                 var y = BitConverter.GetBytes(v.y);
                 var z = BitConverter.GetBytes(v.z);
+                var w = BitConverter.GetBytes(v.w);
                 array[0] = x[0];
                 array[1] = x[1];
                 array[2] = x[2];
@@ -40,6 +41,10 @@ namespace Attri.Runtime
                 array[9] = z[1];
                 array[10] = z[2];
                 array[11] = z[3];
+                array[12] = w[0];
+                array[13] = w[1];
+                array[14] = w[2];
+                array[15] = w[3];
                 data.Add(array);
             }
             return data;
@@ -47,23 +52,23 @@ namespace Attri.Runtime
 
         public override int GetByteSize()
         {
-            return sizeof(float) * 3;
+            return sizeof(float) * 4;
         }
 
         public override AttributeAsset CreateAsset()
         {
-            var asset = ScriptableObject.CreateInstance<Vector3AttributeAsset>();
+            var asset = ScriptableObject.CreateInstance<Vector4AttributeAsset>();
             asset.name = name;
             asset._attribute = this;
             return asset;
         }
 
 #if UNITY_EDITOR
-        private Vector3Int _divisionPow = new Vector3Int(4, 4, 4);
+        private int[] _divisionPow = new int[]{4, 4, 4, 4};
         public override void DrawAttributeDetailInspector()
         {
-            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector4 max = new Vector4(float.MinValue, float.MinValue, float.MinValue, float.MinValue);
+            Vector4 min = new Vector4(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue);
             frames.ForEach(frame =>
             {
                 frame.data.ForEach(data =>
@@ -71,15 +76,17 @@ namespace Attri.Runtime
                     max.x = Mathf.Max(max.x, data.x);
                     max.y = Mathf.Max(max.y, data.y);
                     max.z = Mathf.Max(max.z, data.z);
+                    max.w = Mathf.Max(max.w, data.w);
                     min.x = Mathf.Min(min.x, data.x);
                     min.y = Mathf.Min(min.y, data.y);
                     min.z = Mathf.Min(min.z, data.z);
+                    min.w = Mathf.Min(min.w, data.w);
                 });
             });
-            var range = new Vector3(max.x - min.x, max.y - min.y, max.z - min.z);
+            var range = new Vector4(max.x - min.x, max.y - min.y, max.z - min.z, max.w - min.w);
             var total = frames.Sum(frame => frame.data.Count);
             var height = 50;
-            var axisLabel = new [] {"X", "Y", "Z"};
+            var axisLabel = new [] {"X", "Y", "Z", "W"};
             for (var axis = 0; axis < axisLabel.Length; axis++)
             {
                 EditorGUILayout.BeginVertical("box");
