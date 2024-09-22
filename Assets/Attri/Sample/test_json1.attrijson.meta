@@ -9,15 +9,34 @@ ScriptedImporter:
   assetBundleVariant: 
   script: {fileID: 11500000, guid: d3ec89196a6ed0a4488dc4ca4ac2d3fe, type: 3}
   processors:
-  - rid: 2218637803934711811
+  - rid: 2199193086783651852
+  attributes:
+  - rid: 1000
+  - rid: 1001
+  - rid: 1002
   references:
     version: 2
     RefIds:
-    - rid: 2218637803934711811
-      type: {class: AttributeArrayProcessor, ns: Attri.Editor, asm: Attri.Editor}
+    - rid: 1000
+      type: {class: FloatAttribute, ns: Attri.Runtime, asm: Attri}
       data:
-        assetPrefix: test
-        CompressUnitVector: 0
-        CompressFloat: 0
-        FloatPrecisionBit: 3
-        CompressInteger: 0
+        name: P
+        frames: []
+    - rid: 1001
+      type: {class: FloatAttribute, ns: Attri.Runtime, asm: Attri}
+      data:
+        name: uv
+        frames: []
+    - rid: 1002
+      type: {class: FloatAttribute, ns: Attri.Runtime, asm: Attri}
+      data:
+        name: N
+        frames: []
+    - rid: 2199193086783651852
+      type: {class: AttributeAssetProcessor, ns: Attri.Editor, asm: Attri.Editor}
+      data:
+        assetPrefix: hoge
+        _attributeAssets:
+        - {fileID: 1869298082791115882, guid: 102b881cbe9e3c741877ed80d0738eae, type: 3}
+        - {fileID: 7460946241456888389, guid: 102b881cbe9e3c741877ed80d0738eae, type: 3}
+        - {fileID: -848231053500592621, guid: 102b881cbe9e3c741877ed80d0738eae, type: 3}
