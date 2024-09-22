@@ -47,49 +47,25 @@ namespace Attri.Runtime.Resolvers
 
         static GeneratedResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(41)
+            lookup = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(17)
             {
-                { typeof(global::Attri.Runtime.FrameData<bool>), 0 },
-                { typeof(global::Attri.Runtime.FrameData<float>), 1 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>), 2 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>), 3 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>), 4 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>), 5 },
-                { typeof(global::Attri.Runtime.FrameData<global::UnityEngine.Vector4>), 6 },
-                { typeof(global::Attri.Runtime.FrameData<int[]>), 7 },
-                { typeof(global::Attri.Runtime.FrameData<int>), 8 },
-                { typeof(global::Attri.Runtime.FrameData<string>), 9 },
-                { typeof(global::System.Collections.Generic.List<bool>), 10 },
-                { typeof(global::System.Collections.Generic.List<float>), 11 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<bool>>), 12 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<float>>), 13 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>), 14 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>), 15 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>), 16 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>), 17 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<global::UnityEngine.Vector4>>), 18 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int[]>>), 19 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>), 20 },
-                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>), 21 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2>), 22 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector2Int>), 23 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3>), 24 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector3Int>), 25 },
-                { typeof(global::System.Collections.Generic.List<global::UnityEngine.Vector4>), 26 },
-                { typeof(global::System.Collections.Generic.List<int[]>), 27 },
-                { typeof(global::System.Collections.Generic.List<int>), 28 },
-                { typeof(global::System.Collections.Generic.List<string>), 29 },
-                { typeof(global::Attri.Runtime.IAttribute), 30 },
-                { typeof(global::Attri.Runtime.BoolAttribute), 31 },
-                { typeof(global::Attri.Runtime.FloatAttribute), 32 },
-                { typeof(global::Attri.Runtime.IntAttribute), 33 },
-                { typeof(global::Attri.Runtime.StringAttribute), 34 },
-                { typeof(global::Attri.Runtime.Vector2Attribute), 35 },
-                { typeof(global::Attri.Runtime.Vector2IntAttribute), 36 },
-                { typeof(global::Attri.Runtime.Vector3Attribute), 37 },
-                { typeof(global::Attri.Runtime.Vector3IntAttribute), 38 },
-                { typeof(global::Attri.Runtime.Vector4Attribute), 39 },
-                { typeof(global::Attri.Runtime.Vector4IntAttribute), 40 },
+                { typeof(global::Attri.Runtime.FrameData<float>), 0 },
+                { typeof(global::Attri.Runtime.FrameData<int>), 1 },
+                { typeof(global::Attri.Runtime.FrameData<string>), 2 },
+                { typeof(global::Attri.Runtime.Value<float>), 3 },
+                { typeof(global::Attri.Runtime.Value<float>[]), 4 },
+                { typeof(global::Attri.Runtime.Value<int>), 5 },
+                { typeof(global::Attri.Runtime.Value<int>[]), 6 },
+                { typeof(global::Attri.Runtime.Value<string>), 7 },
+                { typeof(global::Attri.Runtime.Value<string>[]), 8 },
+                { typeof(global::Attri.Runtime.Value<ushort>[]), 9 },//workaround for error. overwrite T -> ushort
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<float>>), 10 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<int>>), 11 },
+                { typeof(global::System.Collections.Generic.List<global::Attri.Runtime.FrameData<string>>), 12 },
+                { typeof(global::Attri.Runtime.IAttribute), 13 },
+                { typeof(global::Attri.Runtime.FloatAttribute), 14 },
+                { typeof(global::Attri.Runtime.IntAttribute), 15 },
+                { typeof(global::Attri.Runtime.StringAttribute), 16 },
             };
         }
 
@@ -103,47 +79,23 @@ namespace Attri.Runtime.Resolvers
 
             switch (key)
             {
-                case 0: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<bool>();
-                case 1: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<float>();
-                case 2: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2>();
-                case 3: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector2Int>();
-                case 4: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3>();
-                case 5: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector3Int>();
-                case 6: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<global::UnityEngine.Vector4>();
-                case 7: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<int[]>();
-                case 8: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<int>();
-                case 9: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<string>();
-                case 10: return new global::MessagePack.Formatters.ListFormatter<bool>();
-                case 11: return new global::MessagePack.Formatters.ListFormatter<float>();
-                case 12: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<bool>>();
-                case 13: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<float>>();
-                case 14: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2>>();
-                case 15: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector2Int>>();
-                case 16: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3>>();
-                case 17: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector3Int>>();
-                case 18: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<global::UnityEngine.Vector4>>();
-                case 19: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<int[]>>();
-                case 20: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<int>>();
-                case 21: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<string>>();
-                case 22: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2>();
-                case 23: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector2Int>();
-                case 24: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3>();
-                case 25: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector3Int>();
-                case 26: return new global::MessagePack.Formatters.ListFormatter<global::UnityEngine.Vector4>();
-                case 27: return new global::MessagePack.Formatters.ListFormatter<int[]>();
-                case 28: return new global::MessagePack.Formatters.ListFormatter<int>();
-                case 29: return new global::MessagePack.Formatters.ListFormatter<string>();
-                case 30: return new Attri.Runtime.Formatters.Attri.Runtime.IAttributeFormatter();
-                case 31: return new Attri.Runtime.Formatters.Attri.Runtime.BoolAttributeFormatter();
-                case 32: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
-                case 33: return new Attri.Runtime.Formatters.Attri.Runtime.IntAttributeFormatter();
-                case 34: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
-                case 35: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2AttributeFormatter();
-                case 36: return new Attri.Runtime.Formatters.Attri.Runtime.Vector2IntAttributeFormatter();
-                case 37: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3AttributeFormatter();
-                case 38: return new Attri.Runtime.Formatters.Attri.Runtime.Vector3IntAttributeFormatter();
-                case 39: return new Attri.Runtime.Formatters.Attri.Runtime.Vector4AttributeFormatter();
-                case 40: return new Attri.Runtime.Formatters.Attri.Runtime.Vector4IntAttributeFormatter();
+                case 0: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<float>();
+                case 1: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<int>();
+                case 2: return new Attri.Runtime.Formatters.Attri.Runtime.FrameDataFormatter<string>();
+                case 3: return new Attri.Runtime.Formatters.Attri.Runtime.ValueFormatter<float>();
+                case 4: return new global::MessagePack.Formatters.ArrayFormatter<global::Attri.Runtime.Value<float>>();
+                case 5: return new Attri.Runtime.Formatters.Attri.Runtime.ValueFormatter<int>();
+                case 6: return new global::MessagePack.Formatters.ArrayFormatter<global::Attri.Runtime.Value<int>>();
+                case 7: return new Attri.Runtime.Formatters.Attri.Runtime.ValueFormatter<string>();
+                case 8: return new global::MessagePack.Formatters.ArrayFormatter<global::Attri.Runtime.Value<string>>();
+                case 9: return new global::MessagePack.Formatters.ArrayFormatter<global::Attri.Runtime.Value<ushort>>();//workaround for error. overwrite T -> ushort
+                case 10: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<float>>();
+                case 11: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<int>>();
+                case 12: return new global::MessagePack.Formatters.ListFormatter<global::Attri.Runtime.FrameData<string>>();
+                case 13: return new Attri.Runtime.Formatters.Attri.Runtime.IAttributeFormatter();
+                case 14: return new Attri.Runtime.Formatters.Attri.Runtime.FloatAttributeFormatter();
+                case 15: return new Attri.Runtime.Formatters.Attri.Runtime.IntAttributeFormatter();
+                case 16: return new Attri.Runtime.Formatters.Attri.Runtime.StringAttributeFormatter();
                 default: return null;
             }
         }

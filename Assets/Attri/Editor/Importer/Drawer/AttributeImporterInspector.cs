@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEditor.AssetImporters;
@@ -70,7 +71,7 @@ namespace Attri.Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             
-            var title = $"{attribute.Name()}({attribute.GetType().Name})";
+            var title = $"{attribute.Name()} ({attribute.GetAttributeType()})";
             attributeFoldoutFlags[attribute] = EditorGUILayout.Foldout(attributeFoldoutFlags[attribute], title);
             if (attributeFoldoutFlags[attribute])
                 DrawAttributeContent(attribute);
@@ -85,21 +86,13 @@ namespace Attri.Editor
             
             EditorGUILayout.LabelField($"Type:{attribute.GetType().Name}");
             EditorGUILayout.LabelField($"Data Type:{attribute.GetDataType().Name}");
-            EditorGUILayout.LabelField($"Dimension:[{GetDimension(attribute)}]");
+            EditorGUILayout.LabelField($"Dimension:[{attribute.GetDimension()}]");
             EditorGUILayout.LabelField(attribute.ToString());
             
             DrawValueInfo(attribute);
             DrawFrameList(attribute);
             
             EditorGUI.indentLevel--;
-        }
-        
-        int GetDimension(IAttribute attribute)
-        {
-            var attributeDataType = attribute.GetDataType();
-            if (attributeDataType == typeof(Vector3) || attributeDataType == typeof(Vector3Int)) return 3;
-            if (attributeDataType == typeof(Vector2) || attributeDataType == typeof(Vector2Int)) return 2;
-            return 1;
         }
     
         private void DrawValueInfo(IAttribute attribute)
@@ -133,14 +126,14 @@ namespace Attri.Editor
                 DrawFrame(attribute, frames, i);
         }
     
-        private void DrawFrame(IAttribute attribute, List<List<object>> frames, int i)
+        private void DrawFrame(IAttribute attribute, List<List<List<object>>> frames, int i)
         {
             EditorGUILayout.BeginHorizontal();
             // EditorStyles.helpBoxにインデントを効かせる記述
             GUILayout.Space(GetIndentSize());
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             
-            var frameTitle = $"Frame[{i}][]: {frames[i].Count} Elements";
+            var frameTitle = $"Frame[{i}]: {frames[i].Count} Elements , {frames[i][0].Count} Components";
             // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
             var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameTitle), EditorStyles.foldout);
             currentRect.xMin -= (EditorGUI.indentLevel-1)*15;
@@ -152,10 +145,15 @@ namespace Attri.Editor
             EditorGUILayout.EndHorizontal();
         }
         
-        private void DrawFrameContent(List<object> valuesInFrame)
+        private void DrawFrameContent(List<List<object>> valuesInFrame)
         {
             foreach (var data in valuesInFrame)
-                EditorGUILayout.LabelField(data.ToString());
+            {
+                var txt = "";
+                foreach (var component in data)
+                    txt += component + ", ";
+                EditorGUILayout.LabelField(txt);
+            }
         }
     
         private float GetIndentSize()

@@ -16,12 +16,12 @@
 
 namespace Attri.Runtime.Formatters.Attri.Runtime
 {
-    public sealed class FrameDataFormatter<T> : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.FrameData<T>>
+    public sealed class ValueFormatter<T> : global::MessagePack.Formatters.IMessagePackFormatter<global::Attri.Runtime.Value<T>>
     {
-        // elements
-        private static global::System.ReadOnlySpan<byte> GetSpan_elements() => new byte[1 + 8] { 168, 101, 108, 101, 109, 101, 110, 116, 115 };
+        // components
+        private static global::System.ReadOnlySpan<byte> GetSpan_components() => new byte[1 + 10] { 170, 99, 111, 109, 112, 111, 110, 101, 110, 116, 115 };
 
-        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.FrameData<T> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref global::MessagePack.MessagePackWriter writer, global::Attri.Runtime.Value<T> value, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (value is null)
             {
@@ -31,11 +31,11 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
 
             var formatterResolver = options.Resolver;
             writer.WriteMapHeader(1);
-            writer.WriteRaw(GetSpan_elements());
-            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Value<T>[]>(formatterResolver).Serialize(ref writer, value.elements, options);
+            writer.WriteRaw(GetSpan_components());
+            global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<T[]>(formatterResolver).Serialize(ref writer, value.components, options);
         }
 
-        public global::Attri.Runtime.FrameData<T> Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public global::Attri.Runtime.Value<T> Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -45,7 +45,7 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
             options.Security.DepthStep(ref reader);
             var formatterResolver = options.Resolver;
             var length = reader.ReadMapHeader();
-            var __elements__ = default(global::Attri.Runtime.Value<T>[]);
+            var ____result = new global::Attri.Runtime.Value<T>();
 
             for (int i = 0; i < length; i++)
             {
@@ -56,16 +56,15 @@ namespace Attri.Runtime.Formatters.Attri.Runtime
                     FAIL:
                       reader.Skip();
                       continue;
-                    case 8:
-                        if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != 8319395793566264421UL) { goto FAIL; }
+                    case 10:
+                        if (!global::System.MemoryExtensions.SequenceEqual(stringKey, GetSpan_components().Slice(1))) { goto FAIL; }
 
-                        __elements__ = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<global::Attri.Runtime.Value<T>[]>(formatterResolver).Deserialize(ref reader, options);
+                        ____result.components = global::MessagePack.FormatterResolverExtensions.GetFormatterWithVerify<T[]>(formatterResolver).Deserialize(ref reader, options);
                         continue;
 
                 }
             }
 
-            var ____result = new global::Attri.Runtime.FrameData<T>(__elements__);
             reader.Depth--;
             return ____result;
         }

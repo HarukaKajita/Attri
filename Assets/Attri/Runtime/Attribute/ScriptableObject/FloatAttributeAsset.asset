@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f41c3f836bfc4684d9455f5ac0914cce, type: 3}
   m_Name: FloatAttributeAsset
   m_EditorClassIdentifier: 
-  _attribute:
-    name: someAttribute
+  attribute:
+    name: FloatAttribute
     frames:
-    - data:
-      - 1
-      - 765.457
+    - elements:
+      - components:
+        - 0
+        - 1
+        - 2
+    - elements:
+      - components:
+        - 3.4
+        - 5.6
+        - 7.8

@@ -1,45 +1,30 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MessagePack;
 
 namespace Attri.Runtime
 {
+    [Union(0, typeof(FrameData<int>))]
+    [Union(1, typeof(FrameData<float>))]
+    [Union(2, typeof(FrameData<string>))]
     [MessagePackObject(true)]
     [Serializable]
     public class FrameData<T>
     {
-        public List<T> data = new();
-        public FrameData() {}
-        public FrameData(List<T> data)
+        public Value<T>[] elements;
+        public FrameData() : this(Array.Empty<Value<T>>()) {}
+        public FrameData(Value<T>[] elements)
         {
-            this.data = data;
+            this.elements = elements;
         }
-        
-        // FrameData<T>が持つべき機能を追加する
-        public void Add(T value)
+        public int ElementCount()
         {
-            data.Add(value);
+            // フレームに依って要素数が異なる場合を許容したいので、フレーム指定で要素数を取得する
+            return elements.Length;
         }
-        public void Remove(T value)
+        public int GetElementDimension()
         {
-            data.Remove(value);
-        }
-        public void Clear()
-        {
-            data.Clear();
-        }
-        public void SetData(List<T> data)
-        {
-            this.data = data;
-        }
-        public List<T> GetData()
-        {
-            return data;
-        }
-        public int Count()
-        {
-            return data.Count;
+            if (elements.Length == 0) return 0;
+            return elements[0].Length;
         }
     }
 }

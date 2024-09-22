@@ -1,31 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MessagePack;
-using UnityEngine;
 
 namespace Attri.Runtime
 {
-    [Union(0, typeof(IntAttribute))]
-    [Union(1, typeof(FloatAttribute))]
-    [Union(2, typeof(BoolAttribute))]
-    [Union(3, typeof(StringAttribute))]
-    [Union(4, typeof(Vector3Attribute))]
-    [Union(5, typeof(Vector3IntAttribute))]
-    [Union(6, typeof(Vector2Attribute))]
-    [Union(7, typeof(Vector2IntAttribute))]
-    [Union(8, typeof(Vector4IntAttribute))]
-    [Union(9, typeof(Vector4Attribute))]
-    
-    [Union(10, typeof(AttributeBase<int>))]
-    [Union(11, typeof(AttributeBase<float>))]
-    [Union(12, typeof(AttributeBase<bool>))]
-    [Union(13, typeof(AttributeBase<string>))]
-    [Union(14, typeof(AttributeBase<Vector3>))]
-    [Union(15, typeof(AttributeBase<Vector3Int>))]
-    [Union(16, typeof(AttributeBase<Vector2>))]
-    [Union(17, typeof(AttributeBase<Vector2Int>))]
-    [Union(18, typeof(AttributeBase<Vector4>))]
-    [Union(19, typeof(AttributeBase<int[]>))]
+    // NOTE:ここのkeyの値がJSON形式で記述する際の型の識別子になる
+    [Union(0, typeof(AttributeBase<int>))]
+    [Union(1, typeof(AttributeBase<float>))]
+    [Union(2, typeof(AttributeBase<string>))]
+    [Union(3, typeof(IntAttribute))]
+    [Union(4, typeof(FloatAttribute))]
+    [Union(5, typeof(StringAttribute))]
+    // [Union(6, typeof(FrameData<int>))]
+    // [Union(7, typeof(FrameData<float>))]
+    // [Union(8, typeof(FrameData<string>))]
+    // [Union(9, typeof(Value<int>))]
+    // [Union(10, typeof(Value<float>))]
+    // [Union(11, typeof(Value<string>))]
     public interface IAttribute
     {
         public string Name();
@@ -33,10 +24,10 @@ namespace Attri.Runtime
         int GetDimension();
         int FrameCount();
         Type GetDataType();
-        List<object> GetObjectFrame(int frameIndex);
+        List<List<object>> GetObjectFrame(int frameIndex);
         List<byte[]> GeByte(int frameIndex);
-        int GetByteSize();
-        List<List<object>> GetObjectFrames();
+        int GetElementByteSize();
+        List<List<List<object>>> GetObjectFrames();
         AttributeAsset CreateAsset();
         void DrawAttributeDetailInspector();
     }

@@ -10,25 +10,21 @@ namespace Attri.Runtime
     public class FloatAttribute : AttributeBase<float>
     {
         public override AttributeType GetAttributeType() => AttributeType.Float;
-        public override int GetDimension() => 1;
         public FloatAttribute() : base(nameof(FloatAttribute)) {}
         public FloatAttribute(string name) : base(name) {}
         public override List<byte[]> GeByte(int frameIndex)
         {
             var frame = frames[frameIndex];
             var data = new List<byte[]>();
-            foreach (var v in frame.data)
-                data.Add(BitConverter.GetBytes(v));
+            foreach (var element in frame.elements) //要素のループ
+                foreach (var component in element.components) //個々の値の成分のループ
+                    data.Add(BitConverter.GetBytes(component)); //byte変換
             return data;
         }
 
-        public override int GetByteSize()
+        public override int GetElementByteSize()
         {
-            return sizeof(float);
-        }
-
-        public override void DrawAttributeDetailInspector()
-        {
+            return sizeof(float) * GetDimension();
         }
         public override AttributeAsset CreateAsset()
         {
@@ -36,6 +32,9 @@ namespace Attri.Runtime
             asset.name = name;
             asset.attribute = this;
             return asset;
+        }
+        public override void DrawAttributeDetailInspector()
+        {
         }
     }
 }

@@ -1,28 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MessagePack;
 using UnityEngine;
 
 namespace Attri.Runtime
-{             
-    // [Union(1, typeof(AttributeBase<int>))]
-    // [Union(2, typeof(AttributeBase<float>))]
-    // [Union(3, typeof(AttributeBase<bool>))]
-    // [Union(4, typeof(AttributeBase<string>))]
-    // [Union(5, typeof(AttributeBase<Vector3>))]
-    // [Union(6, typeof(AttributeBase<Vector3Int>))]
-    // [Union(7, typeof(AttributeBase<Vector2>))]
-    // [Union(8, typeof(AttributeBase<Vector2Int>))]
-    // [Union(9, typeof(IntegerAttribute))]
-    // [Union(10, typeof(FloatAttribute))]
-    // [Union(11, typeof(BoolAttribute))]
-    // [Union(12, typeof(StringAttribute))]
-    // [Union(13, typeof(Vector3Attribute))]
-    // [Union(14, typeof(Vector3IntAttribute))]
-    // [Union(15, typeof(Vector2Attribute))]
-    // [Union(16, typeof(Vector2IntAttribute))]
-    // [MessagePackObject(true)]
+{
     [Serializable]
     public abstract class AttributeBase<T> : IAttribute
     {
@@ -37,7 +19,12 @@ namespace Attri.Runtime
             return AttributeType.Unknown;
         }
 
-        public abstract int GetDimension();
+        public int GetDimension()
+        {
+            if (frames == null) return 0;
+            if (frames.Count == 0) return 0;
+            return frames[0].GetElementDimension();
+        }
         public AttributeBase(string name)
         {
             this.name = name;
@@ -47,9 +34,14 @@ namespace Attri.Runtime
         public override string ToString()
         {
             var frameCount = frames.Count;
-            var str = $"{GetAttributeType().ToString()}{GetDimension()}({typeof(T)}) {name}[{frameCount}]";
-            for (var i = 0; i < frameCount; i++)
-                str += $", [{i}][{frames[i].data.Count}]";
+            var str = $"{GetAttributeType().ToString()}{GetDimension()} {name}[{frameCount}]";
+            for (var frameIndex = 0; frameIndex < frameCount; frameIndex++)
+            {
+                var frame = frames[frameIndex];
+                var elementCount = frame.ElementCount().ToString();
+                str += $", [{frameIndex}][{elementCount}]";
+            }
+                
             return str;
         }
 
@@ -63,20 +55,54 @@ namespace Attri.Runtime
             return typeof(T);
         }
 
-        public List<object> GetObjectFrame(int frameIndex)
+        public List<List<object>> GetObjectFrame(int frameIndex)
         {
-            return frames[frameIndex].data.Cast<object>().ToList();
+            var elementCount = frames[frameIndex].ElementCount();
+            var componentCount = frames[frameIndex].GetElementDimension();
+            var elementsList = new List<List<object>>(elementCount);
+            var elements = frames[frameIndex].elements;
+            // フレーム内の要素のループ
+            for(var i = 0; i < elementCount; i++)
+            {
+                for (var j = 0; j < componentCount; j++)
+                {
+                    // 要素の成分をobjectに変換してリスト化
+                    if(j == 0) elementsList[i] = new List<object>(componentCount);
+                    elementsList[i][j] = elements[i][j];
+                }
+            }
+            return elementsList;
         }
 
         public abstract List<byte[]> GeByte(int frameIndex);
-        public abstract int GetByteSize();
+        public abstract int GetElementByteSize();
 
-        public List<List<object>> GetObjectFrames()
+        public List<List<List<object>>> GetObjectFrames()
         {
-            return frames.Select(frame => frame.data.Cast<object>().ToList()).ToList();
+            var frameList = new List<List<List<object>>>(FrameCount());
+            // フレームループ
+            for (var frameIndex = 0; frameIndex < FrameCount(); frameIndex++)
+            {
+                var frame = frames[frameIndex];
+                var elementCount = frame.ElementCount();
+                var dimension = frame.GetElementDimension();
+                var elements = frame.elements;
+                var elementsList = new List<List<object>>(elementCount);
+                
+                // フレーム内の要素のループ
+                for(var i = 0; i < elementCount; i++)
+                {
+                    elementsList.Add(new List<object>(dimension));
+                    for (var j = 0; j < dimension; j++)
+                    {
+                        // 要素の成分をobjectに変換してリスト化
+                        elementsList[i].Add(elements[i][j]);
+                    }
+                }
+                frameList.Add(elementsList);
+            }
+            return frameList;
         }
-
-        public abstract void DrawAttributeDetailInspector();
         public abstract AttributeAsset CreateAsset();
         internal void SerializeTest()
         {
@@ -86,5 +112,6 @@ namespace Attri.Runtime
             var attribute = MessagePackSerializer.Deserialize<IAttribute>(bytes, AttributeSerializer.options);
             Debug.Log(attribute.ToString());
         }
+        public abstract void DrawAttributeDetailInspector();
     }
 }
