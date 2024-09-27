@@ -121,18 +121,19 @@ namespace Attri.Editor
     
         private void DrawFrameListContent(IAttribute attribute)
         {
-            var frames = attribute.GetObjectFrames();
-            for (var i = 0; i < frames.Count; i++)
-                DrawFrame(attribute, frames, i);
+            var frameCount = attribute.FrameCount();
+            for (var i = 0; i < frameCount; i++)
+                DrawFrame(attribute, i);
         }
     
-        private void DrawFrame(IAttribute attribute, List<List<List<object>>> frames, int i)
+        private void DrawFrame(IAttribute attribute, int i)
         {
             EditorGUILayout.BeginHorizontal();
             // EditorStyles.helpBoxにインデントを効かせる記述
             GUILayout.Space(GetIndentSize());
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             
+            var frames = attribute.GetObjectFrames();
             var frameTitle = $"Frame[{i}]: {frames[i].Count} Elements , {frames[i][0].Count} Components";
             // EditorStyles.helpBoxにインデントを効かせた影響を吸収する。これがないとGUIが右にずれていく
             var currentRect = GUILayoutUtility.GetRect(new GUIContent(frameTitle), EditorStyles.foldout);

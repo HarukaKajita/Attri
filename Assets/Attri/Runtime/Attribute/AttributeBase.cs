@@ -58,14 +58,13 @@ namespace Attri.Runtime
         public List<List<object>> GetObjectFrame(int frameIndex)
         {
             var elementCount = frames[frameIndex].ElementCount();
-            var componentCount = frames[frameIndex].GetElementDimension();
             var elementsList = new List<List<object>>(elementCount);
             var elements = frames[frameIndex].elements;
             // フレーム内の要素のループ
             for(var i = 0; i < elementCount; i++)
             {
-                elementsList[i].Add(new List<object>(componentCount));
-                for (var j = 0; j < componentCount; j++)
+                elementsList.Add(new List<object>(elements[i].Length));
+                for (var j = 0; j < elements[i].Length; j++)
                 {
                     // 要素の成分をobjectに変換してリスト化
                     elementsList[i].Add(elements[i][j]);
@@ -85,15 +84,14 @@ namespace Attri.Runtime
             {
                 var frame = frames[frameIndex];
                 var elementCount = frame.ElementCount();
-                var dimension = frame.GetElementDimension();
                 var elements = frame.elements;
                 var elementsList = new List<List<object>>(elementCount);
                 
                 // フレーム内の要素のループ
                 for(var i = 0; i < elementCount; i++)
                 {
-                    elementsList.Add(new List<object>(dimension));
-                    for (var j = 0; j < dimension; j++)
+                    elementsList.Add(new List<object>(elements[i].Length));
+                    for (var j = 0; j < elements[i].Length; j++)
                     {
                         // 要素の成分をobjectに変換してリスト化
                         elementsList[i].Add(elements[i][j]);

@@ -32,7 +32,14 @@ namespace Attri.Editor
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(fetchAttributeName);
-        } 
-            
+        }
+        public VertexAttributeDescriptor MakeVertexAttributeDescriptor()
+        {
+            return new VertexAttributeDescriptor(attribute, format, dimension);
+        }
+        public int ByteSizePerVertex()
+        {
+            return format.AttributeFormatByteSize() * dimension;
+        }
     }
 }

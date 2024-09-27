@@ -32,7 +32,12 @@ namespace Attri.Editor
             optionRect.x += optionRect.width;
             optionRect.width = attributeDimensionSliderWidth;
             selection.dimension = EditorGUI.IntSlider(optionRect, selection.dimension, 1, 4);
-            
+            // 頂点アトリビュートは4の倍数byteでないといけないのでフォーマットに依って使用できる次元を制限する
+            if(selection.format is VertexAttributeFormat.Float16 or VertexAttributeFormat.UNorm16 or VertexAttributeFormat.UInt16 or VertexAttributeFormat.SInt16)
+                selection.dimension = ((selection.dimension-1) / 2 + 1) *2;
+            else if(selection.format is VertexAttributeFormat.UNorm8 or VertexAttributeFormat.SNorm8 or VertexAttributeFormat.UInt8 or VertexAttributeFormat.SInt8)
+                selection.dimension = 4;
+                
             if (EditorGUI.EndChangeCheck())
             {
                 property.FindPropertyRelative("format").enumValueIndex = (int)selection.format;
