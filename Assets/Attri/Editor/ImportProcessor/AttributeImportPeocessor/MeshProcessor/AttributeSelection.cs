@@ -1,4 +1,5 @@
 using System;
+using Attri.Runtime;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -16,6 +17,9 @@ namespace Attri.Editor
         // public int index = 0;
         [Delayed]
         public string fetchAttributeName;
+        
+        [HideInInspector]
+        public IAttribute SelectedAttribute;
         
         public string AttributeName()
         {

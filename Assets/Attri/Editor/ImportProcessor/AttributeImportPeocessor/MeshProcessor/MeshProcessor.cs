@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Attri.Runtime;
-using Unity.Collections;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -27,30 +26,11 @@ namespace Attri.Editor
             var mesh = new Mesh();
             mesh.name = assetPrefix;
             var vertexAttributeDescriptors = _meshDataSettings.MakeVertexBufferParams(out var byteSizePerVertex);
-            var vertexAttributeBytes = new List<byte>(byteSizePerVertex);
-            foreach (var attributeDescriptor in vertexAttributeDescriptors)
-            {
-                var format = attributeDescriptor.attribute; 
-                if(format == VertexAttribute.Position)       vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.Normal)    vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.Tangent)   vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.Color)     vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord0) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord1) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord2) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord3) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord4) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord5) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord6) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.TexCoord7) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.BlendWeight)  vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else if(format == VertexAttribute.BlendIndices) vertexAttributeBytes.AddRange(FetchPositionBytes());
-                else throw new ArgumentOutOfRangeException();
-            }
-            var vertexCount = vertexAttributeBytes.Count / byteSizePerVertex;
+            var vertexAttributeBytes = _meshDataSettings.FetchVertexDataBytes(attributes);
+            var vertexCount = vertexAttributeBytes.Length / byteSizePerVertex;
             mesh.SetVertexBufferParams(vertexCount, vertexAttributeDescriptors.ToArray());
             mesh.SetIndexBufferParams(vertexCount,  vertexCount < 65535 ? IndexFormat.UInt16 : IndexFormat.UInt32);
-            VertexDataUtility.SetVertexData(mesh, vertexAttributeBytes.ToArray(), vertexCount);
+            VertexDataUtility.SetVertexData(mesh, vertexAttributeBytes, vertexCount);
             SetIndex(mesh);
             mesh.bounds = CalculateBounds();
             mesh.RecalculateNormals();
