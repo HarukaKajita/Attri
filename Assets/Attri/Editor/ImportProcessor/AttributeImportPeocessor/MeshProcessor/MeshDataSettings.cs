@@ -10,7 +10,7 @@ namespace Attri.Editor
     [Serializable]
     public class MeshDataSettings
     {
-        [SerializeField, SerializeReference] public AttributeSelection positionSelection = new(VertexAttribute.Position, VertexAttributeFormat.Float16, "P");
+        [SerializeField, SerializeReference] public AttributeSelection positionSelection = new (VertexAttribute.Position , VertexAttributeFormat.Float32, "P");
         [SerializeField, SerializeReference] public AttributeSelection normalSelection   = new(VertexAttribute.Normal, VertexAttributeFormat.Float16, "N");
         [SerializeField, SerializeReference] public AttributeSelection tangentSelection  = new(VertexAttribute.Tangent, VertexAttributeFormat.Float16, "tangent");
         [SerializeField, SerializeReference] public AttributeSelection colorSelection    = new(VertexAttribute.Color, VertexAttributeFormat.UNorm8 , "Cd");
@@ -94,25 +94,20 @@ namespace Attri.Editor
             var cast2Half = format == VertexAttributeFormat.Float16;
             var floatAttribute = (FloatAttribute)positionAttribute;
             var positions = floatAttribute.frames[0].elements;
-            var positionBytes = new byte[positions.Length * selection.dimension * (cast2Half ? 2 : 4)];
-            for (var i = 0; i < positions.Length; i++)
+            var values = positions.SelectMany(p => p.components).ToArray();
+            var positionBytes = new byte[values.Length * (cast2Half ? 2 : 4)];
+            for (var i = 0; i < values.Length; i++)
             {
-                var position = positions[i];
-                var copyOffset = i * selection.dimension * (cast2Half ? 2 : 4);
-                for (var j = 0; j < selection.dimension; j++)
+                if (cast2Half)
                 {
-                    var value = position.components[j];
-                    if (cast2Half)
-                    {
-                        var half = Mathf.FloatToHalf(value);
-                        var halfBytes = BitConverter.GetBytes(half);
-                        Buffer.BlockCopy(halfBytes, 0, positionBytes, copyOffset+j*2, 2);
-                    }
-                    else
-                    {
-                        var floatBytes = BitConverter.GetBytes(value);
-                        Buffer.BlockCopy(floatBytes, 0, positionBytes, copyOffset+j*4, 4);
-                    }
+                    var half = Mathf.FloatToHalf(values[i]);
+                    var halfBytes = BitConverter.GetBytes(half);
+                    Buffer.BlockCopy(halfBytes, 0, positionBytes, i*2, 2);
+                }
+                else
+                {
+                    var floatBytes = BitConverter.GetBytes(values[i]);
+                    Buffer.BlockCopy(floatBytes, 0, positionBytes, i*4, 4);
                 }
             }
             return positionBytes;

@@ -9,12 +9,16 @@ namespace Attri.Editor
     public class AttributeSelection
     {
         [SerializeField]
+        public bool enabled = false;
+        [SerializeField]
         internal VertexAttribute attribute;
         public VertexAttributeFormat format;
         [Range(1, 4)]
-        public int dimension = 3;//[1,4]
-        // [HideInInspector]
-        // public int index = 0;
+        public int dimension = 4;
+        public virtual int[] GetDimensionArray()
+        {
+            return format.GetValidDimensionArray();
+        }
         [Delayed]
         public string fetchAttributeName;
         
@@ -31,10 +35,12 @@ namespace Attri.Editor
             this.attribute = attribute;
             this.format = format;
             this.fetchAttributeName = fetchAttributeName;
+            dimension = attribute.GetDefaultDimension();
         }
 
         public bool IsValid()
         {
+            if(!enabled) return false;
             return !string.IsNullOrEmpty(fetchAttributeName);
         }
         public VertexAttributeDescriptor MakeVertexAttributeDescriptor()

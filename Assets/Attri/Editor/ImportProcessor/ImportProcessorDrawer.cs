@@ -16,19 +16,15 @@ namespace Attri.Editor
         int currentTypeIndex;
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-	        Debug.Log($"{property.propertyPath} {property.managedReferenceFullTypename} {GetType().Name}.OnGUI()");
             Initialize(property);
             GetCurrentTypeIndex(property.managedReferenceFullTypename);
             if (1 < typePopupNameArray.Length)
             {
 	            int selectedTypeIndex = EditorGUI.Popup(GetPopupPosition(position), currentTypeIndex, typePopupNameArray);
-	            Debug.Log($"currentTypeIndex:{currentTypeIndex}, selectedTypeIndex:{selectedTypeIndex}");
 	            UpdatePropertyToSelectedTypeIndex(property, selectedTypeIndex);
             }
-            // Debug.Log($"{property.type} : {property.managedReferenceValue.GetType().Name} {property.managedReferenceValue}");
-            // if (property.managedReferenceValue == null) return;
+            
             EditorGUI.PropertyField(position, property, label, true);
-            Debug.Log($"{property.propertyPath} {GetType().Name}.OnGUI() End");
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

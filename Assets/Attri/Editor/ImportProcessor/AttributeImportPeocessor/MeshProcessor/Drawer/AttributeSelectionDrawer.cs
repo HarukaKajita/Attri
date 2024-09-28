@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -13,38 +14,50 @@ namespace Attri.Editor
             EditorGUI.BeginChangeCheck();
             position.height = EditorGUIUtility.singleLineHeight;
             // Debug.Log($"{property.propertyPath} {GetType().Name} {property.type} {property.isArray}");
+            position = EditorGUI.IndentedRect(position);
             var selection = property.boxedValue as AttributeSelection;
             var labelWidth = 100;
-            var attributeFormatPopupWidth = 80;
+            var attributeFormatPopupWidth = 100;
             var remainedWidth = (position.width - labelWidth - attributeFormatPopupWidth);
             var attributeNamePopupWidth = remainedWidth*0.4f;
-            var attributeDimensionSliderWidth = remainedWidth*0.6f;
+            var attributeDimensionSliderWidth = 50;
 
-            var labelRect = new Rect(position.x, position.y, labelWidth, position.height);
-            var optionRect = new Rect(position.x + labelWidth, position.y, attributeNamePopupWidth, position.height);
-            EditorGUI.LabelField(labelRect, selection.AttributeName());
-            var indent = EditorGUI.indentLevel;
-            EditorGUI.indentLevel = 0;
-            selection.fetchAttributeName = EditorGUI.DelayedTextField(optionRect, selection.fetchAttributeName);
-            optionRect.xMin = optionRect.xMax;
-            optionRect.width = attributeFormatPopupWidth;
-            selection.format = (VertexAttributeFormat)EditorGUI.EnumPopup(optionRect, selection.format);
-            optionRect.x += optionRect.width;
-            optionRect.width = attributeDimensionSliderWidth;
-            selection.dimension = EditorGUI.IntSlider(optionRect, selection.dimension, 1, 4);
-            // 頂点アトリビュートは4の倍数byteでないといけないのでフォーマットに依って使用できる次元を制限する
-            if(selection.format is VertexAttributeFormat.Float16 or VertexAttributeFormat.UNorm16 or VertexAttributeFormat.UInt16 or VertexAttributeFormat.SInt16)
-                selection.dimension = ((selection.dimension-1) / 2 + 1) *2;
-            else if(selection.format is VertexAttributeFormat.UNorm8 or VertexAttributeFormat.SNorm8 or VertexAttributeFormat.UInt8 or VertexAttributeFormat.SInt8)
-                selection.dimension = 4;
-                
-            if (EditorGUI.EndChangeCheck())
+            var titleRect = new Rect(position.x, position.y, labelWidth, position.height);
+            var optionRect = new Rect(titleRect.xMax+10, position.y, attributeNamePopupWidth, position.height);
+            
+            var iconName = selection.enabled ? "TestPassed" : "TestIgnored"; //"TestFailed"
+            var toggleTitle = EditorGUIUtility.TrTextContentWithIcon(selection.AttributeName(), "State", iconName);
+            var toggled = EditorGUI.LinkButton(titleRect, toggleTitle);
+            if (toggled) selection.enabled = !selection.enabled;
+            using (new EditorGUI.DisabledScope(!selection.enabled))
             {
-                property.FindPropertyRelative("format").enumValueIndex = (int)selection.format;
-                property.FindPropertyRelative("dimension").intValue = selection.dimension;
-                property.FindPropertyRelative("fetchAttributeName").stringValue = selection.fetchAttributeName;
+                var indent = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = 0;
+                selection.fetchAttributeName = EditorGUI.DelayedTextField(optionRect, selection.fetchAttributeName);
+                optionRect.xMin = optionRect.xMax+10;
+                optionRect.width = attributeFormatPopupWidth;
+                var validFormats = selection.attribute.GetValidFormats();
+                var displayFormatOptions = validFormats.Select(v=>v.ToString()).ToArray();
+                var selectedIndex = ArrayUtility.IndexOf(validFormats, selection.format);
+                selectedIndex = EditorGUI.Popup(optionRect, selectedIndex, displayFormatOptions);
+                selection.format = validFormats[selectedIndex];
+                optionRect.x += optionRect.width+10;
+                optionRect.width = attributeDimensionSliderWidth;
+                var dimensionArray = selection.GetDimensionArray();
+                var dimensionIndex = ArrayUtility.IndexOf(dimensionArray, selection.dimension);
+                if (dimensionIndex < 0) selection.dimension = dimensionArray[0];
+                var displayOptions = dimensionArray.Select(v=>v.ToString()).ToArray();
+                selection.dimension = EditorGUI.IntPopup(optionRect, selection.dimension ,displayOptions, dimensionArray);
+                
+                if (EditorGUI.EndChangeCheck())
+                {
+                    property.FindPropertyRelative("format").enumValueIndex = (int)selection.format;
+                    property.FindPropertyRelative("dimension").intValue = selection.dimension;
+                    property.FindPropertyRelative("fetchAttributeName").stringValue = selection.fetchAttributeName;
+                }
+                EditorGUI.indentLevel = indent;    
             }
-            EditorGUI.indentLevel = indent;
+            
             EditorGUI.EndProperty();
         }
     }
