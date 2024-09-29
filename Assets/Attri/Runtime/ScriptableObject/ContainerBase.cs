@@ -7,12 +7,11 @@ namespace Attri.Runtime
     #region Common
     public class Container<T> : ScriptableObject
     {
-        [SerializeField, SerializeReference]
         public List<T> values = new ();
     }
     public class ArrayContainer<T> : ScriptableObject
     {
-        public List<List<T>> values = new ();
+        public List<List<T>> values = new (){new List<T>()};
     }
     #endregion
     
