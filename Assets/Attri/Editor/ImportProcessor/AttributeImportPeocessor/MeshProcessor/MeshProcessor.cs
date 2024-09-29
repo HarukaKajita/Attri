@@ -27,69 +27,22 @@ namespace Attri.Editor
             mesh.name = assetPrefix;
             var vertexAttributeDescriptors = _meshDataSettings.MakeVertexBufferParams(out var byteSizePerVertex);
             var vertexAttributeBytes = _meshDataSettings.FetchVertexDataBytes(attributes);
+            Debug.Log($"vertexAttributeBytes.Length: {vertexAttributeBytes.Length}");
+            Debug.Log($"byteSizePerVertex: {byteSizePerVertex}");
+            Debug.Log($"positionSelection byteSize: {_meshDataSettings.positionSelection.ByteSizePerVertex()}");
+            Debug.Log($"positionSelection dimension: {_meshDataSettings.positionSelection.dimension}");
+            Debug.Log($"normalSelection byteSize: {_meshDataSettings.normalSelection.ByteSizePerVertex()}");
+            Debug.Log($"normalSelection dimension: {_meshDataSettings.normalSelection.dimension}");
+            Debug.Log($"vertexAttributeBytes.Length / byteSizePerVertex: {vertexAttributeBytes.Length / byteSizePerVertex}");
             var vertexCount = vertexAttributeBytes.Length / byteSizePerVertex;
             mesh.SetVertexBufferParams(vertexCount, vertexAttributeDescriptors.ToArray());
             mesh.SetIndexBufferParams(vertexCount,  vertexCount < 65535 ? IndexFormat.UInt16 : IndexFormat.UInt32);
             VertexDataUtility.SetVertexData(mesh, vertexAttributeBytes, vertexCount);
-            SetIndex(mesh);
             mesh.bounds = CalculateBounds();
-            mesh.RecalculateNormals();
-            // mesh.RecalculateTangents();
+            SetIndex(mesh);
             //TODO: IDを一意で不変にする
             ctx.AddObjectToAsset($"{mesh.name}_", mesh);
             return new Object[]{mesh};
-        }
-        
-        private byte[] FetchPositionBytes()
-        {
-            // メッシュデータ設定が無効な場合は空のリストを返す
-            var selection = _meshDataSettings.positionSelection;
-            if (!selection.IsValid()) return Array.Empty<byte>();
-            
-            // positionに指定したアトリビュートが存在しない場合はエラー
-            var positionAttribute = attributes.FirstOrDefault(a => a.Name() == _meshDataSettings.positionSelection.fetchAttributeName);
-            if (positionAttribute == null)
-                throw new Exception($"Attribute not found: {_meshDataSettings.positionSelection.fetchAttributeName}");
-            
-            // アトリビュートのフォーマットがFloat16かFloat32でない場合はエラー
-            var format = _meshDataSettings.positionSelection.format;
-            if (format != VertexAttributeFormat.Float16 && format != VertexAttributeFormat.Float32)
-                throw new Exception($"Unsupported format for position vertex attribute: {format}");
-            
-            // アトリビュートの型がFloatでない場合はエラー
-            if　(positionAttribute.GetAttributeType() != AttributeType.Float)
-                throw new Exception($"Attribute type must be Float: {positionAttribute.GetAttributeType()}");
-            
-            // アトリビュートの要素数が足りない場合はエラー
-            if(positionAttribute.GetDimension() < selection.dimension)
-                throw new Exception($"Attribute dimension must be greater-equal than selection dimension: {positionAttribute.GetDimension()} < {selection.dimension}");
-            
-            // アトリビュートの値列をbyteに変換する。設定を次第でHalfに変換してからbyteに変換する。
-            var cast2Half = format == VertexAttributeFormat.Float16;
-            var floatAttribute = (FloatAttribute)positionAttribute;
-            var positions = floatAttribute.frames[0].elements;
-            var positionBytes = new byte[positions.Length * selection.dimension * (cast2Half ? 2 : 4)];
-            for (var i = 0; i < positions.Length; i++)
-            {
-                var position = positions[i];
-                var copyOffset = i * selection.dimension * (cast2Half ? 2 : 4);
-                for (var j = 0; j < selection.dimension; j++)
-                {
-                    var value = position.components[j];
-                    if (cast2Half)
-                    {
-                        var half = Mathf.FloatToHalf(value);
-                        var halfBytes = BitConverter.GetBytes(half);
-                        Buffer.BlockCopy(halfBytes, 0, positionBytes, copyOffset+j*2, 2);
-                    }
-                    else
-                    {
-                        var floatBytes = BitConverter.GetBytes(value);
-                        Buffer.BlockCopy(floatBytes, 0, positionBytes, copyOffset+j*4, 4);
-                    }
-                }
-            }
-            return positionBytes;
         }
         private Bounds CalculateBounds()
         {

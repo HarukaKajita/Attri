@@ -27,7 +27,7 @@ namespace Attri.Editor
 
 		public static VertexAttributeFormat[] GetValidFormats(this VertexAttribute attribute)
 		{
-			if(attribute == VertexAttribute.Position)
+			if(attribute is VertexAttribute.Position or VertexAttribute.Normal)
 				return new[] {VertexAttributeFormat.Float32, VertexAttributeFormat.Float16};
 			
 			return new[]

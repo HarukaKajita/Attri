@@ -9,7 +9,7 @@ namespace Attri.Runtime
 		{
 			// 4の倍数にする
 			if (byteArray.Length % 4 != 0)
-				throw new ArgumentException("byteArray length must be multiple of 4");
+				throw new ArgumentException($"byteArray length must be multiple of 4. byteArray length: {byteArray.Length}");
 			var byteSize = (int)Math.Ceiling(byteArray.Length / 4f) * 4 / vertexCount;
 			switch (byteSize)
 			{
