@@ -19,23 +19,22 @@ namespace Attri.Editor
 
         protected void OnValidate()
         {
-            // Debug.Log($"{this.GetType().Name}.OnValidate()");
-            Init(false);
+            Init();
         }
-        protected virtual void Init(bool forceDeserialization = false)
+
+        private void Reset()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
         {
             foreach (var processor in processors)
-            {
-                if (processor == null) continue;
                 processor.SetAssetPath(assetPath);
-                processor.SetAttributes(attributes);
-            }
         }
         
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            // Debug.Log($"{this.GetType().Name}.OnImportAsset()");
-            Init(true);
             // Mainアセットだけ設定
             MakeMainAsset(ctx);
 

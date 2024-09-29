@@ -10,18 +10,30 @@ namespace Attri.Editor
     [ScriptedImporter(1, new[] { "attrijson", "attri" }, new[] { "json" })]
     public class AttributeImporter : StackableImporter<AttributeImportProcessor>
     {
-        protected override void Init(bool forceDeserialization = false)
+        protected override void Init()
         {
-            if (forceDeserialization)
+            foreach (var processor in processors)
             {
-                var jsonText = File.ReadAllText(assetPath);
-                var data = File.ReadAllBytes(assetPath);
-                var extension = Path.GetExtension(assetPath);
-                if (extension is ".json" or ".attrijson") 
-                    data = AttributeSerializer.ConvertFromJson(jsonText);
-                attributes = AttributeSerializer.DeserializeAsArray(data).ToList();
+                if (processor == null) continue;
+                processor.SetAttributes(attributes);
             }
-            base.Init(forceDeserialization);
+        }
+
+        protected override void PreProcess(AssetImportContext ctx)
+        {
+            var jsonText = File.ReadAllText(assetPath);
+            var data = File.ReadAllBytes(assetPath);
+            var extension = Path.GetExtension(assetPath);
+            if (extension is ".json" or ".attrijson") 
+                data = AttributeSerializer.ConvertFromJson(jsonText);
+            attributes = AttributeSerializer.DeserializeAsArray(data).ToList();
+            
+            foreach (var processor in processors)
+            {
+                if (processor == null) continue;
+                processor.SetAttributes(attributes);
+            }
+            base.PreProcess(ctx);
         }
     }
 }
