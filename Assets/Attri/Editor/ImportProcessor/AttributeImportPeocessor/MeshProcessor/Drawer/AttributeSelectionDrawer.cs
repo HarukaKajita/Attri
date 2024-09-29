@@ -28,6 +28,7 @@ namespace Attri.Editor
             var iconName = selection.enabled ? "TestPassed" : "TestIgnored"; //"TestFailed"
             var toggleTitle = EditorGUIUtility.TrTextContentWithIcon(selection.AttributeName(), "State", iconName);
             var toggled = EditorGUI.LinkButton(titleRect, toggleTitle);
+            
             if (toggled) selection.enabled = !selection.enabled;
             using (new EditorGUI.DisabledScope(!selection.enabled))
             {
@@ -51,6 +52,8 @@ namespace Attri.Editor
                 
                 if (EditorGUI.EndChangeCheck())
                 {
+                    //ここで実際に変数の変更を反映指せている
+                    property.FindPropertyRelative("enabled").boolValue = selection.enabled;
                     property.FindPropertyRelative("format").enumValueIndex = (int)selection.format;
                     property.FindPropertyRelative("dimension").intValue = selection.dimension;
                     property.FindPropertyRelative("fetchAttributeName").stringValue = selection.fetchAttributeName;
