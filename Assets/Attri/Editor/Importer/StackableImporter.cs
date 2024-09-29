@@ -19,25 +19,11 @@ namespace Attri.Editor
 
         protected void OnValidate()
         {
-            Debug.Log($"{this.GetType().Name}.OnValidate()");
+            // Debug.Log($"{this.GetType().Name}.OnValidate()");
             Init(false);
         }
-        private void Init(bool forceDeserialization = false)
+        protected virtual void Init(bool forceDeserialization = false)
         {
-            Debug.Log($"{this.GetType().Name}.Init(forceDeserialization:{forceDeserialization})");
-            if (forceDeserialization)
-            {
-                var jsonText = File.ReadAllText(assetPath);
-                byte[] data = File.ReadAllBytes(assetPath);
-                // Debug.Log(jsonText);
-                var extension = Path.GetExtension(assetPath);
-                if (extension is ".json" or ".attrijson") 
-                    data = AttributeSerializer.ConvertFromJson(jsonText);
-                attributes = AttributeSerializer.DeserializeAsArray(data).ToList();
-            }
-            
-            // Debug.Log($"\t{this.GetType().Name}.Init() : attributes[{attributes.Count}]");
-            // Debug.Log($"\t{this.GetType().Name}.Init() : processors[{processors.Count}]");
             foreach (var processor in processors)
             {
                 if (processor == null) continue;
@@ -48,7 +34,7 @@ namespace Attri.Editor
         
         public override void OnImportAsset(AssetImportContext ctx)
         {
-            Debug.Log($"{this.GetType().Name}.OnImportAsset()");
+            // Debug.Log($"{this.GetType().Name}.OnImportAsset()");
             Init(true);
             // Mainアセットだけ設定
             MakeMainAsset(ctx);

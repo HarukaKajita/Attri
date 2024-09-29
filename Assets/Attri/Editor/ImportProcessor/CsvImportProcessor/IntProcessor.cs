@@ -8,34 +8,34 @@ using yutokun;
 
 namespace Attri.Editor
 {
-    public class FloatArrayProcessor : CsvImportProcessor
+    public class IntProcessor : CsvImportProcessor
     {
         [SerializeField] bool skipFirstLine = true;
-        private readonly List<FloatArray> _scriptableObjects = new();
-        public FloatArrayProcessor() : this("FloatArray") { }
-        public FloatArrayProcessor(string prefix) : base(prefix) { }
+        private readonly List<IntContainer> _scriptableObjects = new();
+        public IntProcessor() : this("Int") { }
+        public IntProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {   
             var data = File.ReadLines(ctx.assetPath).ToList();
             // 1行目のヘッダーだけ読み飛ばす
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var floatArrayScriptableObject = ScriptableObject.CreateInstance<FloatArray>();
-            floatArrayScriptableObject.name = $"{assetPrefix}";
-            floatArrayScriptableObject.values = ParseFloats(data);
+            var arrayScriptableObject = ScriptableObject.CreateInstance<IntContainer>();
+            arrayScriptableObject.name = $"{assetPrefix}";
+            arrayScriptableObject.values = Parse(data);
             _scriptableObjects.Clear();
-            _scriptableObjects.Add(floatArrayScriptableObject);
+            _scriptableObjects.Add(arrayScriptableObject);
             // scriptableObjectsをsubAssetsに追加
             ctx.AddObjectToAsset($"{_scriptableObjects[0].name}_{GetHashCode()}", _scriptableObjects[0]);
             return _scriptableObjects.Cast<Object>().ToArray();
         }
         
-        private List<float> ParseFloats(List<string> csvLines)
+        private List<int> Parse(List<string> csvLines)
         {
             // 行を無視して一列にしてから,で分離
             var csvText = string.Join(",", csvLines);
             var sheet = CSVParser.LoadFromString(csvText).First();
-            return sheet.Select(float.Parse).ToList();
+            return sheet.Select(int.Parse).ToList();
         }
     }
 }
