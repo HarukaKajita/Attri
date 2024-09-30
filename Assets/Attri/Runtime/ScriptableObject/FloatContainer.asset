@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d3d9d7d1254324894b0c6d56f2cdbd, type: 3}
   m_Name: FloatContainer
   m_EditorClassIdentifier: 
-  values: []
+  values:
+  - 0

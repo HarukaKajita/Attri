@@ -8,20 +8,19 @@ using yutokun;
 
 namespace Attri.Editor
 {
-    public class FloatProcessor : CsvImportProcessor
+    public class IntListProcessor : CsvImportProcessor
     {
-        private readonly List<FloatContainer> _scriptableObjects = new();
-        public FloatProcessor() : this("Float") { }
-        public FloatProcessor(string prefix) : base(prefix) { }
+        private readonly List<IntListContainer> _scriptableObjects = new();
+        public IntListProcessor() : this("Int List") { }
+        public IntListProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {   
             var data = File.ReadLines(ctx.assetPath).ToList();
-            // 1行目のヘッダーだけ読み飛ばす
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var container = ScriptableObject.CreateInstance<FloatContainer>();
+            var container = ScriptableObject.CreateInstance<IntListContainer>();
             container.name = $"{assetPrefix}";
-            container.values = Parse(data);
+            container.elements = Parse(data);
             _scriptableObjects.Clear();
             _scriptableObjects.Add(container);
             // scriptableObjectsをsubAssetsに追加
@@ -29,12 +28,16 @@ namespace Attri.Editor
             return _scriptableObjects.Cast<Object>().ToArray();
         }
         
-        private List<float> Parse(List<string> csvLines)
+        private List<ListWrapper<int>> Parse(List<string> csvLines)
         {
-            // 行を無視して一列にしてから,で分離
-            var csvText = string.Join(",", csvLines);
-            var sheet = CSVParser.LoadFromString(csvText).First();
-            return sheet.Select(float.Parse).ToList();
+            var values = new List<ListWrapper<int>>();
+            foreach (var lineStr in csvLines)
+            {
+                var line = CSVParser.LoadFromString(lineStr).First();
+                values.Add(line.Select(int.Parse).ToList());
+            }
+
+            return values;
         }
     }
 }

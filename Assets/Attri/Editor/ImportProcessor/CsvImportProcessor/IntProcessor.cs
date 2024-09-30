@@ -10,21 +10,19 @@ namespace Attri.Editor
 {
     public class IntProcessor : CsvImportProcessor
     {
-        [SerializeField] bool skipFirstLine = false;
         private readonly List<IntContainer> _scriptableObjects = new();
         public IntProcessor() : this("Int") { }
         public IntProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {   
             var data = File.ReadLines(ctx.assetPath).ToList();
-            // 1行目のヘッダーだけ読み飛ばす
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var arrayScriptableObject = ScriptableObject.CreateInstance<IntContainer>();
-            arrayScriptableObject.name = $"{assetPrefix}";
-            arrayScriptableObject.values = Parse(data);
+            var container = ScriptableObject.CreateInstance<IntContainer>();
+            container.name = $"{assetPrefix}";
+            container.values = Parse(data);
             _scriptableObjects.Clear();
-            _scriptableObjects.Add(arrayScriptableObject);
+            _scriptableObjects.Add(container);
             // scriptableObjectsをsubAssetsに追加
             ctx.AddObjectToAsset($"{_scriptableObjects[0].name}_{GetHashCode()}", _scriptableObjects[0]);
             return _scriptableObjects.Cast<Object>().ToArray();

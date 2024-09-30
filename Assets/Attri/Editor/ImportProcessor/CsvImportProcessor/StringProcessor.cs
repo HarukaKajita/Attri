@@ -8,18 +8,17 @@ using yutokun;
 
 namespace Attri.Editor
 {
-    public class FloatProcessor : CsvImportProcessor
+    public class StringProcessor : CsvImportProcessor
     {
-        private readonly List<FloatContainer> _scriptableObjects = new();
-        public FloatProcessor() : this("Float") { }
-        public FloatProcessor(string prefix) : base(prefix) { }
+        private readonly List<StringContainer> _scriptableObjects = new();
+        public StringProcessor() : this("String") { }
+        public StringProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
         {   
             var data = File.ReadLines(ctx.assetPath).ToList();
-            // 1行目のヘッダーだけ読み飛ばす
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var container = ScriptableObject.CreateInstance<FloatContainer>();
+            var container = ScriptableObject.CreateInstance<StringContainer>();
             container.name = $"{assetPrefix}";
             container.values = Parse(data);
             _scriptableObjects.Clear();
@@ -29,12 +28,12 @@ namespace Attri.Editor
             return _scriptableObjects.Cast<Object>().ToArray();
         }
         
-        private List<float> Parse(List<string> csvLines)
+        private List<string> Parse(List<string> csvLines)
         {
             // 行を無視して一列にしてから,で分離
             var csvText = string.Join(",", csvLines);
             var sheet = CSVParser.LoadFromString(csvText).First();
-            return sheet.Select(float.Parse).ToList();
+            return sheet.ToList();
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Attri.Editor
 {
     public class Float3Processor : CsvImportProcessor
     {
-        [SerializeField] bool skipFirstLine = false;
         private readonly List<Float3Container> _scriptableObjects = new();
         public Float3Processor() : this("Float3") { }
         public Float3Processor(string prefix) : base(prefix) { }
@@ -21,11 +20,11 @@ namespace Attri.Editor
             // 1行目のヘッダーだけ読み飛ばす
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var vector3ArrayScriptableObject = ScriptableObject.CreateInstance<Float3Container>();
-            vector3ArrayScriptableObject.name = $"{assetPrefix}";
-            vector3ArrayScriptableObject.values = Parse(data);
+            var container = ScriptableObject.CreateInstance<Float3Container>();
+            container.name = $"{assetPrefix}";
+            container.values = Parse(data);
             _scriptableObjects.Clear();
-            _scriptableObjects.Add(vector3ArrayScriptableObject);
+            _scriptableObjects.Add(container);
             // scriptableObjectsをsubAssetsに追加
             ctx.AddObjectToAsset($"{_scriptableObjects[0].name}_{GetHashCode()}", _scriptableObjects[0]);
             return _scriptableObjects.Cast<Object>().ToArray();
