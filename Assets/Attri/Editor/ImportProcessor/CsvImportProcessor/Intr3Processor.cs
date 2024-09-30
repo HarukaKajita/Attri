@@ -11,7 +11,7 @@ namespace Attri.Editor
 {
     public class Int3Processor : CsvImportProcessor
     {
-        [SerializeField] bool skipFirstLine = true;
+        [SerializeField] bool skipFirstLine = false;
         private readonly List<Int3Container> _scriptableObjects = new();
         public Int3Processor() : this("Int3") { }
         public Int3Processor(string prefix) : base(prefix) { }

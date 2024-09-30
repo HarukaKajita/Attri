@@ -10,7 +10,7 @@ namespace Attri.Editor
 {
     public class IntProcessor : CsvImportProcessor
     {
-        [SerializeField] bool skipFirstLine = true;
+        [SerializeField] bool skipFirstLine = false;
         private readonly List<IntContainer> _scriptableObjects = new();
         public IntProcessor() : this("Int") { }
         public IntProcessor(string prefix) : base(prefix) { }

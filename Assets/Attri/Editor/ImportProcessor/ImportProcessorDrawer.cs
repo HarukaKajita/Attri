@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Attri.Editor
 {
-    [CustomPropertyDrawer(typeof(ImportProcessor), true)]
-    public class ImportProcessorDrawer : PropertyDrawer
+	[CustomPropertyDrawer(typeof(ImportProcessor), true)]
+	public class ImportProcessorDrawer : PropertyDrawer
     {
         Type[] inheritedTypes;
         string[] typePopupNameArray;
