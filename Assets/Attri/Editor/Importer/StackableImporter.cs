@@ -14,8 +14,6 @@ namespace Attri.Editor
         [SerializeReference]
         public List<T> processors = new();
         private List<Object> _subAssets = new();
-        [SerializeReference, HideInInspector]
-        internal List<IAttribute> attributes = new();
 
         protected void OnValidate()
         {

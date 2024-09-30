@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Attri.Runtime;
 using UnityEditor.AssetImporters;
+using UnityEngine;
 
 namespace Attri.Editor
 {
@@ -10,6 +12,8 @@ namespace Attri.Editor
     [ScriptedImporter(1, new[] { "attrijson", "attri" }, new[] { "json" })]
     public class AttributeImporter : StackableImporter<AttributeImportProcessor>
     {
+        [SerializeReference, HideInInspector]
+        internal List<IAttribute> attributes = new();
         protected override void Init()
         {
             foreach (var processor in processors)
