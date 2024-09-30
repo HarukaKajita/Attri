@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 43522895f2b28764885d2ab95ead7406
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 63c660adc527bdf4da3b497a5196ffcf, type: 3}
+  processors:
+  - rid: 2199193275610693634
+  references:
+    version: 2
+    RefIds:
+    - rid: 2199193275610693634
+      type: {class: Float3Processor, ns: Attri.Editor, asm: Attri.Editor}
+      data:
+        enabled: 1
+        assetPrefix: Float3
+        skipFirstLine: 0
