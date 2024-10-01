@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: N
   m_EditorClassIdentifier: 
   containerFolder: {fileID: 102900000, guid: fc38ca0434f45924aa23a980c267d6b6, type: 3}
-  targetAttribute: uv
+  targetAttribute: N
   containers:
-  - {fileID: -5660158751346780374, guid: 34915d30060f4884d8187acd4d35e253, type: 3}
+  - {fileID: 1839220221515979168, guid: e18e92936f8d04447a3c4cd0486771c6, type: 3}
