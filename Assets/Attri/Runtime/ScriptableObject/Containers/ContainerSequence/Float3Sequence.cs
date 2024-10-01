@@ -2,7 +2,7 @@
 
 namespace Attri.Runtime
 {
-	[CreateAssetMenu(fileName = nameof(Float3Sequence), menuName = "Attri/ScriptableObject/Float3 Sequence")]
+	[CreateAssetMenu(fileName = nameof(Float3Sequence), menuName = "Attri/CSV/Sequence/Float3", order = 6)]
 	public class Float3Sequence : Sequence<Float3Container>
 	{
 		[ContextMenu("Gather Container")]
