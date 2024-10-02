@@ -18,25 +18,25 @@ namespace Attri.Editor
 
         private struct FloatData
         {
-            public readonly uint Sign;
-            public readonly uint Exponent;
+            public readonly bool Sign;
+            public readonly int Exponent;
             public readonly uint Mantissa;
             public FloatData(uint bits)
             {
-                Sign = bits >> 31;
-                Exponent = (bits >> 23) & 0xff;
+                Sign = bits >> 31 != 0;
+                Exponent = (int)((bits >> 23) & 0xff);
                 Mantissa = bits & 0x7fffff;
             }
         }
         private struct Float3Data
         {
-            public readonly uint3 Sign;
-            public readonly uint3 Exponent;
+            public readonly bool3 Signed;
+            public readonly int3 Exponent;
             public readonly uint3 Mantissa;
             public Float3Data(uint3 bits)
             {
-                Sign = new uint3(bits.x >> 31, bits.y >> 31, bits.z >> 31);
-                Exponent = new uint3((bits.x >> 23) & 0xff, (bits.y >> 23) & 0xff, (bits.z >> 23) & 0xff);
+                Signed = new bool3(bits.x >> 31 != 0, bits.y >> 31 != 0, bits.z >> 31 != 0);
+                Exponent = new int3((int)((bits.x >> 23) & 0xff), (int)((bits.y >> 23) & 0xff), (int)((bits.z >> 23) & 0xff));
                 Mantissa = new uint3(bits.x & 0x7fffff, bits.y & 0x7fffff, bits.z & 0x7fffff);
             }
         }
@@ -53,13 +53,13 @@ namespace Attri.Editor
             public readonly uint lengthUnion;
             
             public readonly bool3 signed;
-            public readonly uint3 exponentMin;
-            public readonly uint3 exponentMax;
+            public readonly int3 exponentMin;
+            public readonly int3 exponentMax;
             public readonly uint3 exponentRange;
             public readonly uint3 exponentBitDepth;
             public readonly bool lengthSigned;
-            public readonly uint lengthExponentMin;
-            public readonly uint lengthExponentMax;
+            public readonly int lengthExponentMin;
+            public readonly int lengthExponentMax;
             public readonly uint lengthExponentRange;
             public readonly uint lengthExponentBitDepth;
             public AnalysisData(Float3Sequence sequence)
@@ -84,15 +84,15 @@ namespace Attri.Editor
                 var maxBits = new Float3Data(max.AsUint());
                 var lengthMinBits = new FloatData(lengthMin.AsUint());
                 var lengthMaxBits = new FloatData(lengthMax.AsUint());
-                signed = new bool3(minBits.Sign.x != maxBits.Sign.x, minBits.Sign.y != maxBits.Sign.y, minBits.Sign.z != maxBits.Sign.z);
-                exponentMin = new uint3(minBits.Exponent.x, minBits.Exponent.y, minBits.Exponent.z)-127;
-                exponentMax = new uint3(maxBits.Exponent.x, maxBits.Exponent.y, maxBits.Exponent.z)-127;
-                exponentRange = exponentMax - exponentMin;
+                signed = new bool3(minBits.Signed.x != maxBits.Signed.x, minBits.Signed.y != maxBits.Signed.y, minBits.Signed.z != maxBits.Signed.z);
+                exponentMin = new int3(minBits.Exponent.x-127, minBits.Exponent.y-127, minBits.Exponent.z-127);
+                exponentMax = new int3(maxBits.Exponent.x-127, maxBits.Exponent.y-127, maxBits.Exponent.z-127);
+                exponentRange = (uint3)(exponentMax - exponentMin);
                 exponentBitDepth = new uint3(exponentRange.x.BitDepth(), exponentRange.y.BitDepth(), exponentRange.z.BitDepth());
                 lengthSigned = lengthMinBits.Sign != lengthMaxBits.Sign;
                 lengthExponentMin = lengthMinBits.Exponent-127;
                 lengthExponentMax = lengthMaxBits.Exponent-127;
-                lengthExponentRange = lengthExponentMax - lengthExponentMin;
+                lengthExponentRange = (uint)(lengthExponentMax - lengthExponentMin);
                 lengthExponentBitDepth = lengthExponentRange.BitDepth();
             }
         }
@@ -124,7 +124,7 @@ namespace Attri.Editor
 
         private void DrawVectorTable(AnalysisData data)
         {
-            // データの特性を表示\
+            // データの特性を表示
             DrawRowLabels("      ", new []{"Min", "Max", "Range"});
             DrawVectorRow("     x", data.min.x, data.max.x, data.range.x);
             DrawVectorRow("     y", data.min.y, data.max.y, data.range.y);
@@ -146,42 +146,32 @@ namespace Attri.Editor
         private void DrawBitInfoTable(AnalysisData data)
         {
             // データの特性を表示
-            DrawRowLabels("      ", new []{"Bit Union", "Signed", "Exponent Min", "Exponent Max", "Exponent Range", "Exponent Bit Depth"}, new []{2.1f, 0.5f});
-            DrawBitInfoRow("     x", data.union.x, data.signed.x, data.exponentMin.x, data.exponentMax.x, data.exponentRange.x, data.exponentBitDepth.x);
-            DrawBitInfoRow("     y", data.union.y, data.signed.y, data.exponentMin.y, data.exponentMax.y, data.exponentRange.y, data.exponentBitDepth.y);
-            DrawBitInfoRow("     z", data.union.z, data.signed.z, data.exponentMin.z, data.exponentMax.z, data.exponentRange.z, data.exponentBitDepth.z);
-            DrawBitInfoRow("length", data.lengthUnion, data.lengthSigned, data.lengthExponentMin, data.lengthExponentMax, data.lengthExponentRange, data.lengthExponentBitDepth);
+            DrawRowLabels("      ", new []{"Signed", "Exp Min", "Exp Max", "Exp Range", "Exp BitDepth"}, 0.7f);
+            DrawBitInfoRow("     x", data.signed.x, data.exponentMin.x, data.exponentMax.x, data.exponentRange.x, data.exponentBitDepth.x);
+            DrawBitInfoRow("     y", data.signed.y, data.exponentMin.y, data.exponentMax.y, data.exponentRange.y, data.exponentBitDepth.y);
+            DrawBitInfoRow("     z", data.signed.z, data.exponentMin.z, data.exponentMax.z, data.exponentRange.z, data.exponentBitDepth.z);
+            DrawBitInfoRow("length", data.lengthSigned, data.lengthExponentMin, data.lengthExponentMax, data.lengthExponentRange, data.lengthExponentBitDepth);
         }
-        private void DrawBitInfoRow(string label, uint bitUnion, bool signed, uint exponentMin, uint exponentMax, uint exponentRange, uint exponentBitDepth)
+        private void DrawBitInfoRow(string label, bool signed, int exponentMin, int exponentMax, uint exponentRange, uint exponentBitDepth)
         {
-            var bitUnionStr = Convert.ToString(bitUnion, 2).PadLeft(32, '0');
-            bitUnionStr = bitUnionStr.Insert(1, " ");
-            bitUnionStr = bitUnionStr.Insert(10, " ");
+            // var bitUnionStr = Convert.ToString(bitUnion, 2).PadLeft(32, '0');
+            // bitUnionStr = bitUnionStr.Insert(1, " ");
+            // bitUnionStr = bitUnionStr.Insert(10, " ");
             var signedStr = signed ? "True" : "False";
             var exponentMinStr = exponentMin.ToString();
             var exponentMaxStr = exponentMax.ToString();
             var exponentRangeStr = exponentRange.ToString();
             var exponentBitDepthStr = exponentBitDepth.ToString();
-            DrawRowLabels(label,
-                new []{bitUnionStr, signedStr, exponentMinStr, exponentMaxStr, exponentRangeStr, exponentBitDepthStr },
-                new []{2.1f, 0.5f}
-                );
+            DrawRowLabels(label, new []{signedStr, exponentMinStr, exponentMaxStr, exponentRangeStr, exponentBitDepthStr }, 0.7f);
         }
         
-        private void DrawRowLabels(string label, string[] rowStrings, float[] widthScale = null)
+        private void DrawRowLabels(string label, string[] rowStrings, float widthScale = 1)
         {
             using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
             {
                 EditorGUILayout.SelectableLabel(label   , GUILayout.Width(ComponentLabelWidth), _singleHeightOption);
-                widthScale ??= Array.Empty<float>();
-                {
-                    for (int i = 0; i < rowStrings.Length; i++)
-                    {
-                        var scale = widthScale.Length <= i ? 1 : widthScale[i];
-                        EditorGUILayout.SelectableLabel(rowStrings[i], GUILayout.Width(ValueLabelWidth*scale), _singleHeightOption);
-                    }
-                        
-                }
+                foreach (var t in rowStrings)
+                    EditorGUILayout.SelectableLabel(t, GUILayout.Width(ValueLabelWidth*widthScale), _singleHeightOption);
             }
         }
     }
