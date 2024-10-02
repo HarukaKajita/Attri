@@ -17,16 +17,25 @@ namespace Attri.Runtime.Extensions
 		{
 			return values.Select(AsUint);
 		}
-		
-		public static IEnumerable<uint3> AsUint3(this IEnumerable<float3> values)
+		public static uint3 AsUint(this float3 value)
 		{
-			return values.Select(v => new uint3(
-				v.x.AsUint(),
-				v.y.AsUint(),
-				v.z.AsUint()
-			));
+			return new uint3(value.x.AsUint(), value.y.AsUint(), value.z.AsUint());
 		}
-
+		public static IEnumerable<uint3> AsUint(this IEnumerable<float3> values)
+		{
+			return values.Select(value => value.AsUint());
+		}
+		
+		public static uint BitDepth(this uint value)
+		{
+			uint count = 0;
+			while (value > 0)
+			{
+				value >>= 1;
+				count++;
+			}
+			return count;
+		}
 		#endregion
 	}
 }
