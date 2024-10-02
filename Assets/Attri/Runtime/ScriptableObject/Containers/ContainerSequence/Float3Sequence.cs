@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace Attri.Runtime
 {
@@ -9,6 +12,18 @@ namespace Attri.Runtime
 		public void CallGatherContainer()
 		{
 			GatherContainer();
+		}
+		
+		public float3[] GetValues()
+		{
+			var valuesCount = containers.Select(container => container.values.Count).Sum();
+			var values = new List<float3>(valuesCount);
+			foreach (var container in containers)
+			{
+				if (container == null) continue;
+				values.AddRange(container.values);
+			}
+			return values.ToArray();
 		}
 	}
 }
