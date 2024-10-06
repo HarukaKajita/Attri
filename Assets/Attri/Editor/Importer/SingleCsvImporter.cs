@@ -95,37 +95,13 @@ namespace Attri.Editor
         }
         public CsvImportProcessor GetProcessor()
         {
-            if (_isArray)
-            {
-                if (_type == typeof(int))
-                {
-                    return new IntListProcessor();
-                }
-                if (_type == typeof(float))
-                {
-                    return new FloatListProcessor();
-                }
-                if (_type == typeof(string))
-                    return new StringListProcessor();
-                else
-                    throw new NotImplementedException("intとfloatとstring以外の配列は未実装です");
-            }
-            
             if (_type == typeof(int))
-            {
-                if (_size == 3) return new Int3Processor();
                 return new IntProcessor();
-            }
             if (_type == typeof(float))
-            {
-                if (_size == 3) return new Float3Processor();
-                if (_size == 2) return new Float2Processor();
                 return new FloatProcessor();
-            }
             if (_type == typeof(string))
                 return new StringProcessor();
-            
-            return null;
+            throw new NotImplementedException("intとfloatとstring以外の配列は未実装です");
         }
     }
 }

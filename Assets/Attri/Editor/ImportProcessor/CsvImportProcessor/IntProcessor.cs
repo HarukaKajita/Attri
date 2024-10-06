@@ -10,7 +10,7 @@ namespace Attri.Editor
 {
     public class IntProcessor : CsvImportProcessor
     {
-        private readonly List<IntContainer> _scriptableObjects = new();
+        private readonly List<Container> _scriptableObjects = new();
         public IntProcessor() : this("Int") { }
         public IntProcessor(string prefix) : base(prefix) { }
         internal override Object[] RunProcessor(AssetImportContext ctx)
@@ -18,9 +18,9 @@ namespace Attri.Editor
             var data = File.ReadLines(ctx.assetPath).ToList();
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
-            var container = ScriptableObject.CreateInstance<IntContainer>();
+            var container = ScriptableObject.CreateInstance<Container>();
             container.name = $"{assetPrefix}";
-            container.values = Parse(data);
+            container.SetValues(Parse(data));
             _scriptableObjects.Clear();
             _scriptableObjects.Add(container);
             // scriptableObjectsをsubAssetsに追加
@@ -28,12 +28,17 @@ namespace Attri.Editor
             return _scriptableObjects.Cast<Object>().ToArray();
         }
         
-        private List<int> Parse(List<string> csvLines)
+        private int[][] Parse(List<string> csvLines)
         {
-            // 行を無視して一列にしてから,で分離
-            var csvText = string.Join(",", csvLines);
-            var sheet = CSVParser.LoadFromString(csvText).First();
-            return sheet.Select(int.Parse).ToList();
+            var valueList = new List<int[]>();
+            foreach (var lineStr in csvLines)
+            {
+                var line = CSVParser.LoadFromString(lineStr).First();
+                var value = line.Select(int.Parse).ToArray();
+                valueList.Add(value);
+            }
+
+            return valueList.ToArray();
         }
     }
 }
