@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Attri/Editor/Analysis/AnalysisWindow.uss?fileID=7433441132597879392&amp;guid=41112636d224e0f429cd052ebdb1d14c&amp;type=3#AnalysisWindow" />
+    <ui:Label name="Title" text="Analysis" />
+    <UnityEditor.Search.ObjectField name="Container" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" view-data-key="Container" />
+    <ui:GroupBox name="Group">
+        <ui:MultiColumnListView name="ValueDataListView" fixed-item-height="18">
+            <ui:Columns>
+                <ui:Column name="name"  title="Value" width="50" />
+                <ui:Column name="min"   title="Min"   width="120" />
+                <ui:Column name="max"   title="Max"   width="120" />
+                <ui:Column name="range" title="Range" width="120" />
+                <ui:Column name="sigma" title="Sigma" width="120" />
+            </ui:Columns>
+        </ui:MultiColumnListView>
+    </ui:GroupBox>
+    <ui:GroupBox name="Group">
+        <ui:MultiColumnListView name="BitDataListView" fixed-item-height="18">
+            <ui:Columns>
+                <ui:Column name="name"     title="Value"        width="50" />
+                <ui:Column name="signed"   title="Signed"       width="60" />
+                <ui:Column name="min"      title="Exp Min"      width="60" />
+                <ui:Column name="max"      title="Exp Max"      width="60" />
+                <ui:Column name="range"    title="Exp Range"    width="80" />
+                <ui:Column name="bitDepth" title="Exp BitDepth" width="90" />
+            </ui:Columns>
+        </ui:MultiColumnListView>
+    </ui:GroupBox>
+</ui:UXML>

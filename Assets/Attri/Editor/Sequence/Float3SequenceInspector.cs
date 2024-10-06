@@ -114,6 +114,7 @@ namespace Attri.Editor
             
             AnalysisData data = new AnalysisData(sequence);
             // データの特性を表示
+            // ツリービュー化して分離したい。他の型のSequenceでも使いまわせるようにしたい。
             DrawVectorTable(data);
             DrawBitInfoTable(data);
         }
