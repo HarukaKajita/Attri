@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Attri.Runtime
 {
     [Serializable]
-    public class FloatElement : IElement
+    public class FloatElement : IDataProvider
     {
         [SerializeField]
         public float[] value = Array.Empty<float>();
@@ -17,52 +14,17 @@ namespace Attri.Runtime
         {
             this.value = value;
         }
-        // float[]とFloatElementのキャスト
+        // キャスト
         public static implicit operator float[](FloatElement element) => element.value;
         public static implicit operator FloatElement(float[] value) => new(value);
-        
-        public int Size()
-        {
-            return value.Length;
-        }
-        public float[] AsFloat()
-        {
-            return value;
-        }
-
-        public int[] AsInt()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string[] AsString()
-        {
-            throw new NotImplementedException();
-        }
-
-        public object[] AsObject()
-        {
-            return value.Cast<object>().ToArray();
-        }
-
-        public ushort[] HalfValues()
-        {
-            return value.Select(Mathf.FloatToHalf).ToArray();
-        }
-
-        public byte[] AsByte()
-        {
-            return value.SelectMany(BitConverter.GetBytes).ToArray();
-        }
-
-        public uint[] AsUint()
-        {
-            return value.Select(AsUint).ToArray();
-        }
-
-        private static uint AsUint(float value)
-        {
-            return BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
-        }
+        public int Dimension() => value.Length;
+        public float[] AsFloat() => value;
+        public int[] AsInt() => throw new NotImplementedException();
+        public string[] AsString() => throw new NotImplementedException();
+        public object[] AsObject() => value.Cast<object>().ToArray();
+        public ushort[] HalfValues() => value.Select(Mathf.FloatToHalf).ToArray();
+        public byte[] AsByte() => value.SelectMany(BitConverter.GetBytes).ToArray();
+        public uint[] AsUint() => value.Select(AsUint).ToArray();
+        private static uint AsUint(float value) => BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
     }
 }

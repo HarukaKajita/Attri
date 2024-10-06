@@ -1,42 +1,25 @@
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.Mathematics;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Attri.Runtime
 {
-    #region Common
     [CreateAssetMenu(fileName = nameof(Container), menuName = "Attri/CSV/Container", order = 204)]
-    public class Container : ScriptableObject
+    public class Container : ScriptableObject, IDataProvider
     {
         public string attributeName;
         
         [SerializeReference]
-        private List<IElement> elements = new ();
+        private List<IDataProvider> elements = new ();
         [SerializeField]
-        private bool isArrayAttribute;
+        private bool isVariableLengthAttribute;
         [SerializeField]
-        private string attributeTypeName;
+        private AttributeDataType attributeDataType;
         [SerializeField]
         private int size=0;
-        public int Size()
-        {
-            return size;
-        }
-        public int ElementCount()
-        {
-            return elements.Count;
-        }
-        public Type GetAttributeType()
-        {
-            if(attributeTypeName == typeof(float).ToString()) return typeof(float);
-            if(attributeTypeName == typeof(int).ToString()) return typeof(int);
-            if(attributeTypeName == typeof(string).ToString()) return typeof(string);
-            else return null;
-        }
+
+        public int ElementCount() => elements.Count;
+        public AttributeDataType Type() => attributeDataType;
         public void SetValues(float[][] values)
         {
             elements.Clear();
@@ -47,10 +30,10 @@ namespace Attri.Runtime
                 elements.Add((FloatElement)value);
                 isVariableLength |= value.Length != attributeDimension;
             }
-            attributeTypeName = typeof(float).ToString();
+            attributeDataType = AttributeDataType.Float;
             if (isVariableLength) size = -1;
             else size = attributeDimension;
-            if (isVariableLength) isArrayAttribute = true;
+            if (isVariableLength) isVariableLengthAttribute = true;
         }
 
         public void SetValues(int[][] values)
@@ -63,10 +46,10 @@ namespace Attri.Runtime
                 elements.Add((IntElement)value);
                 isVariableLength |= value.Length != attributeDimension;
             }
-            attributeTypeName = typeof(int).ToString();
+            attributeDataType = AttributeDataType.Int;
             if (isVariableLength) size = -1;
             else size = attributeDimension;
-            if (isVariableLength) isArrayAttribute = true;
+            if (isVariableLength) isVariableLengthAttribute = true;
         }
 
         public void SetValues(string[][] values)
@@ -79,11 +62,21 @@ namespace Attri.Runtime
                 elements.Add((StringElement)value);
                 isVariableLength |= value.Length != attributeDimension;
             }
-            attributeTypeName = typeof(string).ToString();
+            attributeDataType = AttributeDataType.String;
             if (isVariableLength) size = -1;
             else size = attributeDimension;
-            if (isVariableLength) isArrayAttribute = true;
+            if (isVariableLength) isVariableLengthAttribute = true;
         }
+        
+        #region IDataProvider
+        public int Dimension() => size;
+        public float[] AsFloat() => elements.SelectMany(e => e.AsFloat()).ToArray();
+        public int[] AsInt() => elements.SelectMany(e => e.AsInt()).ToArray();
+        public string[] AsString() => elements.SelectMany(e => e.AsString()).ToArray();
+        public object[] AsObject() => elements.SelectMany(e => e.AsObject()).ToArray();
+        public ushort[] HalfValues() => elements.SelectMany(e => e.HalfValues()).ToArray();
+        public byte[] AsByte() => elements.SelectMany(e => e.AsByte()).ToArray();
+        public uint[] AsUint() => elements.SelectMany(e => e.AsUint()).ToArray();
+        #endregion
     }
-    #endregion
 }

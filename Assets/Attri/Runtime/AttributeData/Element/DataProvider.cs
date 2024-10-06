@@ -1,8 +1,8 @@
 namespace Attri.Runtime
 {
-    public interface IElement
+    public interface IDataProvider
     {
-        public int Size();
+        public int Dimension();
         public float[] AsFloat();
         public int[] AsInt();
         public string[] AsString();
