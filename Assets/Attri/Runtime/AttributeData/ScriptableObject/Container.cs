@@ -19,7 +19,6 @@ namespace Attri.Runtime
         private int size=0;
 
         public int ElementCount() => elements.Count;
-        public AttributeDataType Type() => attributeDataType;
         public void SetValues(float[][] values)
         {
             elements.Clear();
@@ -70,13 +69,15 @@ namespace Attri.Runtime
         
         #region IDataProvider
         public int Dimension() => size;
-        public float[] AsFloat() => elements.SelectMany(e => e.AsFloat()).ToArray();
-        public int[] AsInt() => elements.SelectMany(e => e.AsInt()).ToArray();
-        public string[] AsString() => elements.SelectMany(e => e.AsString()).ToArray();
-        public object[] AsObject() => elements.SelectMany(e => e.AsObject()).ToArray();
-        public ushort[] HalfValues() => elements.SelectMany(e => e.HalfValues()).ToArray();
-        public byte[] AsByte() => elements.SelectMany(e => e.AsByte()).ToArray();
-        public uint[] AsUint() => elements.SelectMany(e => e.AsUint()).ToArray();
+        public AttributeDataType GetAttributeType() => attributeDataType;
+        public float[][] AsFloat() => elements.SelectMany(e => e.AsFloat()).ToArray();
+        public int[][] AsInt() => elements.SelectMany(e => e.AsInt()).ToArray();
+        public string[][] AsString() => elements.SelectMany(e => e.AsString()).ToArray();
+        public ScriptableObject GetScriptableObject() => this;
+        // public object[] AsObject() => elements.SelectMany(e => e.AsObject()).ToArray();
+        // public ushort[] HalfValues() => elements.SelectMany(e => e.HalfValues()).ToArray();
+        // public byte[] AsByte() => elements.SelectMany(e => e.AsByte()).ToArray();
+        // public uint[] AsUint() => elements.SelectMany(e => e.AsUint()).ToArray();
         #endregion
     }
 }

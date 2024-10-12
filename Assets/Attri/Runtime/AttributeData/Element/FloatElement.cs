@@ -18,13 +18,15 @@ namespace Attri.Runtime
         public static implicit operator float[](FloatElement element) => element.value;
         public static implicit operator FloatElement(float[] value) => new(value);
         public int Dimension() => value.Length;
-        public float[] AsFloat() => value;
-        public int[] AsInt() => throw new NotImplementedException();
-        public string[] AsString() => throw new NotImplementedException();
-        public object[] AsObject() => value.Cast<object>().ToArray();
-        public ushort[] HalfValues() => value.Select(Mathf.FloatToHalf).ToArray();
-        public byte[] AsByte() => value.SelectMany(BitConverter.GetBytes).ToArray();
-        public uint[] AsUint() => value.Select(AsUint).ToArray();
-        private static uint AsUint(float value) => BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
+        public AttributeDataType GetAttributeType() => AttributeDataType.Float;
+        public float[][] AsFloat() => new []{value};
+        public int[][] AsInt() => throw new NotImplementedException();
+        public string[][] AsString() => throw new NotImplementedException();
+        public ScriptableObject GetScriptableObject() => throw new NotImplementedException();
+        // public object[] AsObject() => value.Cast<object>().ToArray();
+        // public ushort[] HalfValues() => value.Select(Mathf.FloatToHalf).ToArray();
+        // public byte[] AsByte() => value.SelectMany(BitConverter.GetBytes).ToArray();
+        // public uint[] AsUint() => value.Select(AsUint).ToArray();
+        // private static uint AsUint(float value) => BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
     }
 }

@@ -25,14 +25,20 @@ namespace Attri.Runtime
         {
             return containers.Count;
         }
-
         public int FrameCount => ContainerCount();
+        #region IDataProvider
+        public int Dimension() => attributeDimension;
+        public AttributeDataType GetAttributeType() => attributeType;
+        public float[][] AsFloat() => containers.SelectMany(c => c.AsFloat()).ToArray();
+        public int[][] AsInt() => containers.SelectMany(c => c.AsInt()).ToArray();
+        public string[][] AsString() => containers.SelectMany(c => c.AsString()).ToArray();
+        public ScriptableObject GetScriptableObject() => this;
+        // public object[] AsObject() => containers.SelectMany(c => c.AsObject()).ToArray();
+        // public ushort[] HalfValues() => containers.SelectMany(c => c.HalfValues()).ToArray();
+        // public byte[] AsByte() => containers.SelectMany(c => c.AsByte()).ToArray();
+        // public uint[] AsUint() => containers.SelectMany(c => c.AsUint()).ToArray();
+        #endregion
         
-        public AttributeDataType Type()
-        {
-            return attributeType;
-        }
-
 #if UNITY_EDITOR
         [ContextMenu("Setup")]
         public void GatherContainer()
@@ -56,7 +62,7 @@ namespace Attri.Runtime
             }
             // フレーム番号順にソート
             containers = containerDictionary.OrderBy(x => x.Key).Select(x => x.Value).ToList();
-            attributeType = containers[0].Type();
+            attributeType = containers[0].GetAttributeType();
             // アトリビュートの次元が一致しているか確認
             var dimensions = containers.Select(c => c.Dimension()).Distinct().ToArray();
             if (dimensions.Count() > 1) //"Dimension is not consistent"
@@ -65,15 +71,5 @@ namespace Attri.Runtime
                 attributeDimension = dimensions.First();
         }
 #endif
-        #region IDataProvider
-        public int Dimension() => attributeDimension;
-        public float[] AsFloat() => containers.SelectMany(c => c.AsFloat()).ToArray();
-        public int[] AsInt() => containers.SelectMany(c => c.AsInt()).ToArray();
-        public string[] AsString() => containers.SelectMany(c => c.AsString()).ToArray();
-        public object[] AsObject() => containers.SelectMany(c => c.AsObject()).ToArray();
-        public ushort[] HalfValues() => containers.SelectMany(c => c.HalfValues()).ToArray();
-        public byte[] AsByte() => containers.SelectMany(c => c.AsByte()).ToArray();
-        public uint[] AsUint() => containers.SelectMany(c => c.AsUint()).ToArray();
-        #endregion
     }
 }

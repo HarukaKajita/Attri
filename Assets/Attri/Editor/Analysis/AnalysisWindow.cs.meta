@@ -5,9 +5,14 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - m_ViewDataDictionary: {instanceID: 0}
-  - m_VisualTreeAsset: {fileID: 9197481963319205126, guid: f8f13d7ac157e4946bbb13182e6fd72a,
+  - m_WindowVisualTreeAsset: {fileID: 9197481963319205126, guid: f8f13d7ac157e4946bbb13182e6fd72a,
       type: 3}
-  - m_Float3Sequence: {fileID: 11400000, guid: 8e5d58858051d9d4490dbed8de82cef0, type: 2}
+  - m_FloatDataAnalysisVisualTreeAsset: {fileID: 9197481963319205126, guid: 5960d7ca8f94a7342a8608c71f524f1f,
+      type: 3}
+  - m_FloatBitDataAnalysisVisualTreeAsset: {fileID: 9197481963319205126, guid: a2d5b48db824e3d44b6cc74888ef487d,
+      type: 3}
+  - m_IntDataAnalysisVisualTreeAsset: {instanceID: 0}
+  - m_IntBitDataAnalysisVisualTreeAsset: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
