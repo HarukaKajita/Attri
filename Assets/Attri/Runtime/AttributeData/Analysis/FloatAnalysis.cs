@@ -143,8 +143,6 @@ namespace Attri.Runtime
 					components[compoIndex].Add(element[compoIndex]);
 				}
 			}
-			UnityEngine.Debug.Log($"components.Length:{components.Length}");
-			UnityEngine.Debug.Log($"elements.Length:{elements.Length}");
 			
 			// 成分ごとに解析
 			componentsAnalysisData = new FloatComponentAnalysisData[components.Length];
