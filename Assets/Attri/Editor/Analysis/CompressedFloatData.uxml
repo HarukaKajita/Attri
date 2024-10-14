@@ -21,8 +21,8 @@
                 <engine:Column name="errorMax"  title="Error Max"  width="100" />
                 <engine:Column name="errorAverage"  title="Error Ave"  width="100" />
                 <engine:Column name="errorSigma"  title="Error Sigma"  width="100" />
-                <engine:Column name="E" title="E" width="80" />
-                <engine:Column name="offset" title="Offset"  width="50" />
+                <engine:Column name="E" title="E" width="30" />
+                <engine:Column name="offset" title="Offset"  width="80" />
             </engine:Columns>
         </engine:MultiColumnListView>
     </engine:GroupBox>
