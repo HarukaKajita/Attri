@@ -9,7 +9,7 @@ MonoImporter:
       type: 3}
   - m_FloatDataAnalysisVisualTreeAsset: {fileID: 9197481963319205126, guid: 5960d7ca8f94a7342a8608c71f524f1f,
       type: 3}
-  - m_FloatBitDataAnalysisVisualTreeAsset: {fileID: 9197481963319205126, guid: a2d5b48db824e3d44b6cc74888ef487d,
+  - m_CompressedFloatDataAnalysisVisualTreeAsset: {fileID: 9197481963319205126, guid: be91c9a5c9282b8468f51c68654c18b6,
       type: 3}
   - m_IntDataAnalysisVisualTreeAsset: {instanceID: 0}
   - m_IntBitDataAnalysisVisualTreeAsset: {instanceID: 0}

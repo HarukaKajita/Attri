@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4ad0cec93846969a7cb103561ea001, type: 3}
+  m_Script: {fileID: 11500000, guid: e6a8b481632d3b040acf54ea63872352, type: 3}
   m_Name: uv
   m_EditorClassIdentifier: 
   containerFolder: {fileID: 102900000, guid: fc38ca0434f45924aa23a980c267d6b6, type: 3}
-  targetAttribute: uv
+  attributeName: uv
   containers:
-  - {fileID: -5660158751346780374, guid: 34915d30060f4884d8187acd4d35e253, type: 3}
+  - {fileID: 7734851998008583504, guid: 34915d30060f4884d8187acd4d35e253, type: 3}
+  attributeType: 1
+  attributeDimension: 0

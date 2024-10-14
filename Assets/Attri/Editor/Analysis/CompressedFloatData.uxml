@@ -16,11 +16,13 @@
                 <engine:Column name="sigma"  title="Sigma"   width="80" />
                 <engine:Column name="range"  title="Range"   width="80" />
                 <engine:Column name="center" title="Center"  width="80" />
-                <engine:Column name="signed" title="Signed"  width="50" />
-                <engine:Column name="expRange"         title="Exp Range"    width="80" />
-                <engine:Column name="exponentBitDepth" title="Exp BitDepth" width="80" />
                 
-                
+                <engine:Column name="errorMin"  title="Error Min"  width="100" />
+                <engine:Column name="errorMax"  title="Error Max"  width="100" />
+                <engine:Column name="errorAverage"  title="Error Ave"  width="100" />
+                <engine:Column name="errorSigma"  title="Error Sigma"  width="100" />
+                <engine:Column name="E" title="E" width="80" />
+                <engine:Column name="offset" title="Offset"  width="50" />
             </engine:Columns>
         </engine:MultiColumnListView>
     </engine:GroupBox>
