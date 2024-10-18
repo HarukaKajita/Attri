@@ -18,20 +18,19 @@ namespace Attri.Editor
 		[SerializeField] private VisualTreeAsset m_WindowVisualTreeAsset;
 		// Float
 		[SerializeField] private VisualTreeAsset m_FloatDataAnalysisVisualTreeAsset;
-		[SerializeField] private VisualTreeAsset m_CompressedFloatDataAnalysisVisualTreeAsset;
 		// Int
 		[SerializeField] private VisualTreeAsset m_IntDataAnalysisVisualTreeAsset;
 		[SerializeField] private VisualTreeAsset m_IntBitDataAnalysisVisualTreeAsset;
 		
 		private VisualElement windowElement;
-		private Toggle centeringToggleElement;
-		private SliderInt precisionSliderElement;
 		
 		// Data (= Container,Sequence)
 		[SerializeReference] private IDataProvider dataProvider = default;
 		private ObjectField assetField;
 		EventCallback<ChangeEvent<Object>> assignDataCallback;
 		EventCallback<ChangeEvent<bool>> centeringToggleCallback;
+		
+		CompressedFloatView compressedFloatView;
 		
 		[MenuItem("Window/UI Toolkit/AnalysisWindow")]
 		[Shortcut("Attribute Analysis Window", KeyCode.W, ShortcutModifiers.Shift | ShortcutModifiers.Control)]
@@ -59,22 +58,15 @@ namespace Attri.Editor
 			assetField.RegisterValueChangedCallback(assignDataCallback);
 			
 			// オプション
-			precisionSliderElement = windowElement.Q<SliderInt>("Precision");
-			precisionSliderElement.value = 23;
-			precisionSliderElement.RegisterCallback<ChangeEvent<int>>(_ => DrawListView());
-			centeringToggleElement = windowElement.Q<Toggle>("CompressAsFloat");
-			centeringToggleCallback = UpdateListViewOnToggle;
-			centeringToggleElement.RegisterValueChangedCallback(centeringToggleCallback);
+			compressedFloatView = new CompressedFloatView(dataProvider);
+			root.Add(compressedFloatView.VisualElement);
 			Debug.Log("CreateGUI End");
 		}
 
 		private void UpdateListView(ChangeEvent<Object> changeEvent)
 		{
 			dataProvider = changeEvent.newValue as IDataProvider;
-			DrawListView();
-		}
-		private void UpdateListViewOnToggle(ChangeEvent<bool> changeEvent)
-		{
+			compressedFloatView.Reset(dataProvider);
 			DrawListView();
 		}
 
@@ -99,15 +91,8 @@ namespace Attri.Editor
 			if(dataType == AttributeDataType.Float)
 			{
 				// データの分析
-				var data = dataProvider.AsFloat();
-				var analysis = new FloatAnalysisData(data);
-				FloatAnalysisData comparisonAnalysisData = default;
-				var centering = centeringToggleElement.value;
-				var compare = centering;
-				if (centering)
-				{
-					comparisonAnalysisData = analysis.Compressed(precisionSliderElement.value);
-				}
+				var originalData = dataProvider.AsFloat();
+				var analysis = new FloatAnalysisData(originalData);
 				
 				// AnalysisGroup
 				var dataAnalysis = m_FloatDataAnalysisVisualTreeAsset.Instantiate();
@@ -120,16 +105,8 @@ namespace Attri.Editor
 				analysisGroup.Add(dataAnalysis);
 				dataListView.RefreshItems();
 				
-				if(compare)
-				{
-					rootVisualElement.Q<VisualElement>("ComparisonAnalysis").Clear();
-					var comparisonDataAnalysis = m_CompressedFloatDataAnalysisVisualTreeAsset.Instantiate();
-					var comparisonDataListView = comparisonDataAnalysis.Q<MultiColumnListView>("List");
-					var comparisonAnalysisGroup = rootVisualElement.Q<VisualElement>("ComparisonAnalysis");
-					comparisonAnalysisGroup.Add(comparisonDataAnalysis);
-					SetupCompressedFloatDataListView(comparisonDataListView, comparisonAnalysisData);
-					comparisonDataListView.RefreshItems();
-				}
+				compressedFloatView.UpdateView();
+				
 			}
 			else if(dataType == AttributeDataType.Int)
 			{
@@ -160,32 +137,9 @@ namespace Attri.Editor
 			listView.columns["sigma"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].sigma));
 			listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].range));
 			listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str((items[i].min+items[i].max)/2f));
-			listView.columns["signed"].bindCell = (e, i) => MakeLabel((Label)e, items[i].signed ? "Signed" : "Unsigned");
+			listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, items[i].signed ? "Signed" : "Unsigned");
 			listView.columns["expRange"].bindCell = (e, i) => MakeLabel((Label)e, $"{items[i].exponentRange} ({items[i].minExponent}~{items[i].maxExponent})");
 			listView.columns["exponentBitDepth"].bindCell = (e, i) => MakeLabel((Label)e, items[i].exponentBitDepth.ToString());
-		}
-		
-		void SetupCompressedFloatDataListView(MultiColumnListView listView, FloatAnalysisData analysisData)
-		{
-			var items = analysisData.componentsAnalysisData;
-			listView.Clear();
-			listView.itemsSource = items;
-			
-			listView.columns["name"].bindCell = (e, i) => MakeLabel((Label)e, $"[{i}]");
-			listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].elementNum));
-			listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].min));
-			listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].max));
-			listView.columns["sigma"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].sigma));
-			listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].range));
-			listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str((items[i].min+items[i].max)/2f));
-			
-			listView.columns["errorMin"].bindCell = (e, i) => MakeLabel((Label)e, ErrorStr(items[i].errorMin));
-			listView.columns["errorMax"].bindCell = (e, i) => MakeLabel((Label)e, ErrorStr(items[i].errorMax));
-			listView.columns["errorAverage"].bindCell = (e, i) => MakeLabel((Label)e, ErrorStr(items[i].errorAverage));
-			listView.columns["errorSigma"].bindCell = (e, i) => MakeLabel((Label)e, ErrorStr(items[i].errorSigma));
-			
-			listView.columns["E"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].E));
-			listView.columns["offset"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].offset));
 		}
 
 		private static string ErrorStr(float value) => value.ToString("0.0000000");

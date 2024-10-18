@@ -1,29 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
-    
->
-    <engine:GroupBox name="Group">
-        <engine:MultiColumnListView name="List" fixed-item-height="18">
-            <engine:Columns>
-                <engine:Column name="name"   title="Value"   width="50" />
-                <engine:Column name="num"    title="Num"     width="80" />
-                <engine:Column name="min"    title="Min"     width="80" />
-                <engine:Column name="max"    title="Max"     width="80" />
-                <engine:Column name="sigma"  title="Sigma"   width="80" />
-                <engine:Column name="range"  title="Range"   width="80" />
-                <engine:Column name="center" title="Center"  width="80" />
-                
-                <engine:Column name="errorMin"  title="Error Min"  width="100" />
-                <engine:Column name="errorMax"  title="Error Max"  width="100" />
-                <engine:Column name="errorAverage"  title="Error Ave"  width="100" />
-                <engine:Column name="errorSigma"  title="Error Sigma"  width="100" />
-                <engine:Column name="E" title="E" width="30" />
-                <engine:Column name="offset" title="Offset"  width="80" />
-            </engine:Columns>
-        </engine:MultiColumnListView>
-    </engine:GroupBox>
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="CompressedFloatView" style="padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; border-left-color: rgba(255, 255, 255, 0.1); border-right-color: rgba(255, 255, 255, 0.1); border-top-color: rgba(255, 255, 255, 0.1); border-bottom-color: rgba(255, 255, 255, 0.1); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;">
+        <ui:Label tabindex="-1" text="CompressFloat" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:Toggle label="Compress" name="Compress" />
+        <ui:SliderInt name="Precision" label="Precision" high-value="23" low-value="1" show-input-field="true" inverted="false" direction="Horizontal" style="width: 460px;" />
+        <ui:MultiColumnListView name="List" fixed-item-height="18">
+            <ui:Columns>
+                <ui:Column name="name" title="Value" width="50" />
+                <ui:Column name="num" title="Num" width="80" />
+                <ui:Column name="min" title="Min" width="100" />
+                <ui:Column name="max" title="Max" width="100" />
+                <ui:Column name="std" title="Std" width="100" />
+                <ui:Column name="range" title="Range" width="100" />
+                <ui:Column name="center" title="Center" width="100" />
+                <ui:Column name="average" title="Ave" width="100" />
+            </ui:Columns>
+        </ui:MultiColumnListView>
+    </ui:VisualElement>
+</ui:UXML>

@@ -16,7 +16,7 @@
                 <engine:Column name="sigma"  title="Sigma"   width="80" />
                 <engine:Column name="range"  title="Range"   width="80" />
                 <engine:Column name="center" title="Center"  width="80" />
-                <engine:Column name="signed" title="Signed"  width="50" />
+                <engine:Column name="std" title="Signed"  width="50" />
                 <engine:Column name="expRange"         title="Exp Range"    width="80" />
                 <engine:Column name="exponentBitDepth" title="Exp BitDepth" width="80" />
                 

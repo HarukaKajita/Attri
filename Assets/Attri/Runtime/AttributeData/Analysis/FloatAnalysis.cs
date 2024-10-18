@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using Attri.Runtime.Extensions;
-	
+using UnityEngine;
+
 namespace Attri.Runtime
 {
 	[Serializable]
@@ -43,14 +44,6 @@ namespace Attri.Runtime
 		public int exponentRange;//指数の範囲
 		public int exponentBitDepth;//指数のビット深度
 		
-		//圧縮後の値
-		public float[] error;//誤差
-		public float errorMin;
-		public float errorMax;
-		public float errorAverage;
-		public float errorSigma;
-		public int E;
-		public float offset;
 		public FloatComponentAnalysisData(float[] values)
 		{
 			this.values = values;
@@ -69,55 +62,7 @@ namespace Attri.Runtime
 			minExponent = bitData.Min(b => b.Exponent);
 			exponentRange = maxExponent - minExponent;
 			exponentBitDepth = (int)math.ceil(math.log2(exponentRange + 1));
-			
-			error = Array.Empty<float>();
-			errorMin = 0;
-			errorMax = 0;
-			errorAverage = 0;
-			errorSigma = 0;
-			E = 0;
-			offset = 0;
-		}
 
-		public FloatComponentAnalysisData Compress(int precision)
-		{
-			float c = center, r = range;
-			var compressed = values.Select(v => CompressValue(v, c, r, precision)).ToArray();
-			var errorArray = values.Zip(compressed, (v, e) =>  math.abs(e-v)).ToArray();
-			var errorAve = errorArray.Average();
-			var errorSig = math.sqrt(errorArray.Select(e => math.pow(e-errorAve, 2)).Average());
-			var exp = (int)Math.Ceiling(Math.Log(range,2));
-			var expRangeCenterOffset = math.exp2(exp) * 1.5f;
-			var newComponentAnalysisData = new FloatComponentAnalysisData(compressed)
-			{
-				error = errorArray,
-				errorMin = errorArray.Min(),
-				errorMax = errorArray.Max(),	
-				errorAverage = errorAve,
-				errorSigma = errorSig,
-				E = exp,//(exp+127) << 23,
-				offset = -center + expRangeCenterOffset
-			};
-			
-			return newComponentAnalysisData;
-		}
-		
-		static float CompressValue(float value, float center, float range, int precision)
-		{
-			// Encode
-			var exp = (int)Math.Ceiling(Math.Log(range,2));
-			var expRangeCenterOffset = math.exp2(exp) * 1.5f;
-			var E = (exp+127) << 23;
-			var ignoreBit = 23 - precision;
-			var mantissaAsInt = (int)(value-center+expRangeCenterOffset).AsUint();
-			// ベイクする際は下位ビットを切り捨てた状態でベイク
-			mantissaAsInt = (mantissaAsInt >> ignoreBit) << ignoreBit;
-			// Decode
-			return ComposeFloat(E, mantissaAsInt)-expRangeCenterOffset+center;
-		}
-		static float ComposeFloat(int exp, int mantissa)
-		{
-			return BitConverter.ToSingle(BitConverter.GetBytes(exp | mantissa), 0);
 		}
 	}
 	
@@ -128,21 +73,16 @@ namespace Attri.Runtime
 		public float[][] Elements;
 		public float[][] Components;
 		public FloatComponentAnalysisData[] componentsAnalysisData;
-
+		public float[] degreeErrors;
+		public float maxDegreeError;
+		public float minDegreeError;
+		public float averageDegreeError;
+		public float sigmaDegreeError;
 		public FloatAnalysisData(float[][] elements)
 		{
 			Elements = elements;
 			// [エレメント][成分]を[成分][エレメント]に変換
-			var maxComponentLength = elements.Max(e => e.Length);
-			var components = new List<float>[maxComponentLength];
-			foreach (var element in elements)
-			{
-				for (var compoIndex = 0; compoIndex < element.Length; compoIndex++)
-				{
-					components[compoIndex] ??= new List<float>();
-					components[compoIndex].Add(element[compoIndex]);
-				}
-			}
+			var components = elements.ElementsToComponents();
 			
 			// 成分ごとに解析
 			componentsAnalysisData = new FloatComponentAnalysisData[components.Length];
@@ -150,25 +90,39 @@ namespace Attri.Runtime
 				componentsAnalysisData[i] = new FloatComponentAnalysisData(components[i].ToArray());
 			
 			Components = components.Select(c => c.ToArray()).ToArray();
+			degreeErrors = Array.Empty<float>();
+			maxDegreeError = 0;
+			minDegreeError = 0;
+			averageDegreeError = 0;
+			sigmaDegreeError = 0;
 		}
-
-		public FloatAnalysisData Compressed(int precision)
+		
+		public FloatAnalysisData CompressedAsUnitVector(int precision)
 		{
-			var copy = new FloatAnalysisData
+			var elements = CloneElements();
+			List<float> degreeDiffList = new List<float>(elements.Length);
+			foreach (var vectorElement in elements)
 			{
-				Components = CloneComponents(),
-				Elements = CloneElements(),
-				componentsAnalysisData = new FloatComponentAnalysisData[componentsAnalysisData.Length]
-			};
-			for (var compId = 0; compId < copy.Components.Length; compId++)
-			{
-				var componentAnalysisData = componentsAnalysisData[compId];
-				var compressedComponentAnalysisData = componentAnalysisData.Compress(precision);
-				copy.componentsAnalysisData[compId] = compressedComponentAnalysisData;
+				var originalVector = new float3(vectorElement[0], vectorElement[1], vectorElement[2]);
+				originalVector = math.normalize(originalVector);
+				var encodedVector = VectorCompressor.EncodeUnitVectorTo24bit(originalVector);
+				var decodedVector = VectorCompressor.DecodeUnitVectorFrom24bit(encodedVector);
+				vectorElement[0] = decodedVector.x;
+				vectorElement[1] = decodedVector.y;
+				vectorElement[2] = decodedVector.z;
+				var radiansDiff = math.abs(math.acos(math.dot(originalVector, decodedVector)));
+				degreeDiffList.Add(math.degrees(radiansDiff));
 			}
-			return copy;
+			var newAnalysisData = new FloatAnalysisData(elements);
+			newAnalysisData.degreeErrors = degreeDiffList.ToArray();
+			newAnalysisData.maxDegreeError = degreeErrors.Max();
+			newAnalysisData.minDegreeError = degreeErrors.Min();
+			var aveDegreeError = degreeErrors.Average();
+			newAnalysisData.averageDegreeError = aveDegreeError; 
+			newAnalysisData.sigmaDegreeError = math.sqrt(degreeErrors.Select(e => math.pow(e-aveDegreeError, 2)).Average());
+			
+			return newAnalysisData;
 		}
-
 
 		float[][] CloneElements()
 		{
@@ -192,7 +146,7 @@ namespace Attri.Runtime
 			return copy;
 		}
 	}
-	
+
 	// 成分が方向ベクトルである場合の解析データ
 	public struct DirectionAnalysisData
 	{
