@@ -43,6 +43,8 @@ namespace Attri.Editor
 			dataProviderField.objectType = typeof(IDataProvider);
 			assignDataCallback = OnDataProviderChanged;
 			dataProviderField.RegisterValueChangedCallback(assignDataCallback);
+			dataProviderField.searchContext = SearchService.CreateContext("p: union{t:Container, t:Sequence}");
+			// dataProviderField.searchContext = SearchService.CreateContext("p: union{t:Container}");
 			rootVisualElement.Add(windowElement);
 			
 			Debug.Log("CreateGUI End");
