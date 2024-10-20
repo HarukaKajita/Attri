@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="FloatView" style="padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; border-left-color: rgba(255, 255, 255, 0.1); border-right-color: rgba(255, 255, 255, 0.1); border-top-color: rgba(255, 255, 255, 0.1); border-bottom-color: rgba(255, 255, 255, 0.1); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px;">
+        <ui:Label tabindex="-1" text="Float" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:MultiColumnListView name="List" fixed-item-height="18">
+            <ui:Columns>
+                <ui:Column name="name"   title="Value"   width="50" />
+                <ui:Column name="num"    title="Num"     width="80" />
+                <ui:Column name="min"    title="Min"     width="90" />
+                <ui:Column name="max"    title="Max"     width="90" />
+                <ui:Column name="std"    title="Std"     width="80" />
+                <ui:Column name="range"  title="Range"   width="80" />
+                <ui:Column name="center" title="Center"  width="90" />
+                <ui:Column name="signed" title="Signed"  width="70" />
+                <ui:Column name="expRange"         title="Exp Range"    width="100" />
+                <ui:Column name="exponentBitDepth" title="Exp BitDepth" width="80" />
+            </ui:Columns>
+        </ui:MultiColumnListView>
+    </ui:VisualElement>
+</ui:UXML>

@@ -10,7 +10,7 @@ namespace Attri.Editor
 {
     public class CompressedFloatView : AnalysisView
     {
-        private const string VisualTreeAssetPath = "Assets/Attri/Editor/Analysis/CompressedFloatData.uxml";
+        private const string VisualTreeAssetPath = "Assets/Attri/Editor/Analysis/CompressedFloatView.uxml";
         private readonly SliderInt _precision;
         private readonly MultiColumnListView _listView;
         private readonly Toggle _compressToggle;

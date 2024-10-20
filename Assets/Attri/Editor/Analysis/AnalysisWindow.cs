@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Attri.Runtime;
 using UnityEditor;
@@ -26,47 +25,44 @@ namespace Attri.Editor
 		
 		// Data (= Container,Sequence)
 		[SerializeReference] private IDataProvider dataProvider = default;
-		private ObjectField assetField;
 		EventCallback<ChangeEvent<Object>> assignDataCallback;
-		EventCallback<ChangeEvent<bool>> centeringToggleCallback;
-		
-		CompressedFloatView compressedFloatView;
-		
+
+		private FloatView _floatView;
+		private CompressedFloatView _compressedFloatView;
+
 		[MenuItem("Window/UI Toolkit/AnalysisWindow")]
 		[Shortcut("Attribute Analysis Window", KeyCode.W, ShortcutModifiers.Shift | ShortcutModifiers.Control)]
-		public static void ShowExample()
+		public static void ShowWindow()
 		{
-			AnalysisWindow wnd = CreateInstance<AnalysisWindow>();
-			wnd.titleContent = new GUIContent("AnalysisWindow");
+			AnalysisWindow wnd = CreateWindow<AnalysisWindow>("AnalysisWindow", typeof(AnalysisWindow));
 			wnd.ShowUtility();
 		}
-		
+
+		private void OnEnable()
+		{
+			titleContent = new GUIContent();
+		}
+
 		public void CreateGUI()
 		{
 			Debug.Log("CreateGUI");
-			// Each editor window contains a root VisualElement object
-			VisualElement root = rootVisualElement;
-			root.Clear();
 			
-			// Instantiate UXML
-			// 分析ListView
+			// Windowの初期化
 			windowElement = m_WindowVisualTreeAsset.Instantiate();
-			root.Add(windowElement);
-			assetField = windowElement.Q<ObjectField>("DataProvider");
-			assetField.objectType = typeof(IDataProvider);
-			assignDataCallback = UpdateListView;
-			assetField.RegisterValueChangedCallback(assignDataCallback);
+			var dataProviderField = windowElement.Q<ObjectField>("DataProvider");
+			dataProviderField.objectType = typeof(IDataProvider);
+			assignDataCallback = OnDataProviderChanged;
+			dataProviderField.RegisterValueChangedCallback(assignDataCallback);
+			rootVisualElement.Add(windowElement);
 			
-			// オプション
-			compressedFloatView = new CompressedFloatView(dataProvider);
-			root.Add(compressedFloatView.VisualElement);
 			Debug.Log("CreateGUI End");
 		}
 
-		private void UpdateListView(ChangeEvent<Object> changeEvent)
+		private void OnDataProviderChanged(ChangeEvent<Object> changeEvent)
 		{
 			dataProvider = changeEvent.newValue as IDataProvider;
-			compressedFloatView.Reset(dataProvider);
+			_compressedFloatView?.Reset(dataProvider);
+			_floatView?.Reset(dataProvider);
 			DrawListView();
 		}
 
@@ -90,60 +86,34 @@ namespace Attri.Editor
 			var dataType = dataProvider.GetAttributeType();
 			if(dataType == AttributeDataType.Float)
 			{
-				// データの分析
-				var originalData = dataProvider.AsFloat();
-				var analysis = new FloatAnalysisData(originalData);
-				
-				// AnalysisGroup
-				var dataAnalysis = m_FloatDataAnalysisVisualTreeAsset.Instantiate();
-				var dataListView = dataAnalysis.Q<MultiColumnListView>("List");
-				var analysisGroup = rootVisualElement.Q<VisualElement>("DataAnalysis");
-				analysisGroup.Clear();
-
-				// ListViewにデータをセット
-				SetupFloatDataListView(dataListView, analysis);
-				analysisGroup.Add(dataAnalysis);
-				dataListView.RefreshItems();
-				
-				compressedFloatView.UpdateView();
-				
+				// Float
+				if(_floatView == null)
+				{
+					_floatView = new FloatView(dataProvider);
+					rootVisualElement.Add(_floatView.VisualElement);
+					_floatView.UpdateView();
+				}
+				// CompressedFloat
+				if(_compressedFloatView == null)
+				{
+					_compressedFloatView = new CompressedFloatView(dataProvider);
+					rootVisualElement.Add(_compressedFloatView.VisualElement);
+					_compressedFloatView.UpdateView();
+				}
 			}
 			else if(dataType == AttributeDataType.Int)
 			{
-				var dataAnalysis = m_IntDataAnalysisVisualTreeAsset.Instantiate();
-				rootVisualElement.Add(dataAnalysis);
-				var dataListView = dataAnalysis.Q<MultiColumnListView>("List");
-				var analysis = new IntAnalysisData(dataProvider.AsInt());
-				dataListView.RefreshItems();
+				_floatView?.Remove();
+				_compressedFloatView?.Remove();
+				
+				// TODO: Intの分析Viewを追加する
+				// var dataAnalysis = m_IntDataAnalysisVisualTreeAsset.Instantiate();
+				// rootVisualElement.Add(dataAnalysis);
+				// var dataListView = dataAnalysis.Q<MultiColumnListView>("List");
+				// var analysis = new IntAnalysisData(dataProvider.AsInt());
+				// dataListView.RefreshItems();
 			}
 		}
-
-		void MakeLabel(Label label, string text)
-		{
-			label.text = text;
-			label.style.unityTextAlign = TextAnchor.MiddleRight;
-		}
-
-		void SetupFloatDataListView(MultiColumnListView listView, FloatAnalysisData analysisData)
-		{
-			var items = analysisData.componentsAnalysisData;
-			listView.Clear();
-			listView.itemsSource = items;
-			
-			listView.columns["name"].bindCell = (e, i) => MakeLabel((Label)e, $"[{i}]");
-			listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].elementNum));
-			listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].min));
-			listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].max));
-			listView.columns["sigma"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].sigma));
-			listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].range));
-			listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str((items[i].min+items[i].max)/2f));
-			listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, items[i].signed ? "Signed" : "Unsigned");
-			listView.columns["expRange"].bindCell = (e, i) => MakeLabel((Label)e, $"{items[i].exponentRange} ({items[i].minExponent}~{items[i].maxExponent})");
-			listView.columns["exponentBitDepth"].bindCell = (e, i) => MakeLabel((Label)e, items[i].exponentBitDepth.ToString());
-		}
-
-		private static string ErrorStr(float value) => value.ToString("0.0000000");
-		private static string Str(float value) => value.ToString(CultureInfo.InvariantCulture);
 	}
     
 }

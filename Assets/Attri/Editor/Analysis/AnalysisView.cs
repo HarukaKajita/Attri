@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using Attri.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -31,7 +28,11 @@ namespace Attri.Editor
         public void Reset(IDataProvider dataProvider)
         {
             _dataProvider = dataProvider;
-            UpdateView();
+        }
+
+        public void Remove()
+        {
+            Self.parent.Remove(Self);
         }
 
         public abstract void UpdateView();

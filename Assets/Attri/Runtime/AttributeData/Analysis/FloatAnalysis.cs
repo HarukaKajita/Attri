@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.Mathematics;
 using Attri.Runtime.Extensions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Attri.Runtime
 {
@@ -34,7 +35,7 @@ namespace Attri.Runtime
 		public float min;//最小値
 		public float max;//最大値
 		public float range;//範囲
-		public float sigma;//標準偏差
+		[FormerlySerializedAs("sigma")] public float std;//標準偏差
 		public float center;//中心
 		
 		public FloatBitData[] bitData;
@@ -54,7 +55,7 @@ namespace Attri.Runtime
 			range = max - min;
 			var average = values.Average();
 			var variance = values.Sum(v => math.pow(v - average, 2));
-			sigma = math.sqrt(variance / values.Length);
+			std = math.sqrt(variance / values.Length);
 			
 			bitData = values.Select(v => new FloatBitData(v)).ToArray();
 			signed = bitData.Where(b=>b.Value!=0).Select(b => b.MinusSigned).Distinct().Count() > 1;
