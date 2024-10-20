@@ -10,9 +10,5 @@ namespace Attri.Runtime
         public int[][] AsInt();
         public string[][] AsString();
         public ScriptableObject GetScriptableObject();
-        // public object[] AsObject();
-        // public ushort[] HalfValues();
-        // public byte[] AsByte();
-        // public uint[] AsUint();
     }
 }

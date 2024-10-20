@@ -23,10 +23,5 @@ namespace Attri.Runtime
         public int[][] AsInt() => new []{value};
         public string[][] AsString() => throw new NotImplementedException();
         public ScriptableObject GetScriptableObject() => throw new NotImplementedException();
-        // public object[] AsObject() => value.Cast<object>().ToArray();
-        // public ushort[] HalfValues() => throw new NotImplementedException();
-        // public byte[] AsByte() => value.SelectMany(BitConverter.GetBytes).ToArray();
-        // public uint[] AsUint() => value.Select(AsUint).ToArray();
-        // private static uint AsUint(int value) => BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
     }
 }

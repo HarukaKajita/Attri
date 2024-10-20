@@ -74,10 +74,6 @@ namespace Attri.Runtime
         public int[][] AsInt() => elements.SelectMany(e => e.AsInt()).ToArray();
         public string[][] AsString() => elements.SelectMany(e => e.AsString()).ToArray();
         public ScriptableObject GetScriptableObject() => this;
-        // public object[] AsObject() => elements.SelectMany(e => e.AsObject()).ToArray();
-        // public ushort[] HalfValues() => elements.SelectMany(e => e.HalfValues()).ToArray();
-        // public byte[] AsByte() => elements.SelectMany(e => e.AsByte()).ToArray();
-        // public uint[] AsUint() => elements.SelectMany(e => e.AsUint()).ToArray();
         #endregion
     }
 }

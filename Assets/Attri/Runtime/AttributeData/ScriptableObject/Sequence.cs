@@ -33,10 +33,6 @@ namespace Attri.Runtime
         public int[][] AsInt() => containers.SelectMany(c => c.AsInt()).ToArray();
         public string[][] AsString() => containers.SelectMany(c => c.AsString()).ToArray();
         public ScriptableObject GetScriptableObject() => this;
-        // public object[] AsObject() => containers.SelectMany(c => c.AsObject()).ToArray();
-        // public ushort[] HalfValues() => containers.SelectMany(c => c.HalfValues()).ToArray();
-        // public byte[] AsByte() => containers.SelectMany(c => c.AsByte()).ToArray();
-        // public uint[] AsUint() => containers.SelectMany(c => c.AsUint()).ToArray();
         #endregion
         
 #if UNITY_EDITOR
