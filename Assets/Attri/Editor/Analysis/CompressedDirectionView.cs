@@ -8,20 +8,20 @@ using UnityEngine.UIElements;
 
 namespace Attri.Editor
 {
-    public class CompressedFloatView : AnalysisView
+    public class CompressedDirectionView : AnalysisView
     {
-        private const string VisualTreeAssetPath = "Assets/Attri/Editor/Analysis/CompressedFloatView.uxml";
+        private const string VisualTreeAssetPath = "Assets/Attri/Editor/Analysis/CompressedDirectionView.uxml";
         private readonly Toggle _compressToggle;
         private readonly SliderInt _precision;
         private readonly MultiColumnListView _listView;
         
         protected override string VisualTreePath() => VisualTreeAssetPath;
-        public CompressedFloatView(IDataProvider dataProvider) : base(dataProvider)
+        public CompressedDirectionView(IDataProvider dataProvider) : base(dataProvider)
         {
             _listView = Self.Q<MultiColumnListView>("List");
             _compressToggle = Self.Q<Toggle>("Compress");
             _precision = Self.Q<SliderInt>("Precision");
-            _precision.value = 23;
+            _precision.value = 24;
             _precision.RegisterValueChangedCallback(OnPrecisionChanged);
             _compressToggle.RegisterValueChangedCallback(OnCompressToggleChanged);
             _listView.visible = false;
@@ -51,21 +51,19 @@ namespace Attri.Editor
             // 圧縮前後の値を比較
             var originalElements = _dataProvider.AsFloat();
             var precision = _precision.value;
-            var compressor = new FloatCompressor(originalElements, precision);
-            var comparer = new FloatComparer(compressor.OriginalComponents, compressor.Compress());
+            var compressor = new DirectionCompressor(originalElements, precision);
+            var comparer = new DirectionComparer(compressor.OriginalVectors, compressor.Compress());
             DebugLog($"Original:{originalElements.Length}x{originalElements[0].Length} Precision:{precision}");
             // Viewの更新
-            var items = comparer.diffComponents;
+            var items = comparer.DiffDegrees;
             _listView.visible = true;
-            _listView.itemsSource = items;
-            _listView.columns["name"].bindCell = (e, i) => MakeLabel((Label)e, $"[{i}]");
-            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].Length));
-            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMin[i]));
-            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMax[i]));
-            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffStd[i]));
-            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffRange[i]));
-            _listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMid[i]));
-            _listView.columns["average"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffAve[i]));
+            _listView.itemsSource =  new List<DirectionComparer>{comparer};//dummy
+            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffDegrees.Length));
+            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMin));
+            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMax));
+            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffStd));
+            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffRange));
+            _listView.columns["average"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffAve));
             _listView.RefreshItems();
             DebugLog($"UpdateListView() End");
         }

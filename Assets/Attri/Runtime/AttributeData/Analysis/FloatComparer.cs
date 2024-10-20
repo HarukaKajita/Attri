@@ -3,7 +3,7 @@ using Unity.Mathematics;
 
 namespace Attri.Runtime
 {
-	public class CompressedFloatComparer
+	public class FloatComparer
 	{
 		float[][] originalComponents;
 		float[][] compressedComponents;
@@ -14,7 +14,7 @@ namespace Attri.Runtime
 		public float[] diffAve;
 		public float[] diffStd;
 		public float[] diffRange;
-		public CompressedFloatComparer(float[][] originalComponents, float[][] compressedComponents)
+		public FloatComparer(float[][] originalComponents, float[][] compressedComponents)
 		{
 			this.originalComponents = originalComponents;
 			this.compressedComponents = compressedComponents;

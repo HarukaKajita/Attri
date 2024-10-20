@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using Attri.Runtime.Extensions;
-using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Attri.Runtime
@@ -74,11 +71,11 @@ namespace Attri.Runtime
 		public float[][] Elements;
 		public float[][] Components;
 		public FloatComponentAnalysisData[] componentsAnalysisData;
-		public float[] degreeErrors;
-		public float maxDegreeError;
-		public float minDegreeError;
-		public float averageDegreeError;
-		public float sigmaDegreeError;
+		// public float[] degreeErrors;
+		// public float maxDegreeError;
+		// public float minDegreeError;
+		// public float averageDegreeError;
+		// public float sigmaDegreeError;
 		public FloatAnalysisData(float[][] elements)
 		{
 			Elements = elements;
@@ -91,39 +88,39 @@ namespace Attri.Runtime
 				componentsAnalysisData[i] = new FloatComponentAnalysisData(components[i].ToArray());
 			
 			Components = components.Select(c => c.ToArray()).ToArray();
-			degreeErrors = Array.Empty<float>();
-			maxDegreeError = 0;
-			minDegreeError = 0;
-			averageDegreeError = 0;
-			sigmaDegreeError = 0;
+			// degreeErrors = Array.Empty<float>();
+			// maxDegreeError = 0;
+			// minDegreeError = 0;
+			// averageDegreeError = 0;
+			// sigmaDegreeError = 0;
 		}
 		
-		public FloatAnalysisData CompressedAsUnitVector(int precision)
-		{
-			var elements = CloneElements();
-			List<float> degreeDiffList = new List<float>(elements.Length);
-			foreach (var vectorElement in elements)
-			{
-				var originalVector = new float3(vectorElement[0], vectorElement[1], vectorElement[2]);
-				originalVector = math.normalize(originalVector);
-				var encodedVector = VectorCompressor.EncodeUnitVectorTo24bit(originalVector);
-				var decodedVector = VectorCompressor.DecodeUnitVectorFrom24bit(encodedVector);
-				vectorElement[0] = decodedVector.x;
-				vectorElement[1] = decodedVector.y;
-				vectorElement[2] = decodedVector.z;
-				var radiansDiff = math.abs(math.acos(math.dot(originalVector, decodedVector)));
-				degreeDiffList.Add(math.degrees(radiansDiff));
-			}
-			var newAnalysisData = new FloatAnalysisData(elements);
-			newAnalysisData.degreeErrors = degreeDiffList.ToArray();
-			newAnalysisData.maxDegreeError = degreeErrors.Max();
-			newAnalysisData.minDegreeError = degreeErrors.Min();
-			var aveDegreeError = degreeErrors.Average();
-			newAnalysisData.averageDegreeError = aveDegreeError; 
-			newAnalysisData.sigmaDegreeError = math.sqrt(degreeErrors.Select(e => math.pow(e-aveDegreeError, 2)).Average());
-			
-			return newAnalysisData;
-		}
+		// public FloatAnalysisData CompressedAsUnitVector(int precision)
+		// {
+		// 	var elements = CloneElements();
+		// 	List<float> degreeDiffList = new List<float>(elements.Length);
+		// 	foreach (var vectorElement in elements)
+		// 	{
+		// 		var originalVector = new float3(vectorElement[0], vectorElement[1], vectorElement[2]);
+		// 		originalVector = math.normalize(originalVector);
+		// 		var encodedVector = DirectionCompressor.EncodeUnitVectorTo24bit(originalVector);
+		// 		var decodedVector = DirectionCompressor.DecodeUnitVectorFrom24bit(encodedVector);
+		// 		vectorElement[0] = decodedVector.x;
+		// 		vectorElement[1] = decodedVector.y;
+		// 		vectorElement[2] = decodedVector.z;
+		// 		var radiansDiff = math.abs(math.acos(math.dot(originalVector, decodedVector)));
+		// 		degreeDiffList.Add(math.degrees(radiansDiff));
+		// 	}
+		// 	var newAnalysisData = new FloatAnalysisData(elements);
+		// 	newAnalysisData.degreeErrors = degreeDiffList.ToArray();
+		// 	newAnalysisData.maxDegreeError = degreeErrors.Max();
+		// 	newAnalysisData.minDegreeError = degreeErrors.Min();
+		// 	var aveDegreeError = degreeErrors.Average();
+		// 	newAnalysisData.averageDegreeError = aveDegreeError; 
+		// 	newAnalysisData.sigmaDegreeError = math.sqrt(degreeErrors.Select(e => math.pow(e-aveDegreeError, 2)).Average());
+		// 	
+		// 	return newAnalysisData;
+		// }
 
 		float[][] CloneElements()
 		{
@@ -147,15 +144,4 @@ namespace Attri.Runtime
 			return copy;
 		}
 	}
-
-	// 成分が方向ベクトルである場合の解析データ
-	public struct DirectionAnalysisData
-	{
-		public readonly float[][] values;
-		public readonly float min;
-		public readonly float max;
-		public readonly float range;
-		public readonly float sigma;
-	}
-	
 }

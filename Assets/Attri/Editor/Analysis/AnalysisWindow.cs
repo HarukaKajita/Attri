@@ -15,13 +15,6 @@ namespace Attri.Editor
 	{
 		// Window
 		[SerializeField] private VisualTreeAsset m_WindowVisualTreeAsset;
-		// Float
-		[SerializeField] private VisualTreeAsset m_FloatDataAnalysisVisualTreeAsset;
-		// Int
-		[SerializeField] private VisualTreeAsset m_IntDataAnalysisVisualTreeAsset;
-		[SerializeField] private VisualTreeAsset m_IntBitDataAnalysisVisualTreeAsset;
-		
-		private VisualElement windowElement;
 		
 		// Data (= Container,Sequence)
 		[SerializeReference] private IDataProvider dataProvider = default;
@@ -29,8 +22,9 @@ namespace Attri.Editor
 
 		private FloatView _floatView;
 		private CompressedFloatView _compressedFloatView;
+		private CompressedDirectionView _compressedDirectionView;
 
-		[MenuItem("Window/UI Toolkit/AnalysisWindow")]
+		[MenuItem("Tool/Attri/AnalysisWindow")]
 		[Shortcut("Attribute Analysis Window", KeyCode.W, ShortcutModifiers.Shift | ShortcutModifiers.Control)]
 		public static void ShowWindow()
 		{
@@ -38,17 +32,13 @@ namespace Attri.Editor
 			wnd.ShowUtility();
 		}
 
-		private void OnEnable()
-		{
-			titleContent = new GUIContent();
-		}
-
 		public void CreateGUI()
 		{
 			Debug.Log("CreateGUI");
+			titleContent = new GUIContent("AnalysisWindow");
 			
 			// Windowの初期化
-			windowElement = m_WindowVisualTreeAsset.Instantiate();
+			var windowElement = m_WindowVisualTreeAsset.Instantiate();
 			var dataProviderField = windowElement.Q<ObjectField>("DataProvider");
 			dataProviderField.objectType = typeof(IDataProvider);
 			assignDataCallback = OnDataProviderChanged;
@@ -61,8 +51,9 @@ namespace Attri.Editor
 		private void OnDataProviderChanged(ChangeEvent<Object> changeEvent)
 		{
 			dataProvider = changeEvent.newValue as IDataProvider;
-			_compressedFloatView?.Reset(dataProvider);
 			_floatView?.Reset(dataProvider);
+			_compressedFloatView?.Reset(dataProvider);
+			_compressedDirectionView?.Reset(dataProvider);
 			DrawListView();
 		}
 
@@ -78,33 +69,46 @@ namespace Attri.Editor
 			Debug.Log("DrawListView");
 			if (dataProvider == null)
 			{
-				var analysisElement = windowElement.Q<VisualElement>("DataAnalysis");
-				analysisElement.Clear();
+				_floatView.Remove();
+				_compressedFloatView.Remove();
+				_compressedDirectionView.Remove();
+				// IntのViewを削除
 				Debug.LogWarning("DataProvider is null");
 				return;
 			}
 			var dataType = dataProvider.GetAttributeType();
 			if(dataType == AttributeDataType.Float)
 			{
+				// IntのViewを削除
+				
 				// Float
 				if(_floatView == null)
 				{
 					_floatView = new FloatView(dataProvider);
 					rootVisualElement.Add(_floatView.VisualElement);
-					_floatView.UpdateView();
 				}
+				_floatView.UpdateView();
 				// CompressedFloat
 				if(_compressedFloatView == null)
 				{
 					_compressedFloatView = new CompressedFloatView(dataProvider);
 					rootVisualElement.Add(_compressedFloatView.VisualElement);
-					_compressedFloatView.UpdateView();
 				}
+				_compressedFloatView.UpdateView();
+				// CompressedDirection
+				if (_compressedDirectionView == null)
+				{
+					_compressedDirectionView = new CompressedDirectionView(dataProvider);
+					rootVisualElement.Add(_compressedDirectionView.VisualElement);
+				}
+				_compressedDirectionView.UpdateView();
 			}
 			else if(dataType == AttributeDataType.Int)
 			{
+				// FloatのViewを削除
 				_floatView?.Remove();
 				_compressedFloatView?.Remove();
+				_compressedDirectionView?.Remove();
 				
 				// TODO: Intの分析Viewを追加する
 				// var dataAnalysis = m_IntDataAnalysisVisualTreeAsset.Instantiate();

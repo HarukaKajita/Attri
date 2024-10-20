@@ -1,13 +1,42 @@
 ﻿using System;
+using System.Linq;
 using Unity.Mathematics;
 
 namespace Attri.Runtime
 {
-	static class VectorCompressor
+	public class DirectionCompressor
 	{
 		private const int Resolution24BIT = 2046;
-		private const double HalfPI = math.PI_DBL / 2;
-		public static uint EncodeUnitVectorTo24bit(float3 vec)
+		private const double HalfPI = 1.5707963267948966192313216916398;
+		
+		public int Precision;
+		public readonly float3[] OriginalVectors;// IDataProviderでもいいかも
+		// public readonly float[][] OriginalComponents;
+		private float3[] Compressed;
+		public DirectionCompressor(float[][] originalElements, int precision)
+		{
+			Precision = precision;
+			OriginalVectors = originalElements.Select(v => new float3(v[0], v[1], v[2])).Select(math.normalize).ToArray();
+			// [エレメント][成分]を[成分][エレメント]に変換
+			// OriginalComponents = OriginalElements.ElementsToComponents();
+		}
+		
+		public float3[] Compress()
+		{
+			// 成分ごとに圧縮
+			Compressed = new float3[OriginalVectors.Length];
+			for(var i = 0; i < Compressed.Length; i++)
+			{
+				var vec = OriginalVectors[i];
+				var encoded = EncodeUnitVectorTo24bit(vec);
+				var decoded = DecodeUnitVectorFrom24bit(encoded);
+				Compressed[i] = decoded;
+			}
+			
+			return Compressed;
+		}
+		// TODO:任意のbit数で圧縮出来るようにする
+		private uint EncodeUnitVectorTo24bit(float3 vec)
 		{
 			uint compressedValue = 0;
 			const double delta_phi = HalfPI / Resolution24BIT;
@@ -46,10 +75,11 @@ namespace Attri.Runtime
 			double phi = math.acos(cartesian.y); //0~pi
 			return new double2(theta, phi);
 		}
-		public static float3 DecodeUnitVectorFrom24bit(uint encode)
+
+		private float3 DecodeUnitVectorFrom24bit(uint encode)
 		{
 			uint n = encode & 0x1FFFFF;
-			uint i = (uint)(math.sqrt(1 + 8 * n) - 1) / 2;
+			uint i = (uint)((math.sqrt(1 + 8 * n) - 1) / 2);
 			uint j = n - (i + 1) * i / 2;
 
 			double delta_phi = HalfPI / Resolution24BIT;
