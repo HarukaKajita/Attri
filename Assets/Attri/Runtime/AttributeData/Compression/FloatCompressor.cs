@@ -85,7 +85,13 @@ namespace Attri.Runtime
 			var decoded = Decode(E, M, lossBitLength, offset);
 			return decoded;
 		}
-		static float Decode(int exp, int mantissa, int lossBitLength, float offset)
+		public static float Decode(int exp, int mantissa, int lossBitLength, float offset)
+		{
+			mantissa <<= lossBitLength;
+			var preFloat = BitConverter.ToSingle(BitConverter.GetBytes(exp | mantissa), 0);
+			return preFloat - offset;
+		}
+		public static float Decode(int exp, byte mantissa, int lossBitLength, float offset)
 		{
 			mantissa <<= lossBitLength;
 			var preFloat = BitConverter.ToSingle(BitConverter.GetBytes(exp | mantissa), 0);
