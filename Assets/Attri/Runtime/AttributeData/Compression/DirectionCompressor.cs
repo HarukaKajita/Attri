@@ -10,27 +10,32 @@ namespace Attri.Runtime
 		private const double HalfPI = 1.5707963267948966192313216916398;
 		
 		public int Precision;
-		public readonly float3[] OriginalVectors;// IDataProviderでもいいかも
-		// public readonly float[][] OriginalComponents;
-		private float3[] Compressed;
-		public DirectionCompressor(float[][] originalElements, int precision)
+		// [frame][element]
+		public readonly float3[][] OriginalVectors;// IDataProviderでもいいかも
+		private float3[][] Compressed;
+		public DirectionCompressor(float[][][] originalData, int precision)
 		{
 			Precision = precision;
-			OriginalVectors = originalElements.Select(v => new float3(v[0], v[1], v[2])).Select(math.normalize).ToArray();
+			OriginalVectors = originalData.Select(e => e.Select(v => new float3(v[0], v[1], v[2])).Select(math.normalize).ToArray()).ToArray();
 			// [エレメント][成分]を[成分][エレメント]に変換
 			// OriginalComponents = OriginalElements.ElementsToComponents();
 		}
 		
-		public float3[] Compress()
+		public float3[][] Compress()
 		{
 			// 成分ごとに圧縮
-			Compressed = new float3[OriginalVectors.Length];
-			for(var i = 0; i < Compressed.Length; i++)
+			Compressed = new float3[OriginalVectors.Length][];
+			for(var frame = 0; frame < Compressed.Length; frame++)
 			{
-				var vec = OriginalVectors[i];
-				var encoded = EncodeUnitVectorTo24bit(vec);
-				var decoded = DecodeUnitVectorFrom24bit(encoded);
-				Compressed[i] = decoded;
+				var vectors = OriginalVectors[frame];
+				Compressed[frame] = new float3[vectors.Length];
+				for (var element = 0; element < vectors.Length; element++)
+				{
+					var vec = vectors[element];
+					var encoded = EncodeUnitVectorTo24bit(vec);
+					var decoded = DecodeUnitVectorFrom24bit(encoded);
+					Compressed[frame][element] = decoded;
+				}
 			}
 			
 			return Compressed;

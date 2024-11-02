@@ -10,7 +10,7 @@ namespace Attri.Runtime
         public string attributeName;
         
         [SerializeReference]
-        private List<IDataProvider> elements = new ();
+        private List<ElementBase> elements = new ();
         [SerializeField]
         private bool isVariableLengthAttribute;
         [SerializeField]
@@ -67,12 +67,17 @@ namespace Attri.Runtime
             if (isVariableLength) isVariableLengthAttribute = true;
         }
         
+        public int[][] ElementsAsInt() => elements.Select(e => e.ComponentsAsInt()).ToArray();
+        public float[][] ElementsAsFloat() => elements.Select(e => e.ComponentsAsFloat()).ToArray();
+        public string[][] ElementsAsString() => elements.Select(e => e.ComponentsAsString()).ToArray();
+        
+        
         #region IDataProvider
         public int Dimension() => size;
         public AttributeDataType GetAttributeType() => attributeDataType;
-        public float[][] AsFloat() => elements.SelectMany(e => e.AsFloat()).ToArray();
-        public int[][] AsInt() => elements.SelectMany(e => e.AsInt()).ToArray();
-        public string[][] AsString() => elements.SelectMany(e => e.AsString()).ToArray();
+        public float[][][] AsFloat() => new []{elements.Select(e => e.ComponentsAsFloat()).ToArray()};
+        public int[][][] AsInt() => new []{elements.Select(e => e.ComponentsAsInt()).ToArray()};
+        public string[][][] AsString() => new []{elements.Select(e => e.ComponentsAsString()).ToArray()};
         public ScriptableObject GetScriptableObject() => this;
         #endregion
     }

@@ -9,6 +9,10 @@ namespace Attri.Runtime.Extensions
 	{
 		#region UintConversion
 
+		public static int AsInt(this float value)
+		{
+			return BitConverter.ToInt32(BitConverter.GetBytes(value), 0);
+		}
 		public static uint AsUint(this float value)
 		{
 			return BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);

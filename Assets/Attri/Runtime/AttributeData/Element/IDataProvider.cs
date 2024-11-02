@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Attri.Runtime
@@ -6,9 +7,11 @@ namespace Attri.Runtime
     {
         public int Dimension();
         public AttributeDataType GetAttributeType();
-        public float[][] AsFloat();
-        public int[][] AsInt();
-        public string[][] AsString();
+        // [frame][element][component]
+        public float[][][] AsFloat();
+        public int[][][] AsInt();
+        public string[][][] AsString();
+        
         public ScriptableObject GetScriptableObject();
     }
 }

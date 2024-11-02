@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,9 +27,9 @@ namespace Attri.Runtime
         #region IDataProvider
         public int Dimension() => attributeDimension;
         public AttributeDataType GetAttributeType() => attributeType;
-        public float[][] AsFloat() => containers.SelectMany(c => c.AsFloat()).ToArray();
-        public int[][] AsInt() => containers.SelectMany(c => c.AsInt()).ToArray();
-        public string[][] AsString() => containers.SelectMany(c => c.AsString()).ToArray();
+        public int[][][] AsInt() => containers.Select(c => c.ElementsAsInt()).ToArray();
+        public float[][][] AsFloat() => containers.Select(c => c.ElementsAsFloat()).ToArray();
+        public string[][][] AsString() => containers.Select(c => c.ElementsAsString()).ToArray();
         public ScriptableObject GetScriptableObject() => this;
         #endregion
         
@@ -61,7 +59,7 @@ namespace Attri.Runtime
             attributeType = containers[0].GetAttributeType();
             // アトリビュートの次元が一致しているか確認
             var dimensions = containers.Select(c => c.Dimension()).Distinct().ToArray();
-            if (dimensions.Count() > 1) //"Dimension is not consistent"
+            if (dimensions.Length > 1) //"Dimension is not consistent"
                 attributeDimension = -1;
             else
                 attributeDimension = dimensions.First();

@@ -14,20 +14,20 @@ namespace Attri.Runtime
         protected Dictionary<string, float> _floatParams = new ();
         // 圧縮タイプ
         protected CompressionType _compressionType;
-        // 圧縮されたデータ[element][component]
-        protected ValueByte[][] _compressedValueBytes = null;
+        // 圧縮されたデータ[frame][element][component]
+        protected ValueByte[][][] _compressedValueBytes = null;
         // 元の値の型
         protected AttributeDataType _attributeType;
         
         public CompressedDataProvider(){}
-        public CompressedDataProvider(AttributeDataType attributeType , CompressionType compressionType, ValueByte[][] compressedValueBytes)
+        public CompressedDataProvider(AttributeDataType attributeType , CompressionType compressionType, ValueByte[][][] compressedValueBytes)
         {
             _compressedValueBytes = compressedValueBytes;
             _compressionType = compressionType;
             _attributeType = attributeType;
         }
 
-        public void Init(AttributeDataType attributeType , CompressionType compressionType, ValueByte[][] compressedValueBytes)
+        public void Init(AttributeDataType attributeType , CompressionType compressionType, ValueByte[][][] compressedValueBytes)
         {
             _compressedValueBytes = compressedValueBytes;
             _compressionType = compressionType;
@@ -43,17 +43,17 @@ namespace Attri.Runtime
 
         public virtual AttributeDataType GetAttributeType() => _attributeType;
 
-        public virtual float[][] AsFloat()
+        public virtual float[][][] AsFloat()
         {
             throw new System.NotImplementedException();
         }
 
-        public virtual int[][] AsInt()
+        public virtual int[][][] AsInt()
         {
             throw new System.NotImplementedException();
         }
 
-        public virtual string[][] AsString()
+        public virtual string[][][] AsString()
         {
             throw new System.NotImplementedException();
         }

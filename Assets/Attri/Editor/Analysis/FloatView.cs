@@ -34,19 +34,21 @@ namespace Attri.Editor
             var originalComponents = _dataProvider.AsFloat();
             var floatAnalysis = new FloatAnalysisData(originalComponents);
             // Viewの更新
-            var items = floatAnalysis.componentsAnalysisData;
+            var frameAnalysisData = floatAnalysis.frameAnalysisData;
+            var franeId = 0;
+            var targetItems = frameAnalysisData[franeId].componentsAnalysisData;
             _listView.visible = true;
-            _listView.itemsSource = items;
-            _listView.columns["name"].bindCell = (e, i) => MakeLabel((Label)e, $"[{i}]");
-            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].elementNum));
-            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].min));
-            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].max));
-            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].std));
-            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].range));
-            _listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str((items[i].min+items[i].max)/2f));
-            _listView.columns["signed"].bindCell = (e, i) => MakeLabel((Label)e, items[i].signed ? "Signed" : "Unsigned");
-            _listView.columns["expRange"].bindCell = (e, i) => MakeLabel((Label)e, $"{items[i].exponentRange} ({items[i].minExponent}~{items[i].maxExponent})");
-            _listView.columns["exponentBitDepth"].bindCell = (e, i) => MakeLabel((Label)e, items[i].exponentBitDepth.ToString());
+            _listView.itemsSource = targetItems;
+            _listView.columns["name"].bindCell = (e, compoId) => MakeLabel((Label)e, $"[{compoId}]");
+            _listView.columns["num"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].elementNum));
+            _listView.columns["min"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].min));
+            _listView.columns["max"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].max));
+            _listView.columns["std"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].std));
+            _listView.columns["range"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].range));
+            _listView.columns["center"].bindCell = (e, compoId) => MakeLabel((Label)e, Str((targetItems[compoId].min+targetItems[compoId].max)/2f));
+            _listView.columns["signed"].bindCell = (e, compoId) => MakeLabel((Label)e, targetItems[compoId].signed ? "Signed" : "Unsigned");
+            _listView.columns["expRange"].bindCell = (e, compoId) => MakeLabel((Label)e, $"{targetItems[compoId].exponentRange} ({targetItems[compoId].minExponent}~{targetItems[compoId].maxExponent})");
+            _listView.columns["exponentBitDepth"].bindCell = (e, compoId) => MakeLabel((Label)e, targetItems[compoId].exponentBitDepth.ToString());
             _listView.RefreshItems();
             DebugLog($"UpdateListView() End");
         }

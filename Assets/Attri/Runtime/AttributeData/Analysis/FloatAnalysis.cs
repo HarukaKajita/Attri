@@ -32,7 +32,7 @@ namespace Attri.Runtime
 		public float min;//最小値
 		public float max;//最大値
 		public float range;//範囲
-		[FormerlySerializedAs("sigma")] public float std;//標準偏差
+		public float std;//標準偏差
 		public float center;//中心
 		
 		public FloatBitData[] bitData;
@@ -63,20 +63,34 @@ namespace Attri.Runtime
 		}
 	}
 	
-	// FloatElement列の解析
 	[Serializable]
-	public struct FloatAnalysisData
+	public struct FloatFrameAnalysisData
 	{
 		public FloatComponentAnalysisData[] componentsAnalysisData;
-		public FloatAnalysisData(float[][] elements)
+		public FloatFrameAnalysisData(float[][] elements)
 		{
-			// [エレメント][成分]を[成分][エレメント]に変換
-			var components = elements.ElementsToComponents();
+			// [成分][エレメント]を[エレメント][成分]に変換
+			var components = elements.Transpose();
 			
 			// 成分ごとに解析
 			componentsAnalysisData = new FloatComponentAnalysisData[components.Length];
 			for (var i = 0; i < components.Length; i++)
 				componentsAnalysisData[i] = new FloatComponentAnalysisData(components[i].ToArray());
+		}
+	}
+	
+	// FloatElement列の解析
+	[Serializable]
+	public struct FloatAnalysisData
+	{
+		public FloatFrameAnalysisData[] frameAnalysisData;
+		public FloatAnalysisData(float[][][] data)
+		{
+			var frameCount = data.Length;
+			frameAnalysisData = new FloatFrameAnalysisData[frameCount];
+			// フレームごとに解析
+			for (var i = 0; i < frameCount; i++)
+				frameAnalysisData[i] = new FloatFrameAnalysisData(data[i]);
 		}
 	}
 }

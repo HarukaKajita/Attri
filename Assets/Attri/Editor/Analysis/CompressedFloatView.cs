@@ -49,23 +49,27 @@ namespace Attri.Editor
             }
             
             // 圧縮前後の値を比較
-            var originalElements = _dataProvider.AsFloat();
+            var originalData = _dataProvider.AsFloat();
             var precision = _precision.value;
-            var compressor = new FloatCompressor(originalElements, precision);
-            var comparer = new FloatComparer(compressor.OriginalComponents, compressor.Compress());
-            DebugLog($"Original:{originalElements.Length}x{originalElements[0].Length} Precision:{precision}");
+            DebugLog($"Original:{originalData.Length}x{originalData[0].Length}x{originalData[0][0].Length} Precision:{precision}");
+            var compressor = new FloatCompressor(originalData, precision);
+            var compressed = compressor.Compress();
+            DebugLog($"Compressed:{compressed.Length}x{compressed[0].Length}x{compressed[0][0].Length} Precision:{precision}");
+            var comparer = new FloatComparer(compressor.Original, compressed);
             // Viewの更新
-            var items = comparer.diffComponents;
+            var items = comparer.diff;
+            var frameId = 0;
+            var targetItems = items[frameId].Transpose();
             _listView.visible = true;
-            _listView.itemsSource = items;
-            _listView.columns["name"].bindCell = (e, i) => MakeLabel((Label)e, $"[{i}]");
-            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(items[i].Length));
-            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMin[i]));
-            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMax[i]));
-            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffStd[i]));
-            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffRange[i]));
-            _listView.columns["center"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffMid[i]));
-            _listView.columns["average"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.diffAve[i]));
+            _listView.itemsSource = targetItems;
+            _listView.columns["name"].bindCell = (e, compoId) => MakeLabel((Label)e, $"[{compoId}]");
+            _listView.columns["num"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(targetItems[compoId].Length));
+            _listView.columns["min"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffMin[frameId][compoId]));
+            _listView.columns["max"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffMax[frameId][compoId]));
+            _listView.columns["std"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffStd[frameId][compoId]));
+            _listView.columns["range"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffRange[frameId][compoId]));
+            _listView.columns["center"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffMid[frameId][compoId]));
+            _listView.columns["average"].bindCell = (e, compoId) => MakeLabel((Label)e, Str(comparer.diffAve[frameId][compoId]));
             _listView.RefreshItems();
             DebugLog($"UpdateListView() End");
         }

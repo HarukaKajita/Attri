@@ -55,15 +55,15 @@ namespace Attri.Editor
             var comparer = new DirectionComparer(compressor.OriginalVectors, compressor.Compress());
             DebugLog($"Original:{originalElements.Length}x{originalElements[0].Length} Precision:{precision}");
             // Viewの更新
-            var items = comparer.DiffDegrees;
+            var franeId = 0;
             _listView.visible = true;
             _listView.itemsSource =  new List<DirectionComparer>{comparer};//dummy
-            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffDegrees.Length));
-            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMin));
-            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMax));
-            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffStd));
-            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffRange));
-            _listView.columns["average"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffAve));
+            _listView.columns["num"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffDegrees[franeId].Length));
+            _listView.columns["min"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMin[franeId]));
+            _listView.columns["max"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffMax[franeId]));
+            _listView.columns["std"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffStd[franeId]));
+            _listView.columns["range"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffRange[franeId]));
+            _listView.columns["average"].bindCell = (e, i) => MakeLabel((Label)e, Str(comparer.DiffAve[franeId]));
             _listView.RefreshItems();
             DebugLog($"UpdateListView() End");
         }
