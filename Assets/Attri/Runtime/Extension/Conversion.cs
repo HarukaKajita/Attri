@@ -5,7 +5,7 @@ using Unity.Mathematics;
 
 namespace Attri.Runtime.Extensions
 {
-	public static class ConversionToUint
+	public static class Conversion
 	{
 		#region UintConversion
 

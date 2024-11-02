@@ -17,8 +17,6 @@ namespace Attri.Runtime
 		{
 			Precision = precision;
 			OriginalVectors = originalData.Select(e => e.Select(v => new float3(v[0], v[1], v[2])).Select(math.normalize).ToArray()).ToArray();
-			// [エレメント][成分]を[成分][エレメント]に変換
-			// OriginalComponents = OriginalElements.ElementsToComponents();
 		}
 		
 		public float3[][] Compress()
