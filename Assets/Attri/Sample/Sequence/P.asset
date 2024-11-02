@@ -15,6 +15,6 @@ MonoBehaviour:
   containerFolder: {fileID: 102900000, guid: fc38ca0434f45924aa23a980c267d6b6, type: 3}
   attributeName: P
   containers:
-  - {fileID: 6451838232723992840, guid: 7ec6b4cefa03e4c4fa1d9137dbb4bccb, type: 3}
+  - {fileID: -2805958055555664568, guid: 7ec6b4cefa03e4c4fa1d9137dbb4bccb, type: 3}
   attributeType: 1
-  attributeDimension: 0
+  attributeDimension: 3

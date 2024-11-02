@@ -38,6 +38,8 @@ namespace Attri.Runtime
         public void GatherContainer()
         {
             if (containerFolder == null) return;
+            SerializedObject so = new SerializedObject(this);
+            so.Update();
             containers.Clear();
             // 検索
             var guids = AssetDatabase.FindAssets($"t:{nameof(Container)}", new []{AssetDatabase.GetAssetPath(containerFolder)});
@@ -63,6 +65,19 @@ namespace Attri.Runtime
                 attributeDimension = -1;
             else
                 attributeDimension = dimensions.First();
+            so.FindProperty("containers").arraySize = containers.Count;
+            for (int i = 0; i < containers.Count; i++)
+            {
+                so.FindProperty("containers").GetArrayElementAtIndex(i).objectReferenceValue = containers[i];
+            }
+            so.FindProperty("attributeType").enumValueIndex = (int)attributeType;
+            so.FindProperty("attributeDimension").intValue = attributeDimension;
+            so.FindProperty("attributeName").stringValue = attributeName;
+            so.FindProperty("containerFolder").objectReferenceValue = containerFolder;
+            so.ApplyModifiedProperties();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
         }
 #endif
     }
