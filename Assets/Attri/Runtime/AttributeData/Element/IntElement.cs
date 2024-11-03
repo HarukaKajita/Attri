@@ -16,7 +16,6 @@ namespace Attri.Runtime
         // キャスト
         public static implicit operator int[](IntElement dataProvider) => dataProvider.value;
         public static implicit operator IntElement(int[] value) => new(value);
-        public override int Dimension() => value.Length;
         public override AttributeDataType GetAttributeType() => AttributeDataType.Int;
         public override int[][][] AsInt() => new[] { new []{value} };
     }

@@ -33,13 +33,6 @@ namespace Attri.Runtime
             _compressionType = compressionType;
             _attributeType = attributeType;
         }
-        
-        public virtual int Dimension()
-        {
-            // 雑な実装
-            // 0番目のデータの成分の数を返す
-            return _compressedValueBytes[0].Length;
-        }
 
         public virtual AttributeDataType GetAttributeType() => _attributeType;
 

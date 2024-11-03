@@ -16,7 +16,6 @@ namespace Attri.Runtime
         // キャスト
         public static implicit operator float[](FloatElement element) => element.value;
         public static implicit operator FloatElement(float[] value) => new(value);
-        public override int Dimension() => value.Length;
         public override AttributeDataType GetAttributeType() => AttributeDataType.Float;
         public override float[][][] AsFloat() => new[] { new []{value} };
     }

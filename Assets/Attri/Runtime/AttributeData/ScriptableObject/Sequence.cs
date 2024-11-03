@@ -17,15 +17,12 @@ namespace Attri.Runtime
         public List<Container> containers = new();
         [SerializeField]
         private AttributeDataType attributeType;
-        [SerializeField]
-        private int attributeDimension;
         public int ContainerCount()
         {
             return containers.Count;
         }
         public int FrameCount => ContainerCount();
         #region IDataProvider
-        public int Dimension() => attributeDimension;
         public AttributeDataType GetAttributeType() => attributeType;
         public int[][][] AsInt() => containers.Select(c => c.ElementsAsInt()).ToArray();
         public float[][][] AsFloat() => containers.Select(c => c.ElementsAsFloat()).ToArray();
@@ -59,19 +56,12 @@ namespace Attri.Runtime
             // フレーム番号順にソート
             containers = containerDictionary.OrderBy(x => x.Key).Select(x => x.Value).ToList();
             attributeType = containers[0].GetAttributeType();
-            // アトリビュートの次元が一致しているか確認
-            var dimensions = containers.Select(c => c.Dimension()).Distinct().ToArray();
-            if (dimensions.Length > 1) //"Dimension is not consistent"
-                attributeDimension = -1;
-            else
-                attributeDimension = dimensions.First();
             so.FindProperty("containers").arraySize = containers.Count;
             for (int i = 0; i < containers.Count; i++)
             {
                 so.FindProperty("containers").GetArrayElementAtIndex(i).objectReferenceValue = containers[i];
             }
             so.FindProperty("attributeType").enumValueIndex = (int)attributeType;
-            so.FindProperty("attributeDimension").intValue = attributeDimension;
             so.FindProperty("attributeName").stringValue = attributeName;
             so.FindProperty("containerFolder").objectReferenceValue = containerFolder;
             so.ApplyModifiedProperties();

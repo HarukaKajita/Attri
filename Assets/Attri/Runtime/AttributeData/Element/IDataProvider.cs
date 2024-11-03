@@ -5,7 +5,6 @@ namespace Attri.Runtime
 {
     public interface IDataProvider
     {
-        public int Dimension();
         public AttributeDataType GetAttributeType();
         // [frame][element][component]
         public float[][][] AsFloat();

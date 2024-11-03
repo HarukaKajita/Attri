@@ -20,7 +20,6 @@ namespace Attri.Editor
             if (skipFirstLine) data.RemoveAt(0);
             // アセットの作成
             var container = ScriptableObject.CreateInstance<Container>();
-            container.attributeName = $"{assetPrefix}";
             container.SetValues(Parse(data));
             _scriptableObjects.Clear();
             _scriptableObjects.Add(container);
