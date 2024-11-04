@@ -4,6 +4,10 @@
         <ui:Toggle label="Compress" name="Compress" />
         <ui:SliderInt name="Precision" label="Precision" high-value="24" low-value="1" show-input-field="true" inverted="false" direction="Horizontal" style="width: 460px;" />
         <ui:Label tabindex="-1" text="Error Analysis (Degree)" />
+        <ui:VisualElement style="flex-direction: row;">
+            <UnityEditor.Search.ObjectField name="ExportObject" label="ExportObject" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" style="width: 460px; flex-direction: row;" />
+            <ui:Button text="Export" style="height: 18px; width: 100px; flex-direction: column;" />
+        </ui:VisualElement>
         <ui:MultiColumnListView name="List" fixed-item-height="18">
             <ui:Columns>
                 <ui:Column name="num" title="Num" width="80" />
