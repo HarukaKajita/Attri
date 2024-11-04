@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Attri.Editor
+namespace Attri.Runtime
 {
     public class DisableOnInspectorAttribute : PropertyAttribute
     {

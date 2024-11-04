@@ -1,6 +1,4 @@
-using Attri.Editor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Attri.Runtime
 {

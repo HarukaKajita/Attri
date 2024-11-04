@@ -1,8 +1,9 @@
-using UnityEditor;
 using UnityEngine;
 
-namespace Attri.Editor
-{    
+namespace Attri.Runtime
+{
+    #if UNITY_EDITOR
+    using UnityEditor;
     [CustomPropertyDrawer(typeof(DisableOnInspectorAttribute))]
     public class DisableOnInspectorAttributeDrawer : PropertyDrawer
     {
@@ -13,10 +14,10 @@ namespace Attri.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            using (new EditorGUI.DisabledGroupScope(true))
-            {
-                EditorGUI.PropertyField(position, property, label, true);
-            }
+            GUI.enabled = false;
+            EditorGUI.PropertyField(position, property, label, true);
+            GUI.enabled = true;
         }
     }
+    #endif
 }
