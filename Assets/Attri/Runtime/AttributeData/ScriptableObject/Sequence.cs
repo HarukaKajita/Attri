@@ -14,8 +14,9 @@ namespace Attri.Runtime
         public DefaultAsset containerFolder;
 #endif
         public string attributeName;
+        [DisableOnInspector]
         public List<Container> containers = new();
-        [SerializeField]
+        [SerializeField, DisableOnInspector]
         private AttributeDataType attributeType;
         public int ContainerCount()
         {

@@ -7,9 +7,9 @@ namespace Attri.Runtime
     [CreateAssetMenu(fileName = nameof(Container), menuName = "Attri/CSV/Container", order = 204)]
     public class Container : ScriptableObject, IDataProvider
     {
-        [SerializeReference]
+        [SerializeReference, DisableOnInspector]
         private List<ElementBase> elements = new ();
-        [SerializeField]
+        [SerializeField, DisableOnInspector]
         private AttributeDataType attributeDataType;
         
         public int ElementCount() => elements.Count;
