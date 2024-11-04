@@ -4,6 +4,7 @@ namespace Attri.Runtime
 {
 	public enum CompressionType
 	{
+		UnCompressed,
 		Half,
 		UnitVector3,
 		FixedPrecisionFloat,

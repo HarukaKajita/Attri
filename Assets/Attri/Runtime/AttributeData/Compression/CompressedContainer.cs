@@ -3,6 +3,6 @@
 	
 	public class CompressedContainer : Container
 	{
-		
+		public CompressionParams compressionParams;
 	}
 }
