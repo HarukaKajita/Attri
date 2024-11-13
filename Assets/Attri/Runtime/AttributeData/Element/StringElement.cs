@@ -18,5 +18,6 @@ namespace Attri.Runtime
         public static implicit operator StringElement(string[] value) => new(value);
         public override AttributeDataType GetAttributeType() => AttributeDataType.String;
         public override string[][][] AsString() => new[] { new[] { value } };
+        public override string[] ComponentsAsString() => value;
     }
 }

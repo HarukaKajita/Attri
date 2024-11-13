@@ -19,16 +19,12 @@ namespace Attri.Runtime
 			return type switch
 			{
 				CompressionType.Half => Array.Empty<string>(),
-				CompressionType.UnitVector3 => new string[]{"precision"},
-				CompressionType.FixedPrecisionFloat => new[] {"precision", "offset"},
-				CompressionType.BiasedPrecisionFloat => new[] {"precision", "bias"},
+				CompressionType.UnitVector3 => Array.Empty<string>(),
+				CompressionType.FixedPrecisionFloat => new[] {"offset"},
+				CompressionType.BiasedPrecisionFloat => new[] {"bias"},
 				CompressionType.ShrinkLengthInt => new[] {"bitLength"},
 				_ => Array.Empty<string>(),
 			};
-		}
-		public static int PrecisionParam(this CompressedDataProvider provider)
-		{
-			return provider._intParams["precision"];
 		}
 	}
 }

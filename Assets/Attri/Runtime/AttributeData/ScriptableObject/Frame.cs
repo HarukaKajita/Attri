@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace Attri.Runtime
 {
-    [CreateAssetMenu(fileName = nameof(Container), menuName = "Attri/CSV/Container", order = 204)]
-    public class Container : ContainerBase
+    
+    public class Frame : ScriptableObject
     {
         [SerializeReference, DisableOnInspector]
         protected List<ElementBase> elements = new ();
+        [SerializeField, DisableOnInspector]
+        private AttributeDataType attributeDataType;
         
-        public override int ElementCount() => elements.Count;
+        public int ElementCount() => elements.Count;
         public void SetValues(float[][] values)
         {
             elements.Clear();
@@ -34,6 +36,12 @@ namespace Attri.Runtime
                 elements.Add((StringElement)value);
             attributeDataType = AttributeDataType.String;
         }
+        // public void SetValues(ValueByte[][] values)
+        // {
+        //     elements.Clear();
+        //     foreach (var value in values)
+        //         elements.Add((ByteElement)value);
+        // }
         
         public int[][] ElementsAsInt() => elements.Select(e => e.ComponentsAsInt()).ToArray();
         public float[][] ElementsAsFloat() => elements.Select(e => e.ComponentsAsFloat()).ToArray();

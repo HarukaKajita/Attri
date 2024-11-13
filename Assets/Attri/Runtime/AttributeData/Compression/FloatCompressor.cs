@@ -2,6 +2,7 @@
 using System.Linq;
 using Attri.Runtime.Extensions;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace Attri.Runtime
 {
@@ -28,6 +29,10 @@ namespace Attri.Runtime
 			public int LossBitCount;
 			public float Offset;
 			
+			public static string ExponentBitsName = nameof(ExponentBits);
+			public static string LossBitCountName = nameof(LossBitCount);
+			public static string OffsetName = nameof(Offset);
+			
 			public DecodeParam(int exponentBits, int lossBitCount, float offset)
 			{
 				ExponentBits = exponentBits;
@@ -53,17 +58,26 @@ namespace Attri.Runtime
 		}
 		
 		// 成分ごとに圧縮設定を持つ。要素毎ではない。
-		public float[][][] Compress()
+		public float[][][] Compress(bool perFrame = false)
 		{
 			var frameCount = Original.Length;
 			EncodeParams = new EncodeParam[frameCount][];
 			DecodeParams = new DecodeParam[frameCount][];
 			Compressed = Original.EmptyClone();
+
+			// 全フレームの成分を結合
+			var allFrameComponents= Array.Empty<float[]>();
+			if (!perFrame)
+			{
+				var allFrameElements = Original.SelectMany(f => f).ToArray();
+				allFrameComponents = allFrameElements.Transpose();
+			}
 			
 			// Component毎に圧縮パラメータを計算
 			for(var frameId = 0; frameId < frameCount; frameId++)
 			{
-				var components = Original[frameId].Transpose();
+				var components = allFrameComponents;
+				if (perFrame) components = Original[frameId].Transpose();
 				var componentCount = components.Length;
 				EncodeParams[frameId] = new EncodeParam[componentCount];
 				DecodeParams[frameId] = new DecodeParam[componentCount];
@@ -143,11 +157,71 @@ namespace Attri.Runtime
 			return M;
 		}
 
-		private static float Decode(int mantissa, DecodeParam decodeParam)
+		public static float Decode(int mantissa, DecodeParam decodeParam)
 		{
-			mantissa <<= decodeParam.LossBitCount;
-			var preFloat = BitConverter.ToSingle(BitConverter.GetBytes(decodeParam.ExponentBits | mantissa), 0);
-			return preFloat - decodeParam.Offset;
+			return Decode(mantissa, decodeParam.ExponentBits, decodeParam.LossBitCount, decodeParam.Offset);
+		}
+		public static float Decode(int mantissa, int exponentBits, int lossBitCount, float offset)
+		{
+			mantissa <<= lossBitCount;
+			var preFloat = BitConverter.ToSingle(BitConverter.GetBytes(exponentBits | mantissa), 0);
+			return preFloat - offset;
+		}
+		
+		// [frame][component] フレーム毎に異なる設定で圧縮した場合の設定
+		public CompressionParams[][] MakeCompressionParamsObjectPerFrame()
+		{
+			var frameCount = Original.Length;
+			var paramsArray = new CompressionParams[frameCount][];
+			for (var frameId = 0; frameId < frameCount; frameId++)
+			{
+				var componentCount = EncodeParams[frameId].Length;
+				paramsArray[frameId] = new CompressionParams[componentCount];
+				for (var compoId = 0; compoId < componentCount; compoId++)
+				{
+					var encodeParam = EncodeParams[frameId][compoId];
+					var decodeParam = DecodeParams[frameId][compoId];
+					var param = ScriptableObject.CreateInstance<CompressionParams>();
+					param.name = $"Frame{frameId}_Component{compoId}";
+					// Encode
+					param.SetEncodeIntParam(nameof(encodeParam.LossBitCount), encodeParam.LossBitCount);;
+					param.SetEncodeFloatParam(nameof(encodeParam.Center), encodeParam.Center);
+					param.SetEncodeFloatParam(nameof(encodeParam.ExpRangeCenterOffset), encodeParam.ExpRangeCenterOffset);
+					// Decode
+					param.SetDecodeIntParam(nameof(decodeParam.ExponentBits), decodeParam.ExponentBits);
+					param.SetDecodeIntParam(nameof(decodeParam.LossBitCount), decodeParam.LossBitCount);
+					param.SetDecodeFloatParam(nameof(decodeParam.Offset), decodeParam.Offset);
+					paramsArray[frameId][compoId] = param;
+				}
+			}
+			return paramsArray;
+		}
+		// [component] 全フレーム共通の設定で圧縮した場合の設定
+		public CompressionParams[] MakeCompressionParamsObject()
+		{
+			var encodeParams = EncodeParams[0];
+			var decodeParams = DecodeParams[0];
+			var componentCount = encodeParams.Length;
+			var paramsArray = new CompressionParams[componentCount];
+			for (var compoId = 0; compoId < componentCount; compoId++)
+			{
+				var encodeParam = encodeParams[compoId];
+				var decodeParam = decodeParams[compoId];
+				var param = ScriptableObject.CreateInstance<CompressionParams>();
+				param.name = $"FrameAll_Component{compoId}";
+				// Compression Type
+				param.compressionType = CompressionType.FixedPrecisionFloat;
+				// Encode
+				param.SetEncodeIntParam(nameof(encodeParam.LossBitCount), encodeParam.LossBitCount);;
+				param.SetEncodeFloatParam(nameof(encodeParam.Center), encodeParam.Center);
+				param.SetEncodeFloatParam(nameof(encodeParam.ExpRangeCenterOffset), encodeParam.ExpRangeCenterOffset);
+				// Decode
+				param.SetDecodeIntParam(nameof(decodeParam.ExponentBits), decodeParam.ExponentBits);
+				param.SetDecodeIntParam(nameof(decodeParam.LossBitCount), decodeParam.LossBitCount);
+				param.SetDecodeFloatParam(nameof(decodeParam.Offset), decodeParam.Offset);
+				paramsArray[compoId] = param;
+			}
+			return paramsArray;
 		}
 	}
 }

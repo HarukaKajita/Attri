@@ -4,13 +4,13 @@ using UnityEngine;
 namespace Attri.Runtime
 {
     [Serializable]
-    public abstract class ElementBase : IDataProvider
+    public abstract class ElementBase
     {
         // ElementBase
         public int ComponentCount() => Dimension();
-        public virtual int[] ComponentsAsInt() => AsInt()[0][0];
-        public virtual float[] ComponentsAsFloat() => AsFloat()[0][0];
-        public virtual string[] ComponentsAsString() => AsString()[0][0];
+        public virtual int[] ComponentsAsInt() => throw new NotImplementedException();
+        public virtual float[] ComponentsAsFloat() => throw new NotImplementedException();
+        public virtual string[] ComponentsAsString() => throw new NotImplementedException();
         
         // IDataProvider
         public virtual int Dimension()
@@ -28,6 +28,5 @@ namespace Attri.Runtime
         public virtual float[][][] AsFloat() => throw new System.NotImplementedException();
         public virtual int[][][] AsInt() => throw new System.NotImplementedException();
         public virtual string[][][] AsString() => throw new System.NotImplementedException();
-        public virtual ScriptableObject GetScriptableObject() => throw new System.NotImplementedException();
     }
 }

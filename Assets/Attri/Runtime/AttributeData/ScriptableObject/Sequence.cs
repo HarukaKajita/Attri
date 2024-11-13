@@ -31,10 +31,11 @@ namespace Attri.Runtime
         public ScriptableObject GetScriptableObject() => this;
         #endregion
         
-#if UNITY_EDITOR
+
         [ContextMenu("Setup")]
         public void GatherContainer()
         {
+#if UNITY_EDITOR
             if (containerFolder == null) return;
             SerializedObject so = new SerializedObject(this);
             so.Update();
@@ -69,7 +70,7 @@ namespace Attri.Runtime
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
-        }
 #endif
+        }
     }
 }

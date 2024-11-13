@@ -18,7 +18,7 @@ namespace Attri.Editor
 		
 		// Data (= Container,Sequence)
 		[SerializeReference] private IDataProvider dataProvider = default;
-		EventCallback<ChangeEvent<Object>> assignDataCallback;
+		private EventCallback<ChangeEvent<Object>> _assignDataCallback;
 
 		private FloatView _floatView;
 		private CompressedFloatView _compressedFloatView;
@@ -40,11 +40,10 @@ namespace Attri.Editor
 			// Windowの初期化
 			var windowElement = m_WindowVisualTreeAsset.Instantiate();
 			var dataProviderField = windowElement.Q<ObjectField>("DataProvider");
-			dataProviderField.objectType = typeof(IDataProvider);
-			assignDataCallback = OnDataProviderChanged;
-			dataProviderField.RegisterValueChangedCallback(assignDataCallback);
-			dataProviderField.searchContext = SearchService.CreateContext("p: union{t:Container, t:Sequence}");
-			// dataProviderField.searchContext = SearchService.CreateContext("p: union{t:Container}");
+			dataProviderField.objectType = typeof(Sequence);
+			_assignDataCallback = OnDataProviderChanged;
+			dataProviderField.RegisterValueChangedCallback(_assignDataCallback);
+			dataProviderField.searchContext = SearchService.CreateContext("p: t:Sequence");
 			rootVisualElement.Add(windowElement);
 			
 			Debug.Log("CreateGUI End");

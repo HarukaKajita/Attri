@@ -18,5 +18,6 @@ namespace Attri.Runtime
         public static implicit operator IntElement(int[] value) => new(value);
         public override AttributeDataType GetAttributeType() => AttributeDataType.Int;
         public override int[][][] AsInt() => new[] { new []{value} };
+        public override int[] ComponentsAsInt() => value;
     }
 }

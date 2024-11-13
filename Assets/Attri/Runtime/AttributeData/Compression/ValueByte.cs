@@ -1,12 +1,16 @@
-﻿namespace Attri.Runtime
+﻿using System;
+
+namespace Attri.Runtime
 {
 	public struct ValueByte
 	{
-		public byte[] Value;
+		public byte[] Bytes;
 
-		public ValueByte(byte[] value)
+		public ValueByte(byte[] bytes)
 		{
-			Value = value;
+			Bytes = bytes;
 		}
+		
+		public static implicit operator int (ValueByte valueByte) => BitConverter.ToInt32(valueByte.Bytes, 0);
 	}
 }

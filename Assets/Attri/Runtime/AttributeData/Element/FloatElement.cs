@@ -7,7 +7,7 @@ namespace Attri.Runtime
     public class FloatElement : ElementBase
     {
         [SerializeField]
-        public float[] value = Array.Empty<float>();
+        protected float[] value = Array.Empty<float>();
         
         public FloatElement(float[] value)
         {
@@ -18,5 +18,6 @@ namespace Attri.Runtime
         public static implicit operator FloatElement(float[] value) => new(value);
         public override AttributeDataType GetAttributeType() => AttributeDataType.Float;
         public override float[][][] AsFloat() => new[] { new []{value} };
+        public override float[] ComponentsAsFloat() => value;
     }
 }

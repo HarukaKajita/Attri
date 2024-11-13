@@ -2,6 +2,8 @@
     <Style src="project://database/Assets/Attri/Editor/Analysis/AnalysisWindow.uss?fileID=7433441132597879392&amp;guid=41112636d224e0f429cd052ebdb1d14c&amp;type=3#AnalysisWindow" />
     <ui:VisualElement style="flex-grow: 1;">
         <ui:Label name="Title" text="Analysis Window" style="-unity-font-style: bold; font-size: 18px;" />
-        <UnityEditor.Search.ObjectField name="DataProvider" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" label="Container&#x9;" style="height: 25px; width: 460px;" />
+        <ui:VisualElement style="flex-grow: 1;">
+            <UnityEditor.Search.ObjectField name="DataProvider" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" label="DataProvider" style="height: auto; width: 460px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
