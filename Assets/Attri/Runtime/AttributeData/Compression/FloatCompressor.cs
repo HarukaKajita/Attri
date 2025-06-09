@@ -137,7 +137,7 @@ namespace Attri.Runtime
 		
 		static float CompressValue(float value, EncodeParam encodeParam, DecodeParam decodeParam)
 		{
-			if(value is float.NaN) return float.NaN;
+			if(float.IsNaN(value)) return float.NaN;
 			// Encode
 			var M = Encode(value, encodeParam);
 			// Decode
