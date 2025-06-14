@@ -1,12 +1,7 @@
 using System;
-using MessagePack;
 
 namespace Attri.Runtime
 {
-    [Union(0, typeof(Value<int>))]
-    [Union(1, typeof(Value<float>))]
-    [Union(2, typeof(Value<string>))]
-    [MessagePackObject(true)]
     [Serializable]
     public class Value<T>
     {
@@ -17,9 +12,7 @@ namespace Attri.Runtime
         {
             components = value;
         }
-        [IgnoreMember]
         public int Length => components.Length;
-        [IgnoreMember]
         public T this[int index]
         {
             get => components[index];

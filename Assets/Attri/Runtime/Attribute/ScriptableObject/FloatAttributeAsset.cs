@@ -15,13 +15,13 @@ namespace Attri.Runtime
             return attribute;
         }
 
-        [ContextMenu("SerializeTest_Array")]
-        private void SerializeTestArray()
-        {
-            var array = new FloatAttribute[] {attribute, attribute};
-            var bytes = AttributeSerializer.Serialize(array);
-            var json = AttributeSerializer.ConvertToJson(bytes);
-            Debug.Log(json);
-        }
+        // [ContextMenu("SerializeTest_Array")]
+        // private void SerializeTestArray()
+        // {
+        //     var array = new FloatAttribute[] {attribute, attribute};
+        //     var bytes = AttributeSerializer.Serialize(array);
+        //     var json = AttributeSerializer.ConvertToJson(bytes);
+        //     Debug.Log(json);
+        // }
     }
 }

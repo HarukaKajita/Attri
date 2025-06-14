@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using MessagePack;
 using UnityEngine;
 
 namespace Attri.Runtime
 {
-    [MessagePackObject(true)]
     [Serializable]
     public class StringAttribute : AttributeBase<string>
     {

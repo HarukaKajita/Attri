@@ -14,9 +14,9 @@ namespace Attri.Runtime
 		// Arbitrary Parameter for decode in inherited class
 		// ex) int precision
 		
-		public virtual ValueByte EncodeInt(int value)  => throw new NotImplementedException();;
-		public virtual ValueByte EncodeFloat(float value)  => throw new NotImplementedException();;
-		public virtual ValueByte EncodeString(string value)  => throw new NotImplementedException();;
+		public virtual ValueByte EncodeInt(int value)  => throw new NotImplementedException();
+		public virtual ValueByte EncodeFloat(float value)  => throw new NotImplementedException();
+		public virtual ValueByte EncodeString(string value)  => throw new NotImplementedException();
 		
 		public virtual int DecodeInt(ValueByte valueByte) => throw new NotImplementedException();
 		public virtual float DecodeFloat(ValueByte valueByte) => throw new NotImplementedException();

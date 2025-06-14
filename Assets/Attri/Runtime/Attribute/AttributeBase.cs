@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MessagePack;
 using UnityEngine;
 
 namespace Attri.Runtime
@@ -102,14 +101,14 @@ namespace Attri.Runtime
             return frameList;
         }
         public abstract AttributeAsset CreateAsset();
-        internal void SerializeTest()
-        {
-            var bytes = AttributeSerializer.Serialize(this);
-            var json = AttributeSerializer.ConvertToJson(bytes);
-            Debug.Log(json);
-            var attribute = MessagePackSerializer.Deserialize<IAttribute>(bytes, AttributeSerializer.options);
-            Debug.Log(attribute.ToString());
-        }
+        // internal void SerializeTest()
+        // {
+        //     var bytes = AttributeSerializer.Serialize(this);
+        //     var json = AttributeSerializer.ConvertToJson(bytes);
+        //     Debug.Log(json);
+        //     var attribute = MessagePackSerializer.Deserialize<IAttribute>(bytes, AttributeSerializer.options);
+        //     Debug.Log(attribute.ToString());
+        // }
         public abstract void DrawAttributeDetailInspector();
     }
 }

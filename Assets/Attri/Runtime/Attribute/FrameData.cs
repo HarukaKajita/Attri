@@ -1,13 +1,7 @@
 using System;
-using MessagePack;
 
 namespace Attri.Runtime
 {
-    [Union(0, typeof(FrameData<int>))]
-    [Union(1, typeof(FrameData<float>))]
-    [Union(2, typeof(FrameData<string>))]
-    [MessagePackObject(true)]
-    [Serializable]
     public class FrameData<T>
     {
         public Value<T>[] elements;
